@@ -93,26 +93,28 @@ function SignInfo() {
     const formSubmit = async(e) => {
         e.preventDefault();
         console.log("it work")
+        console.log('Request Body:', { firstName, lastName, email, password, phone, dateOfBirth, gender, country, city });
 
-        if(isEmail){ 
-        dispatch(setEmailOrPhone({email: email, phone:null}))
-        }else{
-            dispatch(setEmailOrPhone({email:null, phone: phone}))
-        }
+        // if(isEmail){ 
+        // dispatch(setEmailOrPhone({email: email, phone:null}))
+        // }else{
+        //     dispatch(setEmailOrPhone({email:null, phone: phone}))
+        // }
 
-        if (password === confirmPass) {
+        if (password===confirmPass) {  
             try {
-                const response = await registerUser({firstName,lastName,email,password,phone,gender,country,city}).unwrap(); // Call the mutation
+                const response = await registerUser({firstName,lastName,email,password,phone,dateOfBirth,gender,country,city}).unwrap(); // Call the mutation
                 console.log("Registration successful:", response);
+                
                 if (response.data) {
                     // Handle success, like navigating to a new page
                 }
             } catch (error) {
-                console.error("Registra failed:", error); // Handle error response
+                console.error("Registra failed:", error.response ? error.response.data : error); // Handle error response
             }
         } else {
             console.log("Passwords do not match.");
-        }
+          }
     } 
     
 
@@ -124,9 +126,10 @@ function SignInfo() {
 
     useEffect(() => {
         if (isError) {
-            console.error("Registration failed:", registerData); // Adjust this based on your error handling
+            console.error("Registration failed:", registerData || "No additional data available");
         }
     }, [isError]);
+    
 
     const handleDateChange = (type, value) => {
         const [year = '', month = '', day = ''] = dateOfBirth.split('-');
@@ -134,17 +137,17 @@ function SignInfo() {
     if (type === 'day') {
         setFormValue(prevForm => ({
             ...prevForm,
-            dateOfBirth: `${year || ''}-${month || ''}-${value}` // Ensure day is updated correctly
+            dateOfBirth: `${year || ''}-${month || ''}-${value}` 
         }));
     } else if (type === 'month') {
         setFormValue(prevForm => ({
             ...prevForm,
-            dateOfBirth: `${year || ''}-${value}-${day || ''}` // Ensure month is updated correctly
+            dateOfBirth: `${year || ''}-${value}-${day || ''}` 
         }));
     } else if (type === 'year') {
         setFormValue(prevForm => ({
             ...prevForm,
-            dateOfBirth: `${value}-${month || ''}-${day || ''}` // Ensure year is updated correctly
+            dateOfBirth: `${value}-${month || ''}-${day || ''}`
         }));
     }
     };
@@ -170,7 +173,7 @@ function SignInfo() {
                 </div>
         </div>
 
-        <form className="user_info_form_container  grid grid-cols-2 gap-2 px-4" >
+        <form className="user_info_form_container  grid grid-cols-2 gap-2 px-4"  >
             <div className="user_info_form1_container space-y-4 px-5 mt-4 ml-16 " >
                 <div className="user_info_input_container flex gap-4">
                     <div className="grid w-full">
@@ -245,10 +248,10 @@ function SignInfo() {
                               <input
                                 type="radio"
                                 name="gender"
-                                value="Male"
-                                checked={radioButton === "Male"}
+                                value="MALE"
+                                checked={radioButton === "MALE"}
                                 onChange={radioHandle}
-                                className={`bg-[#ECF1F4]  h-[18px] w-[19px] rounded-[50px] appearance-none relative ${radioButton === "Male" ? "radio_check border-2  border-[#00BCD4]" :" "}`}
+                                className={`bg-[#ECF1F4]  h-[18px] w-[19px] rounded-[50px] appearance-none relative ${radioButton === "MALE" ? "radio_check border-2  border-[#00BCD4]" :" "}`}
                                 />
                               <label className="ml-[10px] mr-[20px] place-self-center">Male</label>
                           </div>
@@ -256,10 +259,10 @@ function SignInfo() {
                               <input
                                 type="radio"
                                 name="gender"
-                                value="Female"
-                                checked={radioButton === "Female"}
+                                value="FEMALE"
+                                checked={radioButton === "FEMALE"}
                                 onChange={radioHandle}
-                                className={`bg-[#ECF1F4]  h-[18px] w-[19px] rounded-[50px] relative appearance-none ${radioButton === "Female" ? "border-2 border-[#00BCD4] radio_check" :" "}`}
+                                className={`bg-[#ECF1F4]  h-[18px] w-[19px] rounded-[50px] relative appearance-none ${radioButton === "FEMALE" ? "border-2 border-[#00BCD4] radio_check" :" "}`}
                               />
                               <label className="ml-[10px] mr-[20px] ">Female</label>
                           </div>
@@ -267,10 +270,10 @@ function SignInfo() {
                               <input
                                 type="radio"
                                 name="gender"
-                                value="Other"
-                                checked={radioButton === "Other"}
+                                value="OTHER"
+                                checked={radioButton === "OTHER"}
                                 onChange={radioHandle}
-                                className={`bg-[#ECF1F4]  h-[18px] w-[19px] rounded-[50px] appearance-none relative ${radioButton === "Other" ? "border-2 border-[#00BCD4]  radio_check " :" "}`}
+                                className={`bg-[#ECF1F4]  h-[18px] w-[19px] rounded-[50px] appearance-none relative ${radioButton === "OTHER" ? "border-2 border-[#00BCD4]  radio_check " :" "}`}
                               />
                               <label className="ml-[10px] mr-[20px]">Other</label>
                           </div>
@@ -286,9 +289,9 @@ function SignInfo() {
                      <label className="block place-self-start text-slate-500 mb-[10px]">Country:</label>
                      <select id="options" name="country" value={country} onChange={formHandleChange} className="w-[315px] h-[40px] text-slate-400 rounded-[5px] px-[10px] pl-[10px] border-2 border-[#ECF1F4]">
                                         <option value="option1">Thailand</option>
-                                        <option value="option2">Option 2</option>
-                                        <option value="option3">Option 3</option>
-                                        <option value="option4">Option 4</option>
+                                        <option value="thai">Thai</option>
+                                        <option value="singapore">Singapore</option>
+                                        <option value="chinese">Chinese</option>
                       </select>
                 </div>
                 <div className="grid">
@@ -305,7 +308,7 @@ function SignInfo() {
                 <div className="grid relative">
                      <label className="block place-self-start  text-slate-500 mb-[10px]">Password:</label>
                      <input
-                          type={password ? "text" : "password"}
+                          type={ispassword ? "text" : "password"}
                           name="password"
                           value={password}
                           onChange={formHandleChange}
@@ -315,13 +318,13 @@ function SignInfo() {
                             (<button className="eye1 absolute top-[3rem] left-[17.5rem]" 
                             onClick={(e)=> {
                             e.preventDefault();
-                            setpassword(!password)}}>
+                            setpassword(!ispassword)}}>
                                 <FaRegEye />
                             </button>) :
                             (<button className="eye2 absolute top-[3rem] right-[5rem]" 
                             onClick={(e)=> {
                                 e.preventDefault();
-                                setpassword(!password)}}>
+                                setpassword(!ispassword)}}>
                                 <FaRegEyeSlash />
                             </button>)
                     }
@@ -351,7 +354,7 @@ function SignInfo() {
                     }
                 </div>
             </div>
-
+            
         </form>
         <div className="user_info_button_container flex flex-col justify-start mt-8 ml-[6.5rem] w-[645px]">
             <div className=" user_button_container text-left flex relative">
@@ -363,11 +366,12 @@ function SignInfo() {
                 </div>
                 <label htmlFor="agree" className="user_info_agree text-[#8C8CA1] ml-2  text-left">By singing up,you accept our terms,privacy policy and cookie policy. policy and cookie policy.policy and cookie policy</label>
             </div>
-              <button type="submit" onClick={formSubmit} className="w-[315px] user_info_button px-14 py-1 mt-[20px] text-lg  font-semibold  bg-[#0097A7] text-white rounded-md">
+              <button type="submit"  onClick={formSubmit} className="w-[315px] user_info_button px-14 py-1 mt-[20px] text-lg  font-semibold  bg-[#0097A7] text-white rounded-md">
                 <span className=" flex items-center justify-center w-full  h-full">Sign Up</span>
               </button>
             
         </div>
+       
       </main>
     </section>
   );

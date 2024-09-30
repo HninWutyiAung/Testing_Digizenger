@@ -7,15 +7,23 @@ import flick from '/images/flick.png';
 import graph from '/images/graph.png';
 import heart1 from '/images/heart1.png';
 import { useState } from 'react';
-import { useGetPostQuery } from '../api/Post';
+
 
 function ShowPost({activeChat}) {
     const [clickHeart, setClickHeart] =useState(true);
-
+    const [showMore, setShowMore] = useState(false);
+    const [count, setCount] = useState(0);
+    const postText = " Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt alias dolorem corporis non labore vitae modi?Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt alias dolorem corporis non labore vitae modi?";
 
     const heartHandle = ()=>{
         setClickHeart(!clickHeart);
     }
+
+    const toggleShowMore = () => {
+        setShowMore(!showMore);
+        setCount((prevCount) => prevCount + 1);
+    };
+
     return(
         <>
             <div className="flex flex-col items-start justify-center rounded-[8px] bg-white ">
@@ -52,8 +60,9 @@ function ShowPost({activeChat}) {
                             <div className={activeChat ? 'flex gap-[12px] self-stretch items-start' : 'flex gap-[20px] self-stretch items-start'}>
                                     <div className='w-[48px]'></div>
 
-                                    <div className={activeChat ? 'w-[330px] text-[15px]  text-[#7E7E8D] font-normal leading-6 line-clamp-3 text-left text-ellipsis ' : 'w-[450px] text-[15px]  text-[#7E7E8D] font-normal leading-6 line-clamp-2 text-left text-ellipsis '}>
-                                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt alias dolorem corporis non labore vitae modi?Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt alias dolorem corporis non labore vitae modi?
+                                    <div className={activeChat ? 'w-[330px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-left text-ellipsis ' : 'w-[500px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-justify text-ellipsis '}>
+                                          {showMore ? postText : postText.split(' ').slice(0, 20).join(' ') + '...'} 
+                                          <button onClick={toggleShowMore} className='mr-[20px] text-black font-semibold'>{showMore ? "show less" : "show more"}</button>
                                     </div>
 
                             </div>

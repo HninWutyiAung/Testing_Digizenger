@@ -8,7 +8,7 @@ function ApiFetchExample() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://digizenger.org/digizenger/api/test/serverTest');
+                const response = await fetch('http://152.42.254.187:8080/digizenger/api/v1/test/serverTest');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

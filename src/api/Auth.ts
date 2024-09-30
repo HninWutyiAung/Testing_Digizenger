@@ -4,18 +4,19 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 export const authApi = createApi ({
     reducerPath: "authApi",
     baseQuery : fetchBaseQuery({
-        baseUrl :"http://digizenger.org/digizenger/api/v1"
+        baseUrl :"http://digizenger.info/api/v1"
     }),
     endpoints: (builder)=>({
         registerUser: builder.mutation ({
-            query : ({firstName,lastName,email,password,phone,gender,country,city}) =>{
+            query : (body: {firstName: string,lastName:string ,email:string,password:string,phone:string ,dateOfBirth:string,gender:string,country:string,city:string}) =>{
                 return{
                     url : '/auth/register',
-                    method: 'post',
-                    body : JSON.stringify({firstName,lastName,email,password,phone,gender,country,city}),
-                    headers:{
-                        'Content-Type' : 'application/json'
-                    }
+                    method: 'POST',
+                    body ,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+
                 }
             }
         }),

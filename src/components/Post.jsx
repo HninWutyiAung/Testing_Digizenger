@@ -14,13 +14,13 @@ function Post({activeChat}) {
     const [content, setContent] = useState('');
     const [showMedia , setShowMedia] = useState(false);
     const [image, setImage] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const uploadRef = useRef(null);
     const [uploadPost] = useUploadPostMutation();
     const [postStatus, setPostStatus] = useState(false);
     const [selectedAudience, setSelectedAudience] = useState('Everyone');
 
-    console.log(typeof image)
     const handleAudienceSelect = (audience) => {
         setSelectedAudience(audience); 
         setPostStatus(false); 
@@ -57,12 +57,10 @@ function Post({activeChat}) {
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                setImage(reader.result);
-
-            };
+            console.log(file);
+            setImageFile(file);
+            const imageUrl = URL.createObjectURL(file);
+            setImage(imageUrl); 
             
         }
     }
@@ -82,16 +80,24 @@ function Post({activeChat}) {
         
         setContent(target.value);
         setIsButtonDisabled(target.value.trim() === '');
-        console.log("it work")
+        console.log(content);
     };
 
     const handlePostSubmit = async () => {
         const postData = {
             content: content,
-            isPublic: true,
-            media: image ? [{ mediaUrl: URL.createObjectURL(image), mediaType: "IMAGE" }] : [],
+            isPublic: "true",
+            media: imageFile ? [{ mediaUrl: imageFile.name, mediaType: "IMAGE" }] : [],
             
         };
+        console.log(postData);
+
+        // if (video) { 
+        //     postData.media.push({
+        //         mediaUrl: video, 
+        //         mediaType: "VIDEO"
+        //     });
+        // }
 
         try {
             const result = await uploadPost(postData).unwrap();
@@ -141,7 +147,7 @@ function Post({activeChat}) {
 
                             <div className={`flex justify-center p-[8px_20px] items-center rounded-[8px] h-[36px] bg-[#0097A7] ${isButtonDisabled ? "opacity-50 cursor-not-allowed" : "opacity-1 cursor-pointer"}}`}>
 
-                                <button disabled={isButtonDisabled}>Post</button>
+                                <button onClick={handlePostSubmit} disabled={isButtonDisabled}>Post</button>
 
                             </div>
                         </div>
