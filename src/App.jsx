@@ -13,9 +13,11 @@ import { store } from './feature/store';
 import { Provider } from 'react-redux';
 import ApiFetchExample  from './ApiFetch';
 
+
+
 function MainApp() {
   const location = useLocation();
-  const hideNav = ["/"];
+  const hideNav = ["/home", "/home/newfeed" , "/home/profile"];
   
   const pageSpecificMargin = {
     "/login": "mt-[0px]",
@@ -28,8 +30,9 @@ function MainApp() {
     <div className={`${pageSpecificMargin[location.pathname] || 'mt-[0]'}`}>
       {!hideNav.includes(location.pathname) && <Nav />}
       <Routes>
-        <Route path='/' element={<Homepage />} />
-        <Route path='/login' element={<Login />} />
+        <Route path='home/*' element={<Homepage />} >
+        </Route>
+        <Route path='/' element={<Login />} />
         <Route path='/signup' element={<SignInfo />} />
         <Route path='/signup/verify' element={<VerifyEmail />} />
         <Route path='/signup/verify/requestIdentity' element={<RequestIdentity />} />
