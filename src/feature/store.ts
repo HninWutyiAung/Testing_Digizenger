@@ -5,10 +5,12 @@ import chatReducer from './chatSlice.ts'
 import registerInfoReducer from './authSlice.ts';
 import uploadPostReducer from './postSlice.ts';
 import { postUploadSlice } from '../api/Post.ts';
+import loginUserTokenReducer from './loginToken.ts';
 
 export const store = configureStore({
     reducer:{
         chat: chatReducer,
+        loginUserToken: loginUserTokenReducer,
         registerInfo: registerInfoReducer,
         uploadPost : uploadPostReducer,
         [authApi.reducerPath] : authApi.reducer,

@@ -4,7 +4,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 export const authApi = createApi ({
     reducerPath: "authApi",
     baseQuery : fetchBaseQuery({
-        baseUrl :"http://digizenger.info/api/v1"
+        baseUrl :"http://152.42.254.187:8080/api/v1"
     }),
     endpoints: (builder)=>({
         registerUser: builder.mutation ({
@@ -24,8 +24,8 @@ export const authApi = createApi ({
             query : ({emailOrPhone,otp}) => {
                 return{
                 method: 'put',
-                url: '/auth/verify-account?emailOrPhone=htetphyoemaung3363@gmail.com&otp=158103',
-                body: JSON.stringify({ emailOrPhone, otp }), 
+                url: '/auth/verify-account',
+                params: { emailOrPhone, otp }, 
                 headers:{
                     'Content-type' : 'application/json'
                 }

@@ -12,12 +12,21 @@ import Homepage from './page/Homepage';
 import { store } from './feature/store';
 import { Provider } from 'react-redux';
 import ApiFetchExample  from './ApiFetch';
-
-
+import { setLoginUserToken } from './feature/loginToken';
+import { useAppSelector, useAppDispatch } from './hook/Hook';
 
 function MainApp() {
   const location = useLocation();
   const hideNav = ["/home", "/home/newfeed" , "/home/profile"];
+  const dispatch = useAppDispatch();
+
+  const userToken = JSON.parse(localStorage.getItem("user") || "{}");
+
+  console.log(userToken);
+
+  useEffect(() => { 
+    dispatch(setLoginUserToken(userToken));
+  }, [dispatch]);
   
   const pageSpecificMargin = {
     "/login": "mt-[0px]",

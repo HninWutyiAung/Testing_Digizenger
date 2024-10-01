@@ -8,7 +8,7 @@ function ApiFetchExample() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://152.42.254.187:8080/digizenger/api/v1/test/serverTest');
+                const response = await fetch('http://152.42.254.187:8080/api/v1/test/serverTest');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -22,7 +22,7 @@ function ApiFetchExample() {
         };
 
         fetchData();
-    }, []); // Empty dependency array means this effect runs once on mount
+    }, []);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;

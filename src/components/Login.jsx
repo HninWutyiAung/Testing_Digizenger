@@ -7,6 +7,8 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { useLoginUserMutation } from "../api/Auth";
 import { useNavigate } from "react-router-dom";
+import { selectToken, setLoginUserToken } from "../feature/loginToken";
+import { useAppDispatch, useAppSelector } from "../hook/Hook";
 
 
 function Login() {
@@ -18,8 +20,12 @@ function Login() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [loginUser,{isLoading, isSuccess, isError} ] = useLoginUserMutation();
+  const [loginUser,{data, isLoading, isSuccess, isError} ] = useLoginUserMutation();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const token = useAppSelector(selectToken);
+
+  console.log(token)
   useEffect(() => {
     console.log("Phone value updated:", phone);
 }, [phone]);
@@ -55,12 +61,6 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     
-    // Check if password is provided
-    // if (!password) {
-    //   console.error("Password is required");
-    //   return;
-    // }
-
     if (activeForm === 'form1' && (!email || !password)) {
       console.error("Email and Password are required for Form 1");
       return;
@@ -86,7 +86,8 @@ function Login() {
 
   useEffect(()=>{
     if(isSuccess){
-      navigate("/")
+      dispatch(setLoginUserToken({token:data.token}));
+      navigate("/home")
 
     }
   })
@@ -157,7 +158,7 @@ function Login() {
                         
                     />
                 </div>
-                <Link><button className="py-[10px] bg-[#00BCD4] login_input_box w-[350px] justify-self-center text-white rounded-lg" disabled={!recaptcha}>Login</button></Link>
+                <button type="submit" onClick={handleLogin} className="py-[10px] bg-[#00BCD4] login_input_box w-[350px] justify-self-center text-white rounded-lg" disabled={!recaptcha}>Login</button>
                 <div className="w-[350px] bg-slate-100 h-[2px] login_input_box justify-self-center mt-[-5px]"></div>
                 <div className="justify-self-center mt-[15px]">
                     <span className="text-slate-400">Not On Digizenger Yet?</span>
@@ -207,7 +208,7 @@ function Login() {
                         grecaptcha={grecaptchaObject}
                     />
                 </div>
-                <Link to="/"><button className="py-[10px] bg-[#00BCD4] w-[350px] login_input_box justify-self-center text-white rounded-lg" disabled={!recaptcha}>Login</button></Link>
+                <button type="submit" onClick={handleLogin} className="py-[10px] bg-[#00BCD4] w-[350px] login_input_box justify-self-center text-white rounded-lg" disabled={!recaptcha}>Login</button>
                 <div className="w-[350px] login_input_box bg-slate-100 h-[2px] justify-self-center mt-[-5px]"></div>
                 <div className="justify-self-center mt-[15px]">
                     <span className="text-slate-400 login_account_button login_input_box">Not On Digizenger Yet?</span>

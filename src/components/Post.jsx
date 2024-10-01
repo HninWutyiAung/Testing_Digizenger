@@ -7,6 +7,10 @@ import { GoImage } from "react-icons/go";
 import { PiGif } from "react-icons/pi";
 import { useUploadPostMutation } from '../api/Post';
 import { FaUsers, FaHome, FaUserFriends } from "react-icons/fa";
+import { addPost } from '../feature/postSlice';
+import { useAppDispatch, useAppSelector } from '../hook/Hook';
+import { selectPosts } from '../feature/postSlice';
+import { selectToken } from '../feature/loginToken';
 
 
 function Post({activeChat}) {
@@ -17,22 +21,31 @@ function Post({activeChat}) {
     const [imageFile, setImageFile] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const uploadRef = useRef(null);
-    const [uploadPost] = useUploadPostMutation();
+    const [uploadPost,{isLoading,isSuccess, isError}] = useUploadPostMutation();
     const [postStatus, setPostStatus] = useState(false);
     const [selectedAudience, setSelectedAudience] = useState('Everyone');
+    const dispatch = useAppDispatch();
+    const postsFromSlice = useAppSelector(selectPosts)
+    const token = useAppSelector(selectToken);
 
     const handleAudienceSelect = (audience) => {
         setSelectedAudience(audience); 
         setPostStatus(false); 
     };
 
+    console.log(content)
+    console.log(imageFile)
+    console.log(selectedAudience)
+    console.log(postsFromSlice[0])
+    console.log(token)  
+
     const getAudienceIcon = (audience) => {
         switch (audience) {
             case 'Everyone':
                 return <FaUsers className='w-[16px] h-[16px] text-[#0097A7]' />;
-            case 'Neighbor':
+            case 'Neighbors':
                 return <FaHome className='w-[16px] h-[16px] text-[#0097A7]' />;
-            case 'Follower':
+            case 'Followers':
                 return <FaUserFriends className='w-[16px] h-[16px] text-[#0097A7]' />;
             default:
                 return null;
@@ -85,20 +98,20 @@ function Post({activeChat}) {
 
     const handlePostSubmit = async () => {
         const postData = {
-            content: content,
-            isPublic: "true",
-            media: imageFile ? [{ mediaUrl: imageFile.name, mediaType: "IMAGE" }] : [],
+            description: content,
+            postType: selectedAudience.toUpperCase(),
+            file: imageFile ? [{ mediaUrl: imageFile.name, mediaType: "IMAGE" }] : [],
             
         };
         console.log(postData);
-
+        dispatch(addPost(postData))
+        console.log(typeof postType)
         // if (video) { 
         //     postData.media.push({
         //         mediaUrl: video, 
         //         mediaType: "VIDEO"
         //     });
         // }
-
         try {
             const result = await uploadPost(postData).unwrap();
             console.log("Post uploaded successfully:", result);
@@ -108,6 +121,15 @@ function Post({activeChat}) {
             console.error("Failed to upload post:", error);
         }
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            console.log("Post uploaded successfully");
+        }
+        if (isError) {
+            console.error("Failed to upload post");
+        }
+    })
 
     return (
         <section>
@@ -172,11 +194,11 @@ function Post({activeChat}) {
                                                 <img src={publicIcon} className='w-[16px] h-[16px]' alt="Public Icon" />
                                                 <span className='text-[14px] text-[#0097A7] font-medium leading-5'>Everyone</span>
                                             </div>
-                                            <div className='flex gap-[5px]' onClick={() => handleAudienceSelect('Neighbor')}>
+                                            <div className='flex gap-[5px]' onClick={() => handleAudienceSelect('Neighbors')}>
                                                 <img src={publicIcon} className='w-[16px] h-[16px]' alt="Public Icon" />
                                                 <span className='text-[14px] text-[#0097A7] font-medium leading-5'>Neighbor</span>
                                             </div>
-                                            <div className='flex gap-[5px]'onClick={() => handleAudienceSelect('Follower')}>
+                                            <div className='flex gap-[5px]'onClick={() => handleAudienceSelect('Followers')}>
                                                 <img src={publicIcon} className='w-[16px] h-[16px]' alt="Public Icon" />
                                                 <span className='text-[14px] text-[#0097A7] font-medium leading-5'>Follower</span>
                                             </div>

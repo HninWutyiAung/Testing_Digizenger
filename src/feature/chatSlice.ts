@@ -48,7 +48,7 @@ const chatSlice = createSlice({
     },
 });
 
-// Export actions and reducer
+
 export const { setChatList, setActiveChat, addMessageToChat } = chatSlice.actions;
 export default chatSlice.reducer;
 export const selectChatList = (state :RootState) => state.chat.chatList;

@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate} from "react-router-dom";
 import { useVerifyEmailOrPhoneMutation } from "../api/Auth";
 import { useAppSelector } from "../hook/Hook";
 import { selectEmail } from "../feature/authSlice";
-
 
 function VerifyEmail (){
 
     const [code, setCode] = useState("");
     const [isTimeOut, setTimeOut] =useState(false);
     const [timer, setTimer] = useState("60");
-    const [verifyEmailOrPhone] = useVerifyEmailOrPhoneMutation();
+    const [verifyEmailOrPhone,{isLoading, isError, isSuccess}] = useVerifyEmailOrPhoneMutation();
     const email = useAppSelector(selectEmail);
+    const navigate = useNavigate();
+    console.log(typeof code);
 
 
   useEffect(()=>{
@@ -48,7 +49,7 @@ function VerifyEmail (){
   const handleVerify = async () => {
     if(code){
         try {
-            const result = await verifyEmailOrPhone({ emailOrPhone: email, otp: code }).unwrap();
+            const result = await verifyEmailOrPhone({ emailOrPhone: email, otp: Number(code) }).unwrap();
             console.log("Verification successful:", result);
         } catch (error) {
             console.error("Verification failed:", error);
@@ -56,6 +57,12 @@ function VerifyEmail (){
 
     }
 };
+
+useEffect(()=> {
+    if(isSuccess){
+        navigate("/");
+    }
+})
 
     const handleResendCode = async () => {
         try {
@@ -96,11 +103,11 @@ function VerifyEmail (){
                         ? <span>Time is up. <button onClick={handleResendCode} className="text-blue-500">Resend Code</button></span>
                         : `Time remaining: ${timeFormat(timer)}`}
                 </p>
-                <Link to="/login">
-                    <button className="bg-[#0097A7] w-full text-white py-2 px-6 rounded-lg mt-4">
+                
+                    <button type="submit" onClick={handleVerify} className="bg-[#0097A7] w-full text-white py-2 px-6 rounded-lg mt-4">
                         Continue
                     </button>
-                </Link>
+                
                 
                 
             </main>

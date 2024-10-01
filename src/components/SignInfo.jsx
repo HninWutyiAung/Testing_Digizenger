@@ -36,7 +36,7 @@ function SignInfo() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const emailValue = useAppSelector(selectEmail);
-    console.log(emailValue)
+    console.log(emailValue);
     
 
     const generateDays = () => Array.from({ length: 31 }, (_, i) => i + 1);
@@ -46,7 +46,7 @@ function SignInfo() {
     const [selectedDay, setSelectedDay] = useState('');
     const [selectedMonth, setSelectedMonth] = useState('');
     const [selectedYear, setSelectedYear] = useState(currentYear);
-    console.log(formValue)
+    console.log(formValue);
 
     function isEmail(input) {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -92,14 +92,12 @@ function SignInfo() {
 
     const formSubmit = async(e) => {
         e.preventDefault();
-        console.log("it work")
-        console.log('Request Body:', { firstName, lastName, email, password, phone, dateOfBirth, gender, country, city });
 
-        // if(isEmail){ 
-        // dispatch(setEmailOrPhone({email: email, phone:null}))
-        // }else{
-        //     dispatch(setEmailOrPhone({email:null, phone: phone}))
-        // }
+        if(isEmail){ 
+             dispatch(setEmailOrPhone({email: email, phone:null}))
+        }else{
+            dispatch(setEmailOrPhone({email:null, phone: phone}))
+        }
 
         if (password===confirmPass) {  
             try {
@@ -120,7 +118,7 @@ function SignInfo() {
 
     useEffect(()=> {
         if(isSuccess){
-            navigate("/login");
+            navigate("/signup/verify");
         }
     },[isSuccess , navigate])
 
@@ -134,22 +132,25 @@ function SignInfo() {
     const handleDateChange = (type, value) => {
         const [year = '', month = '', day = ''] = dateOfBirth.split('-');
     
-    if (type === 'day') {
-        setFormValue(prevForm => ({
-            ...prevForm,
-            dateOfBirth: `${year || ''}-${month || ''}-${value}` 
-        }));
-    } else if (type === 'month') {
-        setFormValue(prevForm => ({
-            ...prevForm,
-            dateOfBirth: `${year || ''}-${value}-${day || ''}` 
-        }));
-    } else if (type === 'year') {
-        setFormValue(prevForm => ({
-            ...prevForm,
-            dateOfBirth: `${value}-${month || ''}-${day || ''}`
-        }));
-    }
+        if (type === 'day') {
+            setFormValue(prevForm => ({
+                ...prevForm,
+                dateOfBirth: `${year}-${month}-${value.padStart(2, '0')}`
+            }));
+            setSelectedDay(value);
+        } else if (type === 'month') {
+            setFormValue(prevForm => ({
+                ...prevForm,
+                dateOfBirth: `${year}-${value.padStart(2, '0')}-${day}`
+            }));
+            setSelectedMonth(value);
+        } else if (type === 'year') {
+            setFormValue(prevForm => ({
+                ...prevForm,
+                dateOfBirth: `${value}-${month}-${day}`
+            }));
+            setSelectedYear(value);
+        }
     };
     
 
@@ -215,7 +216,7 @@ function SignInfo() {
                       <label className="block place-self-start text-slate-500 mb-[10px]">Date Of Birth:</label>
                       <div className="flex gap-3">
                           <div className="grid">
-                              <select id="day" name="day" value={dateOfBirth ? dateOfBirth.split('-')[2] : ''}  className="w-[96.5px] h-[40px] px-[10px] border-2 border-[#ECF1F4] rounded-[5px] text-slate-400 " onChange={(e) => handleDateChange('day', e.target.value)}>
+                              <select id="day" name="day" value={selectedDay}  className="w-[96.5px] h-[40px] px-[10px] border-2 border-[#ECF1F4] rounded-[5px] text-slate-400 " onChange={(e) => handleDateChange('day', e.target.value)}>
                                     <option value="">Day</option>
                                     {generateDays().map((day) => (
                                     <option key={day} value={day}>{day}</option>
@@ -223,7 +224,7 @@ function SignInfo() {
                               </select>
                           </div>
                           <div className="">
-                              <select id="month" name="month" value={dateOfBirth ? dateOfBirth.split('-')[1] : ''}  className="w-[96.5px] h-[40px] px-[10px] text-slate-400 rounded-[5px] border-2 border-[#ECF1F4]" onChange={(e) => handleDateChange('month', e.target.value)}>
+                              <select id="month" name="month" value={selectedMonth}  className="w-[96.5px] h-[40px] px-[10px] text-slate-400 rounded-[5px] border-2 border-[#ECF1F4]" onChange={(e) => handleDateChange('month', e.target.value)}>
                                         <option value="">Month</option>
                                         {generateMonths().map((month) => (
                                         <option key={month} value={month}>{month}</option>

@@ -3,19 +3,19 @@ import MenuNav from "../components/MenuNav2";
 import Post from "../components/Post";
 import Banner from "../components/banner";
 import ShowPost from "../components/ShowPost";
-import { useGetPostQuery } from '../api/Post';
+// import { useGetPostQuery } from '../api/Post';
 import { useState, useEffect} from 'react';
 
 function NewFeed({activeChat}){
     const [page, setPage] = useState(1);
-    const {data, isSuccess, isLoading, isError, error} = useGetPostQuery(page);
+    // const {data, isSuccess, isLoading, isError, error} = useGetPostQuery(page);
     const [post, setPost] = useState([]);
 
-    useEffect(() => {
-        if (isSuccess) {
-          setPosts((prevPosts) => [...prevPosts, ...data]);
-        }
-      }, [isSuccess, data]);
+    // useEffect(() => {
+    //     if (isSuccess) {
+    //       setPosts((prevPosts) => [...prevPosts, ...data]);
+    //     }
+    //   }, [isSuccess, data]);
     
       const handleScroll = () => {
         if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !isLoading) {
@@ -23,10 +23,10 @@ function NewFeed({activeChat}){
         }
       };
     
-      useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-      }, [isLoading]);
+      // useEffect(() => {
+      //   window.addEventListener('scroll', handleScroll);
+      //   return () => window.removeEventListener('scroll', handleScroll);
+      // }, [isLoading]);
       
     
     return(

@@ -1,4 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from './store';
+
+enum PostType {
+  Everyone = "EVERYONE",
+  Neighbor = "NEIGHBOR",
+  Follower = "FOLLOWER",
+}
 
 interface Media {
   mediaUrl: string;
@@ -6,9 +13,9 @@ interface Media {
 }
 
 interface Post {
-  content: string;
-  isPublic: boolean;
-  media: Media[];
+  description: string;
+  postType: PostType;
+  file: Media[];
 }
 
 interface UploadPostState {
@@ -46,3 +53,5 @@ const uploadPostSlice = createSlice({
 export const { setPosts, addPost, updatePost, removePost } = uploadPostSlice.actions;
 
 export default uploadPostSlice.reducer;
+export const selectPosts = (state: RootState) => state.uploadPost.posts;
+
