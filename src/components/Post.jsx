@@ -97,23 +97,40 @@ function Post({activeChat}) {
     };
 
     const handlePostSubmit = async () => {
-        const postData = {
-            description: content,
-            postType: selectedAudience.toUpperCase(),
-            file: imageFile ? [{ mediaUrl: imageFile.name, mediaType: "IMAGE" }] : [],
-            
-        };
+        const formData = new FormData();
+    
+        formData.append('description', content);
+        formData.append('postType', selectedAudience.toUpperCase());
+
+        const mediaFiles = [];
+    
+        if (imageFile) {
+            mediaFiles.push({
+                mediaUrl: imageFile, 
+                mediaType: 'IMAGE'   
+            });
+        }
+
+        // if (videoFile) {
+        //     mediaFiles.push({
+        //         mediaUrl: videoFile,  
+        //         mediaType: 'VIDEO'    
+        //     });
+        // }
+
+        if (mediaFiles.length > 0) {
+            mediaFiles.forEach((media, index) => {
+                formData.append(`file[${index}][mediaUrl]`, media.mediaUrl);
+                formData.append(`file[${index}][mediaType]`, media.mediaType);
+            });
+        }
+
         console.log(postData);
         dispatch(addPost(postData))
         console.log(typeof postType)
-        // if (video) { 
-        //     postData.media.push({
-        //         mediaUrl: video, 
-        //         mediaType: "VIDEO"
-        //     });
-        // }
+
         try {
-            const result = await uploadPost(postData).unwrap();
+            const result = await uploadPost(formData ).unwrap();
             console.log("Post uploaded successfully:", result);
             setContent('');
             setImage(null);
