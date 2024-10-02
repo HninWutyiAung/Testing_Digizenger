@@ -1,38 +1,64 @@
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import NewFeedNav from "../components/NewFeedNav";
 import MenuNav from "../components/MenuNav2";
 import Post from "../components/Post";
 import Banner from "../components/banner";
-import ShowPost from "../components/ShowPost";
 import { useGetPostQuery } from '../api/Post';
-import { useState, useEffect } from 'react';
 
-function NewFeed({activeChat}){
-    const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(10);
-    const { data, isSuccess, isLoading, isError, error } = useGetPostQuery({ page, limit });
+// Lazy load the ShowPost component
+const ShowPost = lazy(() => import("../components/ShowPost"));
 
-    const handleScroll = () => {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !isLoading) {
-          if (data && data.postDtoList.length > 0) {
-            setPage((prevPage) => prevPage + 1); // Increment page
-        }
-        }
-    };
+function NewFeed({ activeChat }) {
+    const [page, setPage] = useState(2);
+    const [limit, setLimit] = useState(21);
+    const [posts, setPosts] = useState([]);
+
+    const { data, isSuccess, isLoading, isError, error } = useGetPostQuery(
+        { page, limit },
+        { refetchOnMountOrArgChange: true }
+    );
 
     useEffect(() => {
+        const handleScroll = () => {
+            console.log("Scroll event triggered");
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+                if (!isLoading) {
+                    console.log("Loading more posts...");
+                    setPage((prevPage) => prevPage + 1);
+                }
+            }
+        };
+
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [isLoading]);
-
-    useEffect(() => {console.log(page)}, [page]); 
+    }, []); // Empty dependency array to attach the listener only once
 
     useEffect(() => {
-      if (data && data.postDtoList.length === 0) {
-          setPage(1); // Reset to page 1 if no posts are returned
-      }
-  }, [data]);
+        if (data && isSuccess) {
+            setPosts((prevPosts) => {
+                const newPosts = data.postDtoList.filter(post =>
+                    !prevPosts.some(prevPost => prevPost.id === post.id)
+                );
+                return [...prevPosts, ...newPosts];
+            });
+        }
 
-  console.log(data);
+        if (isError) {
+            console.error("Error fetching posts:", error);
+        }
+    }, [data, isSuccess, isError, error]);
+
+    useEffect(() => {
+        console.log(`Current Posts: ${JSON.stringify(posts)}`);
+    }, [posts]);
+
+    useEffect(() => {
+        console.log(`Requesting page: ${page}, limit: ${limit}`);
+    }, [page, limit]);
+
+    useEffect(() => {
+        console.log(`isLoading: ${isLoading}`);
+    }, [isLoading]);
 
     return (
         <section>
@@ -42,11 +68,13 @@ function NewFeed({activeChat}){
                 <Post activeChat={activeChat} />
                 <Banner activeChat={activeChat} />
 
-                { isSuccess && data?.postDtoList?.map((post) => (
-                    <ShowPost key={post.id} activeChat={activeChat} post={post} />
+                {posts.map((post) => (
+                    <Suspense key={post.id} fallback={<div>Loading Post...</div>}>
+                        <ShowPost activeChat={activeChat} post={post} />
+                    </Suspense>
                 ))}
 
-                { isLoading && <p>Loading more posts...</p> }
+                {isLoading && <p>Loading more posts...</p>}
             </div>
         </section>
     );
