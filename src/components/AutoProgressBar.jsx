@@ -7,10 +7,14 @@ const AutoplayProgress = forwardRef(({ progress, timeLeft }, ref) => {
     },
   }));
 
+  // Ensure progress is between 0 and 1
+  const clampedProgress = Math.max(0, Math.min(1, progress));
+  const remainingTime = timeLeft ? Math.ceil(timeLeft / 1000) : 0;
+
   return (
     <div className="autoplay-progress">
-      <div className="progress-bar" style={{ width: `${(1 - progress) * 100}%` }}></div>
-      <span>{Math.ceil(timeLeft / 1000)}s</span>
+      <div className="progress-bar" style={{ width: `${(1 - clampedProgress) * 100}%` }}></div>
+      <span>{remainingTime}s</span>
       <style jsx>{`
         .autoplay-progress {
           position: absolute;

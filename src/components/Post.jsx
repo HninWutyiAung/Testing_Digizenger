@@ -33,11 +33,6 @@ function Post({activeChat}) {
         setPostStatus(false); 
     };
 
-    console.log(content)
-    console.log(imageFile)
-    console.log(selectedAudience)
-    console.log(postsFromSlice[0])
-    console.log(token)  
 
     const getAudienceIcon = (audience) => {
         switch (audience) {
@@ -96,38 +91,27 @@ function Post({activeChat}) {
         console.log(content);
     };
 
-    const handlePostSubmit = async () => {
+    const handlePostSubmit = async (e) => {
+        e.preventDefault();
+    
+        // Create a new FormData object
         const formData = new FormData();
     
+        // Append the description and postType to FormData
         formData.append('description', content);
         formData.append('postType', selectedAudience.toUpperCase());
-
-        const mediaFiles = [];
     
+        // If an image file is selected, create a media object and append it
         if (imageFile) {
-            mediaFiles.push({
-                mediaUrl: imageFile, 
-                mediaType: 'IMAGE'   
-            });
+            const mediaData = {
+                mediaUrl: imageFile.name,  
+                mediaType: 'IMAGE'    
+            };
+            
+            // The file object needs to be sent via FormData
+            formData.append('file', JSON.stringify([mediaData])); 
+
         }
-
-        // if (videoFile) {
-        //     mediaFiles.push({
-        //         mediaUrl: videoFile,  
-        //         mediaType: 'VIDEO'    
-        //     });
-        // }
-
-        if (mediaFiles.length > 0) {
-            mediaFiles.forEach((media, index) => {
-                formData.append(`file[${index}][mediaUrl]`, media.mediaUrl);
-                formData.append(`file[${index}][mediaType]`, media.mediaType);
-            });
-        }
-
-        console.log(postData);
-        dispatch(addPost(postData))
-        console.log(typeof postType)
 
         try {
             const result = await uploadPost(formData ).unwrap();

@@ -8,8 +8,8 @@ export const postUploadSlice = createApi({
       const usertoken = localStorage.getItem('user');
       if (usertoken) {
         const token = JSON.parse(usertoken);
-        headers.set('Authorization', `Bearer ${token}`);
-        console.log(token);
+        headers.set('Authorization', `Bearer ${token.token}`);
+        console.log(token.token);
       }
       return headers;
       
@@ -17,21 +17,18 @@ export const postUploadSlice = createApi({
   }),
   endpoints: (builder) => ({
     uploadPost: builder.mutation({
-      query: (postData) => ({
+      query: (formData) => ({
         url: '/posts/upload',
         method: 'POST',
-        body: postData,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        body: formData,
       }),
     }),
-    // getPost: builder.query({
-    //   query: ({ pageCount }) => ({
-    //     url: `posts/getPost?_page=${pageCount}&_limit=10`,
-    //   }),
-    // }),
+    getPost: builder.query({
+      query: ({ page, limit = 10 }) => ({
+        url: `posts/getPost?_page=${page}&_limit=${limit}`,
+      }),
+    }),
   }),
 });
 
-export const { useUploadPostMutation } = postUploadSlice;
+export const { useUploadPostMutation , useGetPostQuery} = postUploadSlice;

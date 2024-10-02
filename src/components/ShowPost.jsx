@@ -9,11 +9,11 @@ import heart1 from '/images/heart1.png';
 import { useState } from 'react';
 
 
-function ShowPost({activeChat}) {
+function ShowPost({activeChat, post}) {
     const [clickHeart, setClickHeart] =useState(true);
     const [showMore, setShowMore] = useState(false);
     const [count, setCount] = useState(0);
-    const postText = " Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt alias dolorem corporis non labore vitae modi?Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt alias dolorem corporis non labore vitae modi?";
+    const postText = post.description;
 
     const heartHandle = ()=>{
         setClickHeart(!clickHeart);
@@ -62,8 +62,11 @@ function ShowPost({activeChat}) {
 
                                     <div className={activeChat ? 'w-[330px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-left text-ellipsis ' : 'w-[500px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-justify text-ellipsis '}>
                                           {showMore ? postText : postText.split(' ').slice(0, 20).join(' ') + '...'} 
-                                          <button onClick={toggleShowMore} className='mr-[20px] text-black font-semibold'>{showMore ? "show less" : "show more"}</button>
+                                          <button onClick={toggleShowMore} className='mr-[20px] text-black font-semibold ml-[5px]'>{showMore ? " show less" : "show more"}</button>
+                                          {post.imageUrl && <img src={post.imageUrl}/>}
                                     </div>
+
+                                    
 
                             </div>
                         </div>
