@@ -13,7 +13,7 @@ import { selectPosts } from '../feature/postSlice';
 import { selectToken } from '../feature/loginToken';
 
 
-function Post({activeChat}) {
+function Post({activeChat, setpostLoading}) {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [content, setContent] = useState('');
     const [showMedia , setShowMedia] = useState(false);
@@ -91,24 +91,22 @@ function Post({activeChat}) {
         console.log(content);
     };
 
+    useEffect(() => {
+        setpostLoading(isLoading);
+    }, [isLoading, setpostLoading]);
+
     const handlePostSubmit = async (e) => {
         e.preventDefault();
-    
-        // Create a new FormData object
         const formData = new FormData();
-    
-        // Append the description and postType to FormData
         formData.append('description', content);
         formData.append('postType', selectedAudience.toUpperCase());
     
-        // If an image file is selected, create a media object and append it
         if (imageFile) {
             const mediaData = {
                 mediaUrl: imageFile.name,  
                 mediaType: 'IMAGE'    
             };
-            
-            // The file object needs to be sent via FormData
+
             formData.append('file', JSON.stringify([mediaData])); 
 
         }
@@ -116,6 +114,9 @@ function Post({activeChat}) {
         try {
             const result = await uploadPost(formData ).unwrap();
             console.log("Post uploaded successfully:", result);
+            dispatch(addPost(result));
+            dispatch(addPost({ ...postData, imageUrl: imageFile.name }));
+
             setContent('');
             setImage(null);
         } catch (error) {

@@ -24,6 +24,10 @@ function ShowPost({activeChat, post}) {
         setCount((prevCount) => prevCount + 1);
     };
 
+    console.log("Uploading post with data:", 
+       post.description , post.imageUrl
+    );
+
     return(
         <>
             <div className="flex flex-col items-start justify-center rounded-[8px] bg-white ">
@@ -37,7 +41,7 @@ function ShowPost({activeChat, post}) {
                                 <div className="flex justify-between items-center self-stretch">
                                     <div className={activeChat ? "flex items-center gap-[8px] w-[320px]" : "flex items-center gap-[8px] w-[500px]"}>
                                         <div className="flex gap-[2px] items-center">
-                                            <span className="text-[20px] font-blod leading-7 text-[#2C3E50]">Andrea Yu</span>
+                                            <span className="text-[20px] font-blod leading-7 text-[#2C3E50]">{`${post.userDto.firstName} ${post.userDto.lastName}`}</span>
                                             <img src={badges} className='w-[20px] h-[20px]'></img>
                                         </div>
                                         <div className='w-[4px] h-[4px]'>
@@ -52,7 +56,7 @@ function ShowPost({activeChat, post}) {
                                 <div className='flex items-center gap-[8px] self-stretch'>
                                     <div className='text-[14px] font-normal leading-5 text-[#7E7E8D]'>Verified User</div>
                                     <img src={dot} className='w-[4px] h-[4px]'></img>
-                                    <div className='text-[14px] font-normal leading-5 text-[#7E7E8D]'>14K follower</div>
+                                    <div className='text-[14px] font-normal leading-5 text-[#7E7E8D]'>{post.userDto.followers} Followers</div>
                                 </div>
                             </div>
                         </div>
@@ -63,7 +67,11 @@ function ShowPost({activeChat, post}) {
                                     <div className={activeChat ? 'w-[330px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-left text-ellipsis ' : 'w-[500px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-justify text-ellipsis '}>
                                           {showMore ? postText : postText.split(' ').slice(0, 20).join(' ') + '...'} 
                                           <button onClick={toggleShowMore} className='mr-[20px] text-black font-semibold ml-[5px]'>{showMore ? " show less" : "show more"}</button>
-                                          {post.imageUrl && <img src={post.imageUrl}/>}
+                                          {post.imageUrl ? (
+                                                <img src={post.imageUrl}  />
+                                            ) : (
+                                                " " 
+                                           )}
                                     </div>
 
                                     
