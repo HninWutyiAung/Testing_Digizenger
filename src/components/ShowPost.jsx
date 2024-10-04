@@ -24,9 +24,9 @@ function ShowPost({activeChat, post}) {
         setCount((prevCount) => prevCount + 1);
     };
 
-    console.log("Uploading post with data:", 
-       post.description , post.imageUrl
-    );
+    // console.log("Uploading post with data:", 
+    //    post.description , post.imageUrl
+    // );
 
     return(
         <>

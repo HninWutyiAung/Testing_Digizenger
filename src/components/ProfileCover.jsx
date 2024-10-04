@@ -6,7 +6,7 @@ import { FaCamera } from "react-icons/fa6";
 import { PiPresentationChartFill } from "react-icons/pi";
 import { PiMegaphoneSimpleFill } from "react-icons/pi";
 import { PiPencilSimpleFill } from "react-icons/pi";
-import { FaChevronRight } from "react-icons/fa";
+import { useUploadProfileImageMutation} from '../api/Profile';
  
 function ProfileCover (){
     const coverRef = useRef();
@@ -15,6 +15,7 @@ function ProfileCover (){
     const [coverImageUrl, setcoverImageUrl] = useState(null);
     const [profileImage, setprofileImage] = useState(null);
     const [profileImageUrl, setprofileImageUrl] = useState(null);
+    const [uploadProfileImage,{isSuccess,isError, isLoading, error }] = useUploadProfileImageMutation();
     console.log(coverImageUrl)
 
     const onChangeCover = (e)=> {
@@ -32,11 +33,22 @@ function ProfileCover (){
             setprofileImageUrl(URL.createObjectURL(profileFile));
         }
     }
-    const uploadProfileImage = ()=> {
+    const uploadProfileImg = ()=> {
         profileRef.current.click();
     }
     const uploadCoverImage = ()=>{
         coverRef.current.click();
+    }
+
+    const uploadProfile = async () => {
+        const formData = new FormData();
+        formData.append('file', profileImage);
+
+        try{
+            const res = await uploadProfileImage(formData).unwrap();
+            console.log("Profile Image Uploaded", res) 
+        }catch(err){
+            console.log("Profile Image Upload failed", err)
     }
 
     console.log(coverImage, profileImage)
@@ -101,6 +113,7 @@ function ProfileCover (){
                     </div>
                 </section>
     )
+}
 }
 
 export default ProfileCover;

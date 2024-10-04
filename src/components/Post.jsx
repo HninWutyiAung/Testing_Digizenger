@@ -67,8 +67,7 @@ function Post({activeChat, setpostLoading}) {
         if (file) {
             console.log(file);
             setImageFile(file);
-            const imageUrl = URL.createObjectURL(file);
-            setImage(imageUrl); 
+              setImage(file);
             
         }
     }
@@ -79,7 +78,7 @@ function Post({activeChat, setpostLoading}) {
 
     const handleInput = (e) => {
         const target = e.target;
-        target.style.height = 'auto'; // Reset height
+        target.style.height = 'auto'; 
         if (target.value === '') {
             target.style.height = '20px'; // Set to initial height when empty
         } else {
@@ -91,36 +90,33 @@ function Post({activeChat, setpostLoading}) {
         console.log(content);
     };
 
-    useEffect(() => {
-        setpostLoading(isLoading);
-    }, [isLoading, setpostLoading]);
+    // useEffect(() => {
+    //     setpostLoading(isLoading);
+    // }, [isLoading, setpostLoading]);
 
     const handlePostSubmit = async (e) => {
         e.preventDefault();
+        setpostLoading(true);
         const formData = new FormData();
         formData.append('description', content);
         formData.append('postType', selectedAudience.toUpperCase());
     
         if (imageFile) {
-            const mediaData = {
-                mediaUrl: imageFile.name,  
-                mediaType: 'IMAGE'    
-            };
-
-            formData.append('file', JSON.stringify([mediaData])); 
-
+            formData.append('file', imageFile); 
         }
 
         try {
             const result = await uploadPost(formData ).unwrap();
             console.log("Post uploaded successfully:", result);
             dispatch(addPost(result));
-            dispatch(addPost({ ...postData, imageUrl: imageFile.name }));
 
-            setContent('');
-            setImage(null);
         } catch (error) {
             console.error("Failed to upload post:", error);
+        }finally{
+            setpostLoading(false);
+            setContent('');
+            setImage(null);
+            setImageFile(null);
         }
     };
 
@@ -160,6 +156,7 @@ function Post({activeChat, setpostLoading}) {
                                         <textarea
                                             placeholder="Share Your Thought"
                                             className='outline-none w-full resize-none'
+                                            value={content}
                                             onInput={handleInput}
                                             onClick={()=>setShowMedia(!showMedia)}
                                             style={{ overflow: 'hidden',  height: "20px" ,lineHeight : "1.2" }} // Set minimum height
@@ -237,16 +234,16 @@ function Post({activeChat, setpostLoading}) {
                                     <div className='w-[330px] h-[1px] bg-[#ECF1F4]'></div>
 
                                     {image ?
-                                    (<div>
-                                        <img src={image} className='w-[500px] h-[300px]'/>
-                                        {/* <button  className='ml-2 text-red-500'>Delete</button>
-                                        <button onClick={ uploadImage} className='ml-2 text-blue-500'>Edit</button> */}
-                                    </div>) : 
-                                    (<div className='flex gap-[10px]'>
-                                        <i onClick={uploadImage}><GoImage size={25} className='text-[#0097A7]'/></i>
-                                        <input ref={uploadRef} type='file' className='hidden' onChange={handleImageUpload}/>
-                                        <i><PiGif size={25} className='text-[#0097A7]'/></i>
-                                    </div>)
+                                        (<div>
+                                            <img src={URL.createObjectURL(image)} className='w-[500px] h-[300px]'/>
+                                            {/* <button  className='ml-2 text-red-500'>Delete</button>
+                                            <button onClick={ uploadImage} className='ml-2 text-blue-500'>Edit</button> */}
+                                        </div>) : 
+                                        (<div className='flex gap-[10px]'>
+                                            <i onClick={uploadImage}><GoImage size={25} className='text-[#0097A7]'/></i>
+                                            <input ref={uploadRef} type='file' className='hidden' onChange={handleImageUpload}/>
+                                            <i><PiGif size={25} className='text-[#0097A7]'/></i>
+                                        </div>)
                                     
                                     }
                                     

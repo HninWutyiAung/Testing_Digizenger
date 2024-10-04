@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useEffect } from 'react';
+import React, { Suspense, lazy, useState, useEffect ,useRef ,startTransition} from 'react';
 import NewFeedNav from "../components/NewFeedNav";
 import MenuNav from "../components/MenuNav2";
 import Post from "../components/Post";
@@ -7,56 +7,51 @@ import { useGetPostQuery } from '../api/Post';
 import { selectPosts } from '../feature/postSlice';
 import { useAppSelector } from '../hook/Hook';
 
-// Lazy load the ShowPost component
 const ShowPost = lazy(() => import("../components/ShowPost"));
 
 function NewFeed({ activeChat }) {
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(50);
+    const [limit, setLimit] = useState(10);
     const [posts, setPosts] = useState([]);
     const [postLoading, setpostLoading] = useState(false);
     const currentUploadPost = useAppSelector(selectPosts);
     const [currentUploads, setCurrentUploads] = useState([]);
+    const observerRef = useRef();
+    const [hasMore,setHasMore] = useState(true);
 
     const { data, isSuccess, isLoading, isError, error } = useGetPostQuery(
         { page, limit },
-        { refetchOnMountOrArgChange: true }
+        { skip: page === 0 && posts.length > 0 }
     );
-
-    const handleScroll = () => {
-        console.log("Scroll event triggered");
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-            if (!isLoading) {
-                console.log("Loading more posts...");
-                setPage((prevPage) => prevPage + 1);
-            }
-        }
-    };
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []); 
-
 
     useEffect(() => {
         if (data && isSuccess) {
-            setPosts((prevPosts) => {
-                const newPosts = data.postDtoList.filter(post =>
-                    !prevPosts.some(prevPost => prevPost.id === post.id)
-                );
-                return [...prevPosts, ...newPosts];
+            const newPosts = data.postDtoList.filter(post =>
+                !posts.some(prevPost => prevPost.id === post.id)
+            );
+            
+            // Use startTransition to wrap the state update
+            startTransition(() => {
+                setPosts(prevPosts => [...prevPosts, ...newPosts]);
+                
+                if (newPosts.length < limit) {
+                    setHasMore(false);
+                }
             });
-        }
-
-        if (isError) {
-            console.error("Error fetching posts:", error);
         }
     }, [data, isSuccess, isError, error]);
 
-    useEffect(() => {
-        console.log(`Current Posts: ${JSON.stringify(posts)}`);
-    }, [posts]);
+    useEffect(() => {  
+        const observer = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting ) {
+                setPage((prevPage) => prevPage + 1);
+            }
+        }, { threshold: 0.5 });
+        if (observerRef.current) observer.observe(observerRef.current);
+        return () => { 
+            if (observerRef.current) observer.unobserve(observerRef.current);
+        } 
+     }, [hasMore]);
 
     useEffect(() => {
         console.log(`Requesting page: ${page}, limit: ${limit}`);
@@ -96,10 +91,12 @@ function NewFeed({ activeChat }) {
                 )}
                 </div>
                 {posts.map((post) => (
-                    <Suspense key={post.id} fallback={<div>Loading Post...</div>}>
-                        <ShowPost activeChat={activeChat} post={post} />
-                    </Suspense>
+                    // <Suspense key={post.id} fallback={<div>Loading Post...</div>}>
+                        <ShowPost key={post.id} activeChat={activeChat} post={post} />
+                    // </Suspense>
                 ))}
+                <div ref={observerRef}></div>
+                {!hasMore && <p>No more posts to show</p>}
 
                 {isLoading && <p>Loading more posts...</p>}
             </div>
