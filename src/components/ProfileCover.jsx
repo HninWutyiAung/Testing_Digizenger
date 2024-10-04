@@ -50,6 +50,7 @@ function ProfileCover (){
         }catch(err){
             console.log("Profile Image Upload failed", err)
     }
+    }
 
     console.log(coverImage, profileImage)
     return(
@@ -68,7 +69,7 @@ function ProfileCover (){
                         <div className="w-[180px] h-[180px] left-[24px] top-[60px] absolute">
                             <input type="file" ref={profileRef} className='hidden' onChange={onChangeProfile}/> 
                             {profileImageUrl ? (<img className="w-[180px] h-[180px] left-0 top-0 absolute rounded-full border-4 border-solid border-white" src={profileImageUrl}  alt="Profile" />) : (<img className="w-[180px] h-[180px] left-0 top-0 absolute rounded-full border-4 border-solid border-white" src={john} alt="Profile" />)}
-                            <div className="w-7 h-7 left-[136px] top-[141px] absolute bg-[#ecf1f4] rounded-full shadow flex justify-center items-center" onClick={uploadProfileImage}>
+                            <div className="w-7 h-7 left-[136px] top-[141px] absolute bg-[#ecf1f4] rounded-full shadow flex justify-center items-center" onClick={uploadProfileImg}>
                                 <FaCamera className='text-[#2C3E50]' />
                             </div>
                         </div>
@@ -106,7 +107,7 @@ function ProfileCover (){
                                 <div className="text-[#2C3E50] text-lg font-bold font-['DM Sans']">Create Ads</div>
                             </div>
                             <div className="w-[91px] h-[40px] p-3 bg-[#ECF1F4] rounded-lg justify-center items-center gap-2 flex">
-                                <PiPencilSimpleFill className="w-6 h-6 relative text-[#2C3E50}"/>
+                                <PiPencilSimpleFill className="w-6 h-6 relative text-[#2C3E50]"/>
                                 <div className="text-[#2C3E50] text-lg font-bold font-['DM Sans']">Edit</div>
                             </div>
                         </div>
@@ -114,6 +115,6 @@ function ProfileCover (){
                 </section>
     )
 }
-}
+
 
 export default ProfileCover;

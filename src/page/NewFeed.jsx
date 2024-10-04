@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useEffect ,useRef ,startTransition} from 'react';
+import React, {  useState, useEffect ,useRef ,startTransition} from 'react';
 import NewFeedNav from "../components/NewFeedNav";
 import MenuNav from "../components/MenuNav2";
 import Post from "../components/Post";
@@ -6,11 +6,11 @@ import Banner from "../components/banner";
 import { useGetPostQuery } from '../api/Post';
 import { selectPosts } from '../feature/postSlice';
 import { useAppSelector } from '../hook/Hook';
+import ShowPost from '../components/ShowPost';
 
-const ShowPost = lazy(() => import("../components/ShowPost"));
 
 function NewFeed({ activeChat }) {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(10);
     const [posts, setPosts] = useState([]);
     const [postLoading, setpostLoading] = useState(false);
@@ -21,7 +21,7 @@ function NewFeed({ activeChat }) {
 
     const { data, isSuccess, isLoading, isError, error } = useGetPostQuery(
         { page, limit },
-        { skip: page === 0 && posts.length > 0 }
+        { skip: page === 1 && posts.length > 0 }
     );
 
     useEffect(() => {
@@ -33,7 +33,10 @@ function NewFeed({ activeChat }) {
             // Use startTransition to wrap the state update
             startTransition(() => {
                 setPosts(prevPosts => [...prevPosts, ...newPosts]);
-                
+    
+                // Set loading to false after posts are fetched
+                setpostLoading(false);
+    
                 if (newPosts.length < limit) {
                     setHasMore(false);
                 }
@@ -58,19 +61,23 @@ function NewFeed({ activeChat }) {
     }, [page, limit]);
 
     useEffect(() => {
-        console.log(`isLoading: ${isLoading}`);
-    }, [isLoading]);
-
-    useEffect(() => {
-        console.log('currentUpload:', currentUploads);
-    }, [currentUploads]);
-
-    useEffect(() => {
         if (currentUploadPost.length > 0) {
-            setCurrentUploads(currentUploadPost.slice(-1)); // Change as needed
+            // Start loading when new posts are being processed
+            setpostLoading(true);
+            setCurrentUploads(currentUploadPost.slice(-1));
+    
+            // Set a timeout to simulate async operation (e.g., rendering)
+            setTimeout(() => {
+                setpostLoading(false); // Stop loading once the post has rendered
+            }, 1000); // Adjust timing as necessary
         }
     }, [currentUploadPost]);
-    console.log(currentUploads.postDto);
+
+    useEffect(() => {
+        console.log(`postLoading: ${postLoading}`);
+        console.log(`currentUploads:`, currentUploads);
+    }, [postLoading, currentUploads]);
+
     return (
         <section>
             <NewFeedNav activeChat={activeChat} />
@@ -92,7 +99,7 @@ function NewFeed({ activeChat }) {
                 </div>
                 {posts.map((post) => (
                     // <Suspense key={post.id} fallback={<div>Loading Post...</div>}>
-                        <ShowPost key={post.id} activeChat={activeChat} post={post} />
+                        <ShowPost activeChat={activeChat} post={post} />
                     // </Suspense>
                 ))}
                 <div ref={observerRef}></div>
