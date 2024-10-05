@@ -7,6 +7,7 @@ import flick from '/images/flick.png';
 import graph from '/images/graph.png';
 import heart1 from '/images/heart1.png';
 import { useState } from 'react';
+import { formatDistanceToNow } from 'date-fns';
 
 
 function ShowPost({activeChat, post}) {
@@ -14,6 +15,8 @@ function ShowPost({activeChat, post}) {
     const [showMore, setShowMore] = useState(false);
     const [count, setCount] = useState(0);
     const postText = post.description;
+    
+    const timeAgo = formatDistanceToNow(post.createdDate, { addSuffix: true });
 
     const heartHandle = ()=>{
         setClickHeart(!clickHeart);
@@ -47,7 +50,7 @@ function ShowPost({activeChat, post}) {
                                         <div className='w-[4px] h-[4px]'>
                                             <img src={dot}></img>
                                         </div>
-                                        <div>4m</div>
+                                        <div>{timeAgo}</div>
                                     </div>
                                     <div>
                                         <img src={dotthree}/>
@@ -85,7 +88,7 @@ function ShowPost({activeChat, post}) {
                                 <div className={activeChat ? 'flex items-center gap-[4px]' : 'flex items-center gap-[10px]'}>
                                     <img src={heart} className='w-[16px] h-[16px]' onClick={heartHandle}/>
                                     <div className='text-[14px] font-medium leading-5 text-[#7E7E8D]'>
-                                        You and 1.2K other
+                                        {post.likeCount} other
                                     </div>
                                 </div>
                                 <div className='text-[14px] font-medium leading-5 text-[#7E7E8D]'>

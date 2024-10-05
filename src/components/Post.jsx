@@ -94,7 +94,8 @@ function Post({activeChat, setpostLoading}) {
     //     setpostLoading(isLoading);
     // }, [isLoading, setpostLoading]);
 
-    const handlePostSubmit = async (e) => {
+    const handlePostSubmit = async (e) => { 
+        const startTimer = Date.now();
         e.preventDefault();
         setpostLoading(true);
         const formData = new FormData();
@@ -108,6 +109,9 @@ function Post({activeChat, setpostLoading}) {
         try {
             const result = await uploadPost(formData ).unwrap();
             console.log("Post uploaded successfully:", result);
+            const endTimer = Date.now();
+            const resultTime = endTimer - startTimer;
+            console.log("Time taken to upload post:", resultTime);
             dispatch(addPost(result));
 
         } catch (error) {

@@ -143,7 +143,7 @@ function ChatBoxLayout () {
                         />
                         {!inputStyle && <span className="absolute left-4">Message</span>}
                         {inputStyle ? (
-                            <i><FaCircleArrowUp className="absolute top-3 right-3 w-[25px] h-[25px] text-[#0097A7]" /></i>
+                            <i><FaCircleArrowUp className="absolute top-3 right-3 w-[25px] h-[25px] text-[#0097A7]" onClick={sendMessage}/></i>
                         ) : (
                             <img src={emoji} className="absolute right-2 bg-[2C3E50]" alt="Emoji icon" />
                         )}

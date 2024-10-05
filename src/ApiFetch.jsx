@@ -8,7 +8,7 @@ function ApiFetchExample() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://152.42.254.187:8080/api/v1/test/serverTest');
+                const response = await fetch('https://167.99.77.65/api/v1/test/serverTest');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
