@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useRegisterUserMutation } from "../api/Auth";
 import { useAppDispatch, useAppSelector } from '../hook/Hook.ts';
 import { setEmailOrPhone , selectEmail} from "../feature/authSlice.ts";
+import LoadingSpinner from "./LoadingSpinner.jsx";
 
 const initialState ={
     firstName: '',
@@ -163,6 +164,11 @@ function SignInfo() {
 
   return (
     <section className="flex  justify-center  container W-full  mb-[20px] pt-[100px]"  onClick={handleClickOutside}>
+        {isLoading && 
+          <div className="absolute flex justify-center items-center z-50">
+            <LoadingSpinner />
+          </div>
+          }
       <main className="text-center ml-[5rem] user_info_container">
         <div className="mt-[-10px] grid  w-[400px] ml-[6rem] mb-[20px] ">
                 <div className=" text-[36px] header_container font-bold mt-[-10px]">

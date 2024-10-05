@@ -22,6 +22,14 @@ export const profileApiSlice = createApi({
             method:'POST',
             body: formData,
         })
+    }),
+
+    uploadUsername: builder.mutation({
+      query: (username) =>({
+        url: 'profile/username',
+        method: 'POST',
+        body: username,
+      })
     })
 
   })

@@ -6,19 +6,20 @@ import heart from '/images/heart2.jpg';
 import flick from '/images/flick.png';
 import graph from '/images/graph.png';
 import heart1 from '/images/heart1.png';
-import { useState } from 'react';
+import { useState  } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { EffectFlip } from 'swiper/modules';
 import { useSetLikeOrUnlikeMutation } from '../api/Post';
-
 
 
 function ShowPost({activeChat, post , setPosts}) {
     const [clickHeart, setClickHeart] =useState(post.liked);
     const [showMore, setShowMore] = useState(false);
     const [count, setCount] = useState(0);
-    const postText = post.description;
     const [setLikeOrUnlike] = useSetLikeOrUnlikeMutation();
+
+    const postText = post.description;
+    const wordLength =post.description.split(" ");
     
     const timeAgo = formatDistanceToNow(post.createdDate, { addSuffix: true });
 
@@ -35,10 +36,8 @@ function ShowPost({activeChat, post , setPosts}) {
         }
         updatedPost.liked = !updatedPost.liked;
 
-        // Update the local component state for the heart icon
         setClickHeart(updatedPost.liked);
 
-        // Update the post in the parent component by using setPosts
         setPosts((prevPosts) =>
             prevPosts.map((p) => (p.id === post.id ? updatedPost : p))
         );
@@ -61,13 +60,13 @@ function ShowPost({activeChat, post , setPosts}) {
                     <div className="flex flex-col items-start gap-[12px] p-[10px] self-stretch">
                         <div className={activeChat ? "flex justify-center items-center gap-[12px] self-stretch" : "flex justify-center items-center gap-[20px] self-stretch" }>
                             <div className='w-[48px] h-[48px]'>
-                                <img src={andrea}/>
+                                <img src={post.profileDto.profileImageUrl} className='rounded-[50px] w-[48px] h-[48px]'/>
                             </div>
                             <div className="flex flex-col items-start justify-center gap-[8px]">
                                 <div className="flex justify-between items-center self-stretch">
                                     <div className={activeChat ? "flex items-center gap-[8px] w-[320px]" : "flex items-center gap-[8px] w-[500px]"}>
                                         <div className="flex gap-[2px] items-center">
-                                            <span className="text-[20px] font-blod leading-7 text-[#2C3E50]">{`${post.userDto.firstName} ${post.userDto.lastName}`}</span>
+                                            <span className={`font-bold leading-7 text-[#2C3E50] ${activeChat ? 'text-[18px]': 'text-[18px]'}`}>{`${post.userDto.firstName} ${post.userDto.lastName}`}</span>
                                             <img src={badges} className='w-[20px] h-[20px]'></img>
                                         </div>
                                         <div className='w-[4px] h-[4px]'>
@@ -92,9 +91,9 @@ function ShowPost({activeChat, post , setPosts}) {
 
                                     <div className={activeChat ? 'w-[330px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-left text-ellipsis ' : 'w-[500px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-justify text-ellipsis '}>
                                           {showMore ? postText : postText.split(' ').slice(0, 20).join(' ') + '...'} 
-                                          <button onClick={toggleShowMore} className='mr-[20px] text-black font-semibold ml-[5px]'>{showMore ? " show less" : "show more"}</button>
+                                          {wordLength>= 20 && (<button onClick={toggleShowMore} className='mr-[20px] text-black font-semibold ml-[5px]'>{showMore ? " show less" : "show more"}</button>)}
                                           {post.imageUrl ? (
-                                                <img src={post.imageUrl}  />
+                                                <img src={post.imageUrl} className={activeChat ? 'h-[200px] w-[300px] rounded-md mt-[10px]' : 'h-[350px] w-[500px] rounded-md mt-[10px]'} />
                                             ) : (
                                                 " " 
                                            )}

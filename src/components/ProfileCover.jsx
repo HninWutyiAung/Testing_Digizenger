@@ -52,7 +52,6 @@ function ProfileCover (){
     }
     }
 
-    console.log(coverImage, profileImage)
     return(
         <section className="h-[484px] w-[640px] flex flex-col pb-6 items-center gap-7 self-stretch rounded-lg border border-solid border-[#C9DCDE] bg-white ">
                     {/* Cover Image & Profile Image */}

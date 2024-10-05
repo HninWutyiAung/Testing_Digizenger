@@ -7,6 +7,7 @@ import { useGetPostQuery } from '../api/Post';
 import { selectPosts } from '../feature/postSlice';
 import { useAppSelector } from '../hook/Hook';
 import ShowPost from '../components/ShowPost';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 
 function NewFeed({ activeChat }) {
@@ -62,14 +63,13 @@ function NewFeed({ activeChat }) {
 
     useEffect(() => {
         if (currentUploadPost.length > 0) {
-            // Start loading when new posts are being processed
+
             setpostLoading(true);
             setCurrentUploads(currentUploadPost.slice(-1));
     
-            // Set a timeout to simulate async operation (e.g., rendering)
             setTimeout(() => {
-                setpostLoading(false); // Stop loading once the post has rendered
-            }, 1000); // Adjust timing as necessary
+                setpostLoading(false); 
+            }, 1000);
         }
     }, [currentUploadPost]);
 
@@ -103,9 +103,9 @@ function NewFeed({ activeChat }) {
                     // </Suspense>
                 ))}
                 <div ref={observerRef}></div>
-                {!hasMore && <p>No more posts to show</p>}
+                {!hasMore && <LoadingSpinner/>}
 
-                {isLoading && <p>Loading more posts...</p>}
+                {isLoading && <LoadingSpinner/>}
             </div>
         </section>
     );

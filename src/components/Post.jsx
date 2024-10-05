@@ -9,8 +9,7 @@ import { useUploadPostMutation } from '../api/Post';
 import { FaUsers, FaHome, FaUserFriends } from "react-icons/fa";
 import { addPost } from '../feature/postSlice';
 import { useAppDispatch, useAppSelector } from '../hook/Hook';
-import { selectPosts } from '../feature/postSlice';
-import { selectToken } from '../feature/loginToken';
+
 
 
 function Post({activeChat, setpostLoading}) {
@@ -25,8 +24,7 @@ function Post({activeChat, setpostLoading}) {
     const [postStatus, setPostStatus] = useState(false);
     const [selectedAudience, setSelectedAudience] = useState('Everyone');
     const dispatch = useAppDispatch();
-    const postsFromSlice = useAppSelector(selectPosts)
-    const token = useAppSelector(selectToken);
+    const statusRef = useRef();
 
     const handleAudienceSelect = (audience) => {
         setSelectedAudience(audience); 
@@ -47,9 +45,20 @@ function Post({activeChat, setpostLoading}) {
         }
     };
 
-    const handlePostStatus = () => {
-        setPostStatus(!postStatus)
+    const handlePostStatus = (e) => {
+        if(statusRef.current){
+            setPostStatus(!postStatus)
+        }else {
+            setPostStatus(!postStatus);
+        }
     }
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handlePostStatus);
+        return () => {
+            document.removeEventListener("mousedown", handlePostStatus);
+        };
+    }, []);
 
     const uploadImage = () => {
         setIsButtonDisabled
@@ -135,7 +144,7 @@ function Post({activeChat, setpostLoading}) {
     })
 
     return (
-        <section>
+        <section ref={statusRef}>
             <main className={activeChat ? "flex flex-col items-center gap-[14px] p-[20px] rounded-[8px] self-stretch bg-white" : "flex flex-col  gap-[14px] p-[20px] rounded-[8px] self-stretch bg-white"}>
                 <div className="flex flex-col items-center bg-white">
 
@@ -143,7 +152,7 @@ function Post({activeChat, setpostLoading}) {
                         
                         <div className="flex items-start justify-between">
 
-                            <div className={activeChat ? "flex gap-[8px] w-[320px]" : "flex w-[540px] gap-[15px]"}>
+                            <div className={activeChat ? "flex gap-[8px] w-[320px]" : "flex w-[520px] gap-[15px]"}>
 
                                 <div className="w-[38px] h-[38px]">
                                     <img src={john} alt="John" />
@@ -189,7 +198,7 @@ function Post({activeChat, setpostLoading}) {
                                 </div>
 
                                 {postStatus &&(
-                                    <div className='flex flex-col gap-[10px] absolute items-start bg-[#ECF1F4] left-20 top-200 z-20 p-[20px] w-[300px]'>
+                                    <div className='flex flex-col gap-[10px] absolute items-start bg-[#ECF1F4] left-16 top-200 z-20 p-[20px] w-[300px]'>
                                         <span>Who can see you post?</span>
                                         <span>Choose who can see your post.<br /></span>
                                         <span className='text-left'>Everyone you mentioned in the post can still see it.</span>
@@ -236,7 +245,7 @@ function Post({activeChat, setpostLoading}) {
                                 <div className='w-[32px] h-[14px]'></div>
 
                                 <div className='flex flex-col gap-[5px]'>
-                                    <div className='w-[330px] h-[1px] bg-[#ECF1F4]'></div>
+                                    <div className={activeChat ? "w-[330px] h-[1px] bg-[#ECF1F4]" :"w-[500px] h-[1px] bg-[#ECF1F4]"}></div>
 
                                     {image ?
                                         (<div>

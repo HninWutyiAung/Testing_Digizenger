@@ -9,6 +9,7 @@ import { useLoginUserMutation } from "../api/Auth";
 import { useNavigate } from "react-router-dom";
 import { selectToken, setLoginUserToken } from "../feature/loginToken";
 import { useAppDispatch, useAppSelector } from "../hook/Hook";
+import LoadingSpinner from "./LoadingSpinner";
 
 
 function Login() {
@@ -36,7 +37,6 @@ function Login() {
     setActiveForm(formName);
     const link = e.currentTarget;
 
-    // Set the active link's width and left position
     setActiveLinkStyles({
       width: `${link.offsetWidth}px`,
       left: `${link.offsetLeft}px`,
@@ -95,13 +95,18 @@ function Login() {
 
   return (
     <section className="flex justify-center pt-[80px] mb-[20px]">
+          {isLoading && 
+          <div className="absolute flex justify-center items-center z-50">
+            <LoadingSpinner />
+          </div>
+          }
       <main className="login_main_container text-center">
         <div className="mt-[-10px] grid mb-[10px] ">
           <h1 className="login_header_text1 text-[36px] font-bold">
             <span className="text-[#00BCD4] text-[36px] ml-[-4rem] font-bold">Connect</span> Anytime,
           </h1>
           <div className="login_header_text2 ml-[-11rem] text-[36px] font-bold">AnyWhere</div>
-          <div className="login_body_text text-left justify-self-center w-[350px]  text-[#8C8CA1] mt-[10px]">
+          <div className="login_body_text text-justify hyphens-auto justify-self-center w-[350px]  text-[#8C8CA1] mt-[10px]">
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt alias dolorem corporis non labore vitae modi?
           </div>
         </div>
