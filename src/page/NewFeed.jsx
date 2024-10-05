@@ -99,7 +99,7 @@ function NewFeed({ activeChat }) {
                 </div>
                 {posts.map((post) => (
                     // <Suspense key={post.id} fallback={<div>Loading Post...</div>}>
-                        <ShowPost activeChat={activeChat} post={post} />
+                        <ShowPost activeChat={activeChat} post={post} setPosts={setPosts}/>
                     // </Suspense>
                 ))}
                 <div ref={observerRef}></div>

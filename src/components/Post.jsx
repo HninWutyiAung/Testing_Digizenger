@@ -52,6 +52,7 @@ function Post({activeChat, setpostLoading}) {
     }
 
     const uploadImage = () => {
+        setIsButtonDisabled
         if (uploadRef.current){
             if (!isEditing) {
                 uploadRef.current.value = "";  

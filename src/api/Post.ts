@@ -28,7 +28,13 @@ export const postUploadSlice = createApi({
         url: `posts/getPost?_page=${page}&_limit=${limit}`,
       }),
     }),
+    setLikeOrUnlike: builder.mutation({
+      query: (postId) =>({
+        url: `posts/isLike/${postId}`,
+        method: 'POST',
+      })
+    })
   }),
 });
 
-export const { useUploadPostMutation , useGetPostQuery} = postUploadSlice;
+export const { useUploadPostMutation , useGetPostQuery ,useSetLikeOrUnlikeMutation} = postUploadSlice;

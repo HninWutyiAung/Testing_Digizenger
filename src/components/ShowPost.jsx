@@ -8,28 +8,51 @@ import graph from '/images/graph.png';
 import heart1 from '/images/heart1.png';
 import { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
+import { EffectFlip } from 'swiper/modules';
+import { useSetLikeOrUnlikeMutation } from '../api/Post';
 
 
-function ShowPost({activeChat, post}) {
-    const [clickHeart, setClickHeart] =useState(true);
+
+function ShowPost({activeChat, post , setPosts}) {
+    const [clickHeart, setClickHeart] =useState(post.liked);
     const [showMore, setShowMore] = useState(false);
     const [count, setCount] = useState(0);
     const postText = post.description;
+    const [setLikeOrUnlike] = useSetLikeOrUnlikeMutation();
     
     const timeAgo = formatDistanceToNow(post.createdDate, { addSuffix: true });
 
-    const heartHandle = ()=>{
-        setClickHeart(!clickHeart);
-    }
+    const heartHandle = async () => {
+        try {
+          console.log(post.id);
+          const response = await setLikeOrUnlike(post.id).unwrap();
+          console.log(response);    
+          const updatedPost = {...post};
+          if (updatedPost.liked) {
+            updatedPost.likeCount -= 1;
+        } else {
+            updatedPost.likeCount += 1;
+        }
+        updatedPost.liked = !updatedPost.liked;
+
+        // Update the local component state for the heart icon
+        setClickHeart(updatedPost.liked);
+
+        // Update the post in the parent component by using setPosts
+        setPosts((prevPosts) =>
+            prevPosts.map((p) => (p.id === post.id ? updatedPost : p))
+        );
+
+        } catch (error) {
+          console.error('Failed to update like:', error);
+        }
+      };
 
     const toggleShowMore = () => {
         setShowMore(!showMore);
         setCount((prevCount) => prevCount + 1);
     };
 
-    // console.log("Uploading post with data:", 
-    //    post.description , post.imageUrl
-    // );
 
     return(
         <>
@@ -104,17 +127,17 @@ function ShowPost({activeChat, post}) {
 
                         <div className='flex justify-between items-start flex-grow flex-shrink-0 basis-0'>
                             <div className='flex w-[96px] h-[28px] items-center gap-[8px]'>
-                                {clickHeart ? (<img src={heart1} className='w-[16px] h-[16px]' onClick={heartHandle}/>) : (<img src={heart} className='w-[16px] h-[16px]' onClick={heartHandle}/>)}
+                                {clickHeart ? (<img src={heart} className='w-[16px] h-[16px]' onClick={heartHandle}/>) : (<img src={heart1} className='w-[16px] h-[16px]' onClick={heartHandle}/>)}
                                 <span className='text-[14px] font-medium leading-4'>Love</span>
                             </div>
                            
                             <div className='flex w-[96px] h-[28px] items-center gap-[8px]'>
-                                <img src={flick} className='w-[24px] h-[24px]'></img>
+                                <img src={flick} className='w-[24px] h-[24px]' alt="Flick Icon"></img>
                                 <span className='text-[14px] font-medium leading-4'>flick</span>
                             </div>
                             
                             <div className='flex w-[96px] h-[28px] items-center gap-[8px]'>
-                                <img src={graph} className='w-[24px] h-[24px]'></img>
+                                <img src={graph} className='w-[24px] h-[24px]' alt="view Icon"></img>
                                 <span className='text-[14px] font-medium leading-4'>View</span>
                             </div>
                         </div>
