@@ -45,20 +45,9 @@ function Post({activeChat, setpostLoading}) {
         }
     };
 
-    const handlePostStatus = (e) => {
-        if(statusRef.current){
+    const handlePostStatus = () => {
             setPostStatus(!postStatus)
-        }else {
-            setPostStatus(!postStatus);
-        }
     }
-
-    useEffect(() => {
-        document.addEventListener("mousedown", handlePostStatus);
-        return () => {
-            document.removeEventListener("mousedown", handlePostStatus);
-        };
-    }, []);
 
     const uploadImage = () => {
         setIsButtonDisabled
