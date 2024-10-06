@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const postUploadSlice = createApi({
   reducerPath: 'postUploadApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://152.42.254.187:8080/api/v1',
+    baseUrl: 'https://digizenger.org/api/v1',
     prepareHeaders: (headers) => {
       const usertoken = localStorage.getItem('user');
       if (usertoken) {
@@ -25,7 +25,7 @@ export const postUploadSlice = createApi({
     }),
     getPost: builder.query({
       query: ({ page, limit = 10 }) => ({
-        url: `posts/getPost?_page=${page}&_limit=${limit}`,
+        url: `posts/getPosts?_page=${page}&_limit=${limit}`,
       }),
     }),
     setLikeOrUnlike: builder.mutation({

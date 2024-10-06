@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const profileApiSlice = createApi({
   reducerPath: 'profileApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://152.42.254.187:8080/api/v1',
+    baseUrl: 'https://digizenger.org/api/v1',
     prepareHeaders: (headers) => {
       const usertoken = localStorage.getItem('user');
       if (usertoken) {
