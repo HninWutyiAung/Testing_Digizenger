@@ -24,6 +24,23 @@ function ShowPost({activeChat, post , setPosts}) {
     const timeAgo = formatDistanceToNow(post.createdDate, { addSuffix: true });
 
     const heartHandle = async () => {
+
+        const newLikedState = !clickHeart;
+        setClickHeart(newLikedState);
+
+        // Optimistically update the like count based on the new liked state
+        const updatedLikeCount = newLikedState ? post.likeCount + 1 : post.likeCount - 1;
+
+        // Update the post state immediately with the new like count
+        const updatedPost = {
+            ...post,
+            liked: newLikedState,
+            likeCount: updatedLikeCount,
+        };
+
+        setPosts((prevPosts) =>
+            prevPosts.map((p) => (p.id === post.id ? updatedPost : p))
+        );
         try {
           console.log(post.id);
           const response = await setLikeOrUnlike(post.id).unwrap();
