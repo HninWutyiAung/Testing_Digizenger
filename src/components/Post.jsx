@@ -9,6 +9,7 @@ import { useUploadPostMutation } from '../api/Post';
 import { FaUsers, FaHome, FaUserFriends } from "react-icons/fa";
 import { addPost } from '../feature/postSlice';
 import { useAppDispatch, useAppSelector } from '../hook/Hook';
+import { selectFirstName, selectLastName } from '../feature/authSlice';
 
 
 
@@ -22,9 +23,12 @@ function Post({activeChat, setpostLoading}) {
     const uploadRef = useRef(null);
     const [uploadPost,{isLoading,isSuccess, isError}] = useUploadPostMutation();
     const [postStatus, setPostStatus] = useState(false);
+    const firstName = useAppSelector(selectFirstName);
+    const lastName = useAppSelector(selectLastName);
     const [selectedAudience, setSelectedAudience] = useState('Everyone');
     const dispatch = useAppDispatch();
     const statusRef = useRef();
+    console.log(firstName,lastName);
 
     const handleAudienceSelect = (audience) => {
         setSelectedAudience(audience); 
@@ -50,7 +54,7 @@ function Post({activeChat, setpostLoading}) {
     }
 
     const uploadImage = () => {
-        setIsButtonDisabled
+        setIsButtonDisabled(false);
         if (uploadRef.current){
             if (!isEditing) {
                 uploadRef.current.value = "";  
@@ -66,7 +70,7 @@ function Post({activeChat, setpostLoading}) {
         if (file) {
             console.log(file);
             setImageFile(file);
-              setImage(file);
+            setImage(file);
             
         }
     }
@@ -89,14 +93,13 @@ function Post({activeChat, setpostLoading}) {
         console.log(content);
     };
 
-    // useEffect(() => {
-    //     setpostLoading(isLoading);
-    // }, [isLoading, setpostLoading]);
-
     const handlePostSubmit = async (e) => { 
         const startTimer = Date.now();
         e.preventDefault();
-        setpostLoading(true);
+        setContent('');
+        setImage(null);
+        setImageFile(null);
+        // setpostLoading(true);
         const formData = new FormData();
         formData.append('description', content);
         formData.append('postType', selectedAudience.toUpperCase());
@@ -116,10 +119,10 @@ function Post({activeChat, setpostLoading}) {
         } catch (error) {
             console.error("Failed to upload post:", error);
         }finally{
-            setpostLoading(false);
-            setContent('');
-            setImage(null);
-            setImageFile(null);
+            // setpostLoading(false);
+            // setContent('');
+            // setImage(null);
+            // setImageFile(null);
         }
     };
 
@@ -151,7 +154,7 @@ function Post({activeChat, setpostLoading}) {
                                 <div className='flex flex-col gap-2 items-start w-[250px]'>
 
                                     <div className='flex items-center h-[20px] gap-[8px]'>
-                                        <span className='text-[16px] font-bold leading-8'>John Doe</span>
+                                        <span className='text-[16px] font-bold leading-8'>{`${firstName} ${lastName}`}</span>
                                         <img src={mark} alt="Mark" />
                                     </div>
 
@@ -161,7 +164,7 @@ function Post({activeChat, setpostLoading}) {
                                             className='outline-none w-full resize-none'
                                             value={content}
                                             onInput={handleInput}
-                                            onClick={()=>setShowMedia(!showMedia)}
+                                            onClick={()=>setShowMedia(true)}
                                             style={{ overflow: 'hidden',  height: "20px" ,lineHeight : "1.2" }} // Set minimum height
                                         />
                                     </div>
@@ -179,7 +182,7 @@ function Post({activeChat, setpostLoading}) {
                         <div className='flex flex-col gap-1 items-start'>
 
                             <div className='flex gap-[12px]'>
-                                <div className='w-[32px] h-[14px]'></div>
+                                <div className={activeChat ? 'w-[32px] h-[14px]' : 'w-[40px] h-[14px]'}></div>
 
                                 <div className='flex gap-[4px] items-center pointer' onClick={handlePostStatus}>
                                     {getAudienceIcon(selectedAudience)}
@@ -214,7 +217,7 @@ function Post({activeChat, setpostLoading}) {
 
                             <div className='flex gap-[12px] items-center'>
 
-                                <div className='w-[32px] h-[14px]'></div>
+                                <div className={activeChat ? 'w-[32px] h-[14px]' : 'w-[40px] h-[14px]'}></div>
 
                                 <div className='flex gap-[10px]'>
                                     <span className='text-[13px] font-normal leading-5'>Trending Now</span>
@@ -231,10 +234,10 @@ function Post({activeChat, setpostLoading}) {
                         {showMedia &&
                             <div className='flex items-start gap-[12px]'>
 
-                                <div className='w-[32px] h-[14px]'></div>
+                                <div className='w-[40px] h-[14px]'></div>
 
                                 <div className='flex flex-col gap-[5px]'>
-                                    <div className={activeChat ? "w-[330px] h-[1px] bg-[#ECF1F4]" :"w-[500px] h-[1px] bg-[#ECF1F4]"}></div>
+                                    <div className={activeChat ? "w-[330px] h-[1px] bg-[#ECF1F4]" :"w-[450px] h-[1px] bg-[#ECF1F4]"}></div>
 
                                     {image ?
                                         (<div>

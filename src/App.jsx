@@ -13,6 +13,7 @@ import { store } from './feature/store';
 import { Provider } from 'react-redux';
 import ApiFetchExample  from './ApiFetch';
 import { setLoginUserToken } from './feature/loginToken';
+import { setRegisterInfo } from './feature/authSlice';
 import { useAppSelector, useAppDispatch } from './hook/Hook';
 
 function MainApp() {
@@ -21,13 +22,17 @@ function MainApp() {
   const dispatch = useAppDispatch();
 
   const userToken = JSON.parse(localStorage.getItem("user") || "{}");
-
-  console.log(userToken);
+  const registerInfo = JSON.parse(localStorage.getItem("registerInfo") || "{}");
+  
+  console.log("registerInfo", registerInfo);
 
   useEffect(() => { 
     dispatch(setLoginUserToken(userToken));
   }, [dispatch]);
   
+  useEffect(() =>{
+    dispatch(setRegisterInfo(registerInfo));
+  })
   const pageSpecificMargin = {
     "/login": "mt-[0px]",
     "/signup": "mt-[0px]",

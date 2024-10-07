@@ -7,6 +7,8 @@ import { PiPresentationChartFill } from "react-icons/pi";
 import { PiMegaphoneSimpleFill } from "react-icons/pi";
 import { PiPencilSimpleFill } from "react-icons/pi";
 import { useUploadProfileImageMutation} from '../api/Profile';
+import { selectFirstName, selectLastName } from '../feature/authSlice';
+import { useAppSelector } from '../hook/Hook';
  
 function ProfileCover (){
     const coverRef = useRef();
@@ -15,6 +17,8 @@ function ProfileCover (){
     const [coverImageUrl, setcoverImageUrl] = useState(null);
     const [profileImage, setprofileImage] = useState(null);
     const [profileImageUrl, setprofileImageUrl] = useState(null);
+    const firstName = useAppSelector(selectFirstName);
+    const lastName = useAppSelector(selectLastName);
     const [uploadProfileImage,{isSuccess,isError, isLoading, error }] = useUploadProfileImageMutation();
     console.log(coverImageUrl)
 
@@ -79,7 +83,7 @@ function ProfileCover (){
                         {/* Profile Name & Email */}
                         <div className="self-stretch h-[52px] flex flex-col justify-start items-start gap-1">
                             <div className="h-[24px] self-stretch flex items-center gap-1">
-                                <div className="w-[125px] h-[20px] text-[#2C3E50] text-[28px] font-bold font-['DM Sans'] flex items-center">John Doe</div>
+                                <div className=" h-[20px] text-[#2C3E50] text-[28px] font-bold font-['DM Sans'] flex items-center">{`${firstName} ${lastName}`}</div>
                                 <div className="flex items-center justify-center w-6 h-6">
                                     <img className="w-[19.20px] h-[19.20px]" src={mark} alt="" />
                                 </div>

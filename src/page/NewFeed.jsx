@@ -8,6 +8,7 @@ import { selectPosts } from '../feature/postSlice';
 import { useAppSelector } from '../hook/Hook';
 import ShowPost from '../components/ShowPost';
 import LoadingSpinner from '../components/LoadingSpinner';
+import PostLoadingSpinner from '../components/postLoadingSpinner';
 
 
 function NewFeed({ activeChat }) {
@@ -31,11 +32,9 @@ function NewFeed({ activeChat }) {
                 !posts.some(prevPost => prevPost.id === post.id)
             );
             
-            // Use startTransition to wrap the state update
             startTransition(() => {
                 setPosts(prevPosts => [...prevPosts, ...newPosts]);
     
-                // Set loading to false after posts are fetched
                 setpostLoading(false);
     
                 if (newPosts.length < limit) {
@@ -69,7 +68,7 @@ function NewFeed({ activeChat }) {
     
             setTimeout(() => {
                 setpostLoading(false); 
-            }, 1000);
+            }, 3000);
         }
     }, [currentUploadPost]);
 
@@ -88,7 +87,10 @@ function NewFeed({ activeChat }) {
                 <div>
                 {postLoading && currentUploads.length > 0 && (
                     <>
-                        <p className='text-left bg-white rounded-t-lg'>Loading Your Post...</p>
+                        <div className='flex items-center pl-[10px] gap-3 bg-white h-[50px] border-b border-[#ECF1F4] rounded-t-lg'>
+                            <PostLoadingSpinner />
+                            <span className='text-left bg-white rounded-t-lg'> Loading Your Post...</span>
+                        </div>
                         {currentUploads.map((currentPost) => (       
                             <div key={currentPost.id} style={{ opacity: 0.5 }}>             
                                 <ShowPost activeChat={activeChat} post={currentPost.postDto}/>

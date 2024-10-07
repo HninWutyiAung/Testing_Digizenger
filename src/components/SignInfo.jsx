@@ -6,7 +6,7 @@ import { FaRegEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useRegisterUserMutation } from "../api/Auth";
 import { useAppDispatch, useAppSelector } from '../hook/Hook.ts';
-import { setEmailOrPhone , selectEmail} from "../feature/authSlice.ts";
+import { setEmailOrPhone , setRegisterInfo, selectEmail ,selectLastName, selectFirstName} from "../feature/authSlice.ts";
 import LoadingSpinner from "./LoadingSpinner.jsx";
 
 const initialState ={
@@ -95,9 +95,9 @@ function SignInfo() {
         e.preventDefault();
 
         if(isEmail){ 
-             dispatch(setEmailOrPhone({email: email, phone:null}))
+             dispatch(setEmailOrPhone({email: email, phone:null , firstName: firstName, lastName: lastName}))
         }else{
-            dispatch(setEmailOrPhone({email:null, phone: phone}))
+            dispatch(setEmailOrPhone({email:null, phone: phone , firstName: firstName, lastName: lastName}))
         }
 
         if (password===confirmPass) {  
@@ -119,6 +119,7 @@ function SignInfo() {
 
     useEffect(()=> {
         if(isSuccess){
+            dispatch(setRegisterInfo({firstName , lastName}))
             navigate("/signup/verify");
         }
     },[isSuccess , navigate])

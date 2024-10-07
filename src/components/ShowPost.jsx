@@ -21,7 +21,7 @@ function ShowPost({activeChat, post , setPosts}) {
     const postText = post.description;
     const wordLength =post.description.split(" ");
     
-    const timeAgo = formatDistanceToNow(post.createdDate, { addSuffix: true });
+    const timeAgo = formatDistanceToNow(new Date(post.createdDate), { addSuffix: true });
 
     const heartHandle = async () => {
 
@@ -83,7 +83,7 @@ function ShowPost({activeChat, post , setPosts}) {
                                 <div className="flex justify-between items-center self-stretch">
                                     <div className={activeChat ? "flex items-center gap-[8px] w-[320px]" : "flex items-center gap-[8px] w-[500px]"}>
                                         <div className="flex gap-[2px] items-center">
-                                            <span className={`font-bold leading-7 text-[#2C3E50] ${activeChat ? 'text-[18px]': 'text-[18px]'}`}>{`${post.userDto.firstName} ${post.userDto.lastName}`}</span>
+                                            <span className={`font-bold leading-7 text-[#2C3E50] ${activeChat ? 'text-[15px]': 'text-[18px]'}`}>{`${post.userDto.firstName} ${post.userDto.lastName}`}</span>
                                             <img src={badges} className='w-[20px] h-[20px]'></img>
                                         </div>
                                         <div className='w-[4px] h-[4px]'>
