@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 function MenuNav({activeChat}){
     const [activeButton, setActiveButton] = useState ("newfeed");
     const navigate = useNavigate();
-    console.log(activeButton);
     const buttonHandle = (value) => {
          // Prevent setting state if it's already active
         setActiveButton(value);

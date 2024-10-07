@@ -9,6 +9,8 @@ import { useAppSelector } from '../hook/Hook';
 import ShowPost from '../components/ShowPost';
 import LoadingSpinner from '../components/LoadingSpinner';
 import PostLoadingSpinner from '../components/postLoadingSpinner';
+import { ToastContainer , toast} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function NewFeed({ activeChat }) {
@@ -68,6 +70,19 @@ function NewFeed({ activeChat }) {
     
             setTimeout(() => {
                 setpostLoading(false); 
+                toast.success("Your post has been uploaded successfully!", {
+                    style: {
+                        backgroundColor: '#2C3E50', 
+                        color: '#FFFFFF', 
+                        width: '400px' ,
+                    },
+                    position: "bottom-left",
+                    autoClose: 1000, // Duration in milliseconds
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true, // Optional, can leave undefined
+                });
             }, 3000);
         }
     }, [currentUploadPost]);
@@ -108,6 +123,8 @@ function NewFeed({ activeChat }) {
                 {!hasMore && <LoadingSpinner/>}
 
                 {isLoading && <LoadingSpinner/>}
+                <ToastContainer />
+                
             </div>
         </section>
     );

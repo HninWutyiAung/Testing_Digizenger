@@ -6,7 +6,7 @@ import registerInfoReducer from './authSlice.ts';
 import uploadPostReducer from './postSlice.ts';
 import { postUploadSlice } from '../api/Post.ts';
 import loginUserTokenReducer from './loginToken.ts';
-import { profileApiSlice, useUploadProfileImageMutation } from "../api/Profile.ts";
+import { profileApiSlice} from "../api/Profile.ts";
 import profileDataReducer from './profileSlice.ts';
 
 export const store = configureStore({
@@ -21,7 +21,7 @@ export const store = configureStore({
         [profileApiSlice.reducerPath] : profileApiSlice.reducer,
     },
     middleware : (getDefaultMiddleWare) =>
-        getDefaultMiddleWare().concat(authApi.middleware, postUploadSlice.middleware),
+        getDefaultMiddleWare().concat(authApi.middleware, postUploadSlice.middleware,profileApiSlice.middleware),
     
 })
 

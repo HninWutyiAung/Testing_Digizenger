@@ -119,7 +119,6 @@ function SignInfo() {
 
     useEffect(()=> {
         if(isSuccess){
-            dispatch(setRegisterInfo({firstName , lastName}))
             navigate("/signup/verify");
         }
     },[isSuccess , navigate])

@@ -1,3 +1,4 @@
+
 import cover from '/images/cover.png';
 import john from '/images/john doe.jpg';
 import mark from '/images/mark2.png';
@@ -20,7 +21,6 @@ function ProfileCover (){
     const firstName = useAppSelector(selectFirstName);
     const lastName = useAppSelector(selectLastName);
     const [uploadProfileImage,{isSuccess,isError, isLoading, error }] = useUploadProfileImageMutation();
-    console.log(coverImageUrl)
 
     const onChangeCover = (e)=> {
         const coverFile = e.target.files[0];
@@ -57,7 +57,7 @@ function ProfileCover (){
     }
 
     return(
-        <section className="h-[484px] w-[640px] flex flex-col pb-6 items-center gap-7 self-stretch rounded-lg border border-solid border-[#C9DCDE] bg-white ">
+        <section className=" flex flex-col pb-6 items-center gap-7 self-stretch rounded-lg border border-solid border-[#C9DCDE] bg-white ">
                     {/* Cover Image & Profile Image */}
                     <div className="w-[640px] h-60 relative">
                         {/* Cover Image */}

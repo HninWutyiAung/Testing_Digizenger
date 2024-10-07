@@ -30,10 +30,17 @@ export const profileApiSlice = createApi({
         method: 'POST',
         body: username,
       })
+    }),
+    
+    getProfile: builder.query({
+      query:()=>({
+        url: '/profile/',
+        method: 'get'
+      })
     })
 
   })
 
 });
 
-export const { useUploadProfileImageMutation } = profileApiSlice;
+export const { useUploadProfileImageMutation ,useGetProfileQuery } = profileApiSlice;
