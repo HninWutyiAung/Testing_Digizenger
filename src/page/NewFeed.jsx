@@ -1,29 +1,30 @@
-import React, {  useState, useEffect ,useRef ,startTransition} from 'react';
+import React, { useState, useEffect, useRef, startTransition } from 'react';
 import NewFeedNav from "../components/NewFeedNav";
 import MenuNav from "../components/MenuNav2";
 import Post from "../components/Post";
 import Banner from "../components/banner";
 import { useGetPostQuery } from '../api/Post';
-import { selectPosts } from '../feature/postSlice';
-import { useAppSelector } from '../hook/Hook';
+import { useAppSelector,useAppDispatch } from '../hook/Hook';
 import ShowPost from '../components/ShowPost';
 import LoadingSpinner from '../components/LoadingSpinner';
 import PostLoadingSpinner from '../components/postLoadingSpinner';
-import { ToastContainer , toast} from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-
+import { selectCurrentPost ,resetCurrentUpload} from '../feature/postSlice';
+import PostLoading from '../components/PostLoading';
 
 function NewFeed({ activeChat }) {
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(10);
     const [posts, setPosts] = useState([]);
-    const [postLoading, setpostLoading] = useState(false);
-    const currentUploadPost = useAppSelector(selectPosts);
-    const [currentUploads, setCurrentUploads] = useState([]);
+    const [postLoading, setPostLoading] = useState(false);
+    const currentUpload = useAppSelector(selectCurrentPost); // Use the currentUpload directly as an object
     const observerRef = useRef();
-    const [hasMore,setHasMore] = useState(true);
+    const [hasMore, setHasMore] = useState(true);
+    const toastRef = useRef(null);
+    const dispatch = useAppDispatch();
 
-    const { data, isSuccess, isLoading, isError, error } = useGetPostQuery(
+    const { data, isSuccess, isLoading } = useGetPostQuery(
         { page, limit },
         { skip: page === 1 && posts.length > 0 }
     );
@@ -33,101 +34,96 @@ function NewFeed({ activeChat }) {
             const newPosts = data.postDtoList.filter(post =>
                 !posts.some(prevPost => prevPost.id === post.id)
             );
-            
+
             startTransition(() => {
                 setPosts(prevPosts => [...prevPosts, ...newPosts]);
-    
-                setpostLoading(false);
-    
+
                 if (newPosts.length < limit) {
                     setHasMore(false);
                 }
             });
         }
-    }, [data, isSuccess, isError, error]);
+    }, [data, isSuccess]);
 
-    useEffect(() => {  
+    useEffect(() => {
         const observer = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting ) {
-                setPage((prevPage) => prevPage + 1);
+            if (entries[0].isIntersecting) {
+                setPage(prevPage => prevPage + 1);
             }
         }, { threshold: 0.5 });
+
         if (observerRef.current) observer.observe(observerRef.current);
-        return () => { 
+        return () => {
             if (observerRef.current) observer.unobserve(observerRef.current);
-        } 
-     }, [hasMore]);
+        }
+    }, [hasMore]);
 
     useEffect(() => {
         console.log(`Requesting page: ${page}, limit: ${limit}`);
     }, [page, limit]);
 
     useEffect(() => {
-        if (currentUploadPost.length > 0 ) {
+        if (currentUpload) {
 
-            setpostLoading(true);
-            setCurrentUploads(currentUploadPost.slice(-1));
+            setPostLoading(true);
 
-            toast.dismiss();
-    
-            setTimeout(() => {
-                setpostLoading(false); 
-
-                toast.success("Your post has been uploaded successfully!", {
+            const timer = setTimeout(() => {
+                toastRef.current = toast.success("Your post has been uploaded successfully!", {
                     style: {
-                        backgroundColor: '#2C3E50', 
-                        color: '#FFFFFF', 
-                        width: '400px' ,
+                        backgroundColor: '#2C3E50',
+                        color: '#FFFFFF',
+                        width: '400px',
                     },
                     position: "bottom-left",
-                    autoClose: 1000, // Duration in milliseconds
                     hideProgressBar: true,
                     closeOnClick: true,
                     pauseOnHover: true,
-                    draggable: true, // Optional, can leave undefined
+                    draggable: true,
                 });
-            }, 3000);
-        }
-    }, [currentUploadPost]);
+                toast.dismiss(toastRef.current);
+                dispatch(resetCurrentUpload()); 
+                setPostLoading(false);
+            }, 3000); 
 
-    useEffect(() => {
-        console.log(`postLoading: ${postLoading}`);
-        console.log(`currentUploads:`, currentUploads);
-    }, [postLoading, currentUploads]);
+            
+            return () => {
+                clearTimeout(timer);
+            };
+        }
+    }, [currentUpload, dispatch]);
+
+
+    useEffect(()=>{
+        console.log(currentUpload)
+    },[currentUpload])
 
     return (
         <section>
             <NewFeedNav activeChat={activeChat} />
             <MenuNav activeChat={activeChat} />
             <div className="flex flex-col p-[20px] pt-[140px] gap-[12px] w-full bg-[#ECF1F4] h-[945px] overflow-y-auto scrollable newfeed-responsive">
-                <Post activeChat={activeChat} setpostLoading={setpostLoading}/>
+                <Post activeChat={activeChat} setpostLoading={setPostLoading}/>
                 <Banner activeChat={activeChat} />
                 <div>
-                {postLoading && currentUploads.length > 0 && (
-                    <>
-                        <div className='flex items-center pl-[10px] gap-3 bg-white h-[50px] border-b border-[#ECF1F4] rounded-t-lg'>
-                            <PostLoadingSpinner />
-                            <span className='text-left bg-white rounded-t-lg'> Loading Your Post...</span>
-                        </div>
-                        {currentUploads.map((currentPost) => (       
-                            <div key={currentPost.id} style={{ opacity: 0.5 }}>             
-                                <ShowPost activeChat={activeChat} post={currentPost.postDto}/>
+                    {postLoading && currentUpload && (
+                        <>
+                            <div className='flex items-center pl-[10px] gap-3 bg-white h-[50px] border-b border-[#ECF1F4] rounded-t-lg'>
+                                <PostLoadingSpinner />
+                                <span className='text-left bg-white rounded-t-lg'> Loading Your Post...</span>
                             </div>
-                        ))}
-                    </>
-                )}
+                            <div key={currentUpload.id} style={{ opacity: 0.5 }}>
+                                <PostLoading activeChat={activeChat} post={currentUpload} />
+                            </div>
+                        </>
+                    )}
                 </div>
                 {posts.map((post) => (
-                    // <Suspense key={post.id} fallback={<div>Loading Post...</div>}>
-                        <ShowPost activeChat={activeChat} post={post} setPosts={setPosts}/>
-                    // </Suspense>
+                    <ShowPost key={post.id} activeChat={activeChat} post={post} setPosts={setPosts} />
                 ))}
                 <div ref={observerRef}></div>
-                {!hasMore && <LoadingSpinner/>}
-
-                {isLoading && <LoadingSpinner/>}
+                {!hasMore && <LoadingSpinner />}
+                {isLoading && <LoadingSpinner />}
                 <ToastContainer />
-                
             </div>
         </section>
     );

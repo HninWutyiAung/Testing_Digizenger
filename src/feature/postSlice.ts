@@ -15,16 +15,18 @@ interface Media {
 interface Post {
   description: string;
   postType: PostType;
-  file: Media[];  // Use `file` to store media array
+  file: Media[]; // Use `file` to store media array
 }
 
 interface UploadPostState {
   posts: Post[];
+  currentPost: Post | null;
   isLoading: boolean;
 }
 
 const initialState: UploadPostState = {
   posts: [],
+  currentPost: null,
   isLoading: false,
 };
 
@@ -41,18 +43,26 @@ const uploadPostSlice = createSlice({
     updatePost: (state, action: PayloadAction<{ index: number; post: Post }>) => {
       state.posts[action.payload.index] = action.payload.post;
     },
-    setLoading: (state, action: PayloadAction<{ isLoading: boolean }>) => {
-      state.isLoading = action.payload.isLoading;  
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
     },
     removePost: (state, action: PayloadAction<number>) => {
       state.posts.splice(action.payload, 1);
-    }
+    },
+    setCurrentPost: (state, action: PayloadAction<Post | null>) => {
+      state.currentPost = action.payload; // Set the current post
+    },
+    resetCurrentUpload: (state) => {
+      state.currentPost = null; // Reset current post to null
+    },
   }
 });
 
-export const { setPosts, addPost, updatePost, removePost, setLoading } = uploadPostSlice.actions;
+export const { setPosts, addPost, updatePost, removePost, setLoading, setCurrentPost,resetCurrentUpload } = uploadPostSlice.actions;
 
 export default uploadPostSlice.reducer;
 
-// Selector to get posts from state
+// Selectors to get posts and current post from the slice
 export const selectPosts = (state: RootState) => state.uploadPost.posts;
+export const selectCurrentPost = (state: RootState) => state.uploadPost.currentPost; // Selector for currentPost
+export const selectIsLoading = (state: RootState) => state.uploadPost.isLoading;

@@ -7,7 +7,7 @@ import { GoImage } from "react-icons/go";
 import { PiGif } from "react-icons/pi";
 import { useUploadPostMutation } from '../api/Post';
 import { FaUsers, FaHome, FaUserFriends } from "react-icons/fa";
-import { addPost } from '../feature/postSlice';
+import { addPost, setCurrentPost } from '../feature/postSlice';
 import { useAppDispatch, useAppSelector } from '../hook/Hook';
 import { selectFirstName, selectLastName } from '../feature/authSlice';
 
@@ -99,7 +99,7 @@ function Post({activeChat, setpostLoading}) {
         setContent('');
         setImage(null);
         setImageFile(null);
-        // setpostLoading(true);
+        setpostLoading(true);
         const formData = new FormData();
         formData.append('description', content);
         formData.append('postType', selectedAudience.toUpperCase());
@@ -107,6 +107,14 @@ function Post({activeChat, setpostLoading}) {
         if (imageFile) {
             formData.append('file', imageFile); 
         }
+
+        const postData = {
+            description: content,
+            postType: selectedAudience.toUpperCase(),
+            image: imageFile ? URL.createObjectURL(imageFile) : null, 
+        };
+        
+        dispatch(setCurrentPost(postData))
 
         try {
             const result = await uploadPost(formData ).unwrap();
@@ -119,7 +127,7 @@ function Post({activeChat, setpostLoading}) {
         } catch (error) {
             console.error("Failed to upload post:", error);
         }finally{
-            // setpostLoading(false);
+            setpostLoading(false);
             // setContent('');
             // setImage(null);
             // setImageFile(null);
