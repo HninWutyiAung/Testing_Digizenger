@@ -23,12 +23,12 @@ function Post({activeChat, setpostLoading}) {
     const uploadRef = useRef(null);
     const [uploadPost,{isLoading,isSuccess, isError}] = useUploadPostMutation();
     const [postStatus, setPostStatus] = useState(false);
-    const firstName = useAppSelector(selectFirstName);
-    const lastName = useAppSelector(selectLastName);
+    // const firstName = useAppSelector(selectFirstName);
+    // const lastName = useAppSelector(selectLastName);
     const [selectedAudience, setSelectedAudience] = useState('Everyone');
     const dispatch = useAppDispatch();
     const statusRef = useRef();
-    console.log(firstName,lastName);
+    // console.log(firstName,lastName);
 
     const handleAudienceSelect = (audience) => {
         setSelectedAudience(audience); 
@@ -154,7 +154,7 @@ function Post({activeChat, setpostLoading}) {
                                 <div className='flex flex-col gap-2 items-start w-[250px]'>
 
                                     <div className='flex items-center h-[20px] gap-[8px]'>
-                                        <span className='text-[16px] font-bold leading-8'>{`${firstName} ${lastName}`}</span>
+                                        <span className='text-[16px] font-bold leading-8'>John Doe</span>
                                         <img src={mark} alt="Mark" />
                                     </div>
 

@@ -63,13 +63,16 @@ function NewFeed({ activeChat }) {
     }, [page, limit]);
 
     useEffect(() => {
-        if (currentUploadPost.length > 0) {
+        if (currentUploadPost.length > 0 ) {
 
             setpostLoading(true);
             setCurrentUploads(currentUploadPost.slice(-1));
+
+            toast.dismiss();
     
             setTimeout(() => {
                 setpostLoading(false); 
+
                 toast.success("Your post has been uploaded successfully!", {
                     style: {
                         backgroundColor: '#2C3E50', 
