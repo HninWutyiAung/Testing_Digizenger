@@ -11,17 +11,20 @@ import { setRegisterInfo } from "../feature/authSlice";
 function Profile({ activeChat }) {
     const { data: profile, isSuccess, isLoading, isError } = useGetProfileQuery();
     const [posts, setPosts] = useState([]);
+    const [userName, setUserName] = useState({ firstName: '', lastName: '' });
     const dispatch = useAppDispatch();
-
-
 
     useEffect(() => {
         if (isSuccess && profile) {
             setPosts(profile.profileDto.userForProfileDto.postDtoList);
             const { firstName, lastName } = profile.profileDto.userForProfileDto;
-            dispatch(setRegisterInfo({firstName , lastName}))
+            setUserName({ firstName, lastName }); // Update local state
+            dispatch(setRegisterInfo({ firstName, lastName })); // Dispatch to Redux
         }
-    }, [isSuccess, profile]);
+    }, [isSuccess, profile, dispatch]);
+
+    // Use userName state to access firstName and lastName
+    console.log(userName.firstName, userName.lastName);
 
     return (
         <section>
@@ -29,7 +32,8 @@ function Profile({ activeChat }) {
             <MenuNav activeChat={activeChat} />
             
             <div className="flex relative flex-col p-[20px] pt-[140px] bg-[#ECF1F4] gap-[12px] w-full h-[945px] overflow-y-auto scrollable newfeed-responsive">
-                <ProfileCover />
+                {/* Pass firstName and lastName to ProfileCover */}
+                <ProfileCover firstName={userName.firstName} lastName={userName.lastName} />
                 {isLoading && <div className="absolute top-[25rem] left-[20rem]"><PostLoadingSpinner/></div>}
                 {isError && <div>Error loading profile data</div>}
                 {isSuccess && (

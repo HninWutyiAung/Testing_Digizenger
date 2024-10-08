@@ -26,9 +26,7 @@ const registerInfoSlice = createSlice({
             state.firstName = action.payload.firstName;
             state.lastName = action.payload.lastName;
         },
-        setRegisterInfo: (state, action: PayloadAction<{ firstName: string | null, lastName: string | null}>) => {
-            localStorage.setItem("registerInfo", JSON.stringify({firstName: action.payload.firstName, lastName: action.payload.lastName}));
-            
+        setRegisterInfo: (state, action: PayloadAction<{ firstName: string | null, lastName: string | null}>) => {    
             state.firstName = action.payload.firstName;
             state.lastName = action.payload.lastName;
 

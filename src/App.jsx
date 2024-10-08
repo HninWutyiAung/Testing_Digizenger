@@ -21,18 +21,12 @@ function MainApp() {
   const hideNav = ["/home", "/home/newfeed" , "/home/profile"];
   const dispatch = useAppDispatch();
 
-  const userToken = JSON.parse(localStorage.getItem("user") || "{}");
-  const registerInfo = JSON.parse(localStorage.getItem("registerInfo") || "{}");
-  
-  console.log("registerInfo", registerInfo);
+  const userToken = JSON.parse(localStorage.getItem("user") || "{}")
 
   useEffect(() => { 
     dispatch(setLoginUserToken(userToken));
   }, [dispatch]);
   
-  useEffect(() =>{
-    dispatch(setRegisterInfo(registerInfo));
-  })
   const pageSpecificMargin = {
     "/login": "mt-[0px]",
     "/signup": "mt-[0px]",
