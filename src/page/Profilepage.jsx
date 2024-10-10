@@ -34,14 +34,14 @@ function Profile({ activeChat }) {
             <div className="flex relative flex-col p-[20px] pt-[140px] bg-[#ECF1F4] gap-[12px] w-full h-[945px] overflow-y-auto scrollable newfeed-responsive">
                 {/* Pass firstName and lastName to ProfileCover */}
                 <ProfileCover firstName={userName.firstName} lastName={userName.lastName} />
-                {isLoading && <div className="absolute top-[25rem] left-[20rem]"><PostLoadingSpinner/></div>}
+                {isLoading && <div className="absolute top-[25rem] left-[12rem]"><PostLoadingSpinner/></div>}
                 {isError && <div>Error loading profile data</div>}
                 {isSuccess && (
                     <>   
-                        <div className="flex flex-col gap-3">
+                        <div className=" ">
                             {
                                 posts.map((profilePost) => (
-                                    <ShowPost key={profilePost.id} post={profilePost} setPosts={setPosts} />
+                                    <ShowPost key={profilePost.id} activeChat={activeChat} post={profilePost} setPosts={setPosts} />
                                 ))
                             }
                         </div>

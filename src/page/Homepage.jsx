@@ -4,9 +4,14 @@ import { useState } from "react";
 import ChatBox from "./ChatBoxPage";
 import Profile from "./Profilepage";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import { selectProfileBox } from "../feature/profileSlice";
+import { useAppSelector } from "../hook/Hook";
+import ProfileEditBox from "../components/ProfileEditBox";
 function Homepage (){
 
     const [activeChat, setActiveChat] = useState(false);
+    const profileBox = useAppSelector(selectProfileBox);
+    console.log(profileBox)
 
     const columnHandle =()=>{
         if(activeChat === true){
@@ -16,7 +21,7 @@ function Homepage (){
     }
 
     return(
-        <section className={`grid ${activeChat ? "homepage_container" : " homepage_container_without_chat_room"}`}>
+        <section className={`grid ${activeChat ? "homepage_container" : " homepage_container_without_chat_room"} ${profileBox ? "dimmed" : ""}`}>
             <div>
             <Routes>
                     <Route index element={<NewFeed activeChat={activeChat} />} />
@@ -32,8 +37,13 @@ function Homepage (){
                      <ChatBox setActiveChat={setActiveChat}/>
                 </div>
             )
-
             }
+            {profileBox && (
+                <>
+                    <div className="home-cover"></div>
+                    <ProfileEditBox />
+                </>
+            )}
         </section>
     )
 }

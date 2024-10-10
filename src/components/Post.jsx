@@ -54,16 +54,12 @@ function Post({activeChat, setpostLoading}) {
     }
 
     const uploadImage = () => {
-        setIsButtonDisabled(false);
-        if (uploadRef.current){
-            if (!isEditing) {
-                uploadRef.current.value = "";  
-            }
-            uploadRef.current.click();  
-        }else{
-            console.log("ref is null")
+        if (uploadRef.current) {
+            uploadRef.current.click(); // Always trigger file input click
+        } else {
+            console.log("ref is null");
         }
-    }
+    };
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
@@ -71,7 +67,7 @@ function Post({activeChat, setpostLoading}) {
             console.log(file);
             setImageFile(file);
             setImage(file);
-            
+            setIsEditing(false);
         }
     }
 
@@ -250,16 +246,17 @@ function Post({activeChat, setpostLoading}) {
                                     {image ?
                                         (<div>
                                             <img src={URL.createObjectURL(image)} className='w-[500px] h-[300px]'/>
-                                            {/* <button  className='ml-2 text-red-500'>Delete</button>
-                                            <button onClick={ uploadImage} className='ml-2 text-blue-500'>Edit</button> */}
+                                            <button  className='ml-2 text-red-500'>Delete</button>
+                                            <button onClick={ uploadImage} className='ml-2 text-blue-500'>Edit</button>
                                         </div>) : 
                                         (<div className='flex gap-[10px]'>
                                             <i onClick={uploadImage}><GoImage size={25} className='text-[#0097A7]'/></i>
-                                            <input ref={uploadRef} type='file' className='hidden' onChange={handleImageUpload}/>
+                                            
                                             <i><PiGif size={25} className='text-[#0097A7]'/></i>
                                         </div>)
                                     
                                     }
+                                    <input ref={uploadRef} type='file' className='hidden' onChange={handleImageUpload}/>
                                     
                                 </div>
                             </div>
