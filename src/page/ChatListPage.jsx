@@ -13,6 +13,10 @@ function ChatList({ activeChat, columnHandle }) {
 
     useEffect(() => {
         dispatch(setChatList(data));
+        if (data.length > 0) {
+            const defaultChatId = data[0].id;  // Set the first chat as default
+            dispatch(setActiveChat(defaultChatId));
+        }
     }, [dispatch]);
 
     // Correct function invocation for click event
@@ -21,6 +25,7 @@ function ChatList({ activeChat, columnHandle }) {
         console.log(id)
     };
 
+    console.log(chatList);
     return (
         <section className="relative">
             <div className="relative">

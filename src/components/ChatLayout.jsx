@@ -10,22 +10,22 @@ function ChatLayout({activeChat, chat , activeChatRoomHandle}) {
     return (
         <section onClick={() => activeChatRoomHandle(chat.id)}>
            
-            <div className={activeChat ? "flex  items-start gap-[12px] px-[18px] py-[15px] bg-[#F8FCFD]" :"flex items-start gap-[12px] px-[26px] py-[15px] bg-[#F8FCFD]"}>
+            <div className="flex  items-start gap-[12px] px-[18px] py-[15px] bg-[#F8FCFD]">
                 <div className='flex items-center gap-[12px]'>
                         <div className="flex items-center justify-center w-[48px] h-[48px]">
                             <img src={emma} className='w-[48px] h-[48px]'/>
                         </div>
                         <div className='flex flex-col justify-center items-start'>
-                            <div className={activeChat ? 'flex items-center justify-between gap-[2px] w-[240px] ': 'flex items-center justify-between gap-[4px] w-[550px]'}>
+                            <div className='flex items-center justify-between gap-[2px] w-[240px] '>
                                 <div className='flex items-center gap-[5px]'>
-                                    <span className={activeChat ? 'text-[16px] font-bold leading-7' : 'text-[20px] font-bold leading-7'}>{chat.title}</span>
+                                    <span className='text-[16px] font-bold leading-7'>{chat.title}</span>
                                     <img src={badges} className='w-[20px] h-[20px]'></img>
                                 </div>
                                 <div>
                                     <span className='text-[14px] text-[#7E7E8D] font-normal leading-5'>12:00PM</span>
                                 </div>
                             </div>
-                            <div className={activeChat ?'flex items-start justify-between w-[220px]' : 'flex items-start justify-between w-[540px]'}>
+                            <div className='flex items-start justify-between w-[220px]'>
                                 <div className='text-[16px] font-normal leading-6 text-[#7E7E8D]'>
                                     <span>{chat.messages[lastMessage].content}</span>
                                 </div>

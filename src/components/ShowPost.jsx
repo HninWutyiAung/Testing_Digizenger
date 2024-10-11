@@ -75,15 +75,15 @@ function ShowPost({activeChat, post , setPosts}) {
             <div className="flex flex-col items-start justify-center rounded-[8px] bg-white ">
                 <div className="flex flex-col items-start gap-[16px]">
                     <div className="flex flex-col items-start gap-[12px] p-[10px] self-stretch">
-                        <div className={activeChat ? "flex justify-center items-center gap-[12px] self-stretch" : "flex justify-center items-center gap-[20px] self-stretch" }>
+                        <div className="flex justify-center items-center gap-[12px] self-stretch">
                             <div className='w-[48px] h-[48px]'>
                                 <img src={post.profileDto.profileImageUrl} className='rounded-[50px] w-[48px] h-[48px]'/>
                             </div>
                             <div className="flex flex-col items-start justify-center gap-[8px]">
                                 <div className="flex justify-between items-center self-stretch">
-                                    <div className={activeChat ? "flex items-center gap-[8px] w-[320px]" : "flex items-center gap-[8px] w-[500px]"}>
+                                    <div className="flex items-center gap-[8px] w-[320px]">
                                         <div className="flex gap-[2px] items-center">
-                                            <span className={`font-bold leading-7 text-[#2C3E50] ${activeChat ? 'text-[15px]': 'text-[18px]'}`}>{`${post.userDto.firstName} ${post.userDto.lastName}`}</span>
+                                            <span className="font-bold leading-7 text-[#2C3E50] text-[15px]">{`${post.userDto.firstName} ${post.userDto.lastName}`}</span>
                                             <img src={badges} className='w-[20px] h-[20px]'></img>
                                         </div>
                                         <div className='w-[4px] h-[4px]'>
@@ -103,14 +103,14 @@ function ShowPost({activeChat, post , setPosts}) {
                             </div>
                         </div>
                         <div>
-                            <div className={activeChat ? 'flex gap-[12px] self-stretch items-start' : 'flex gap-[20px] self-stretch items-start'}>
+                            <div className='flex gap-[12px] self-stretch items-start'>
                                     <div className='w-[48px]'></div>
 
-                                    <div className={activeChat ? 'w-[330px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-left text-ellipsis ' : 'w-[500px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-justify text-ellipsis '}>
+                                    <div className='w-[330px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-left text-ellipsis '>
                                           {showMore ? postText : postText.split(' ').slice(0, 20).join(' ') + '...'} 
                                           {wordLength>= 20 && (<button onClick={toggleShowMore} className='mr-[20px] text-black font-semibold ml-[5px]'>{showMore ? " show less" : "show more"}</button>)}
                                           {post.imageUrl ? (
-                                                <img src={post.imageUrl} className={activeChat ? 'h-[200px] w-[300px] rounded-md mt-[10px]' : 'h-[350px] w-[500px] rounded-md mt-[10px]'} />
+                                                <img src={post.imageUrl} className='h-[200px] w-[300px] rounded-md mt-[10px]'  />
                                             ) : (
                                                 " " 
                                            )}
@@ -120,11 +120,11 @@ function ShowPost({activeChat, post , setPosts}) {
 
                             </div>
                         </div>
-                        <div className={ activeChat ? 'flex items-start gap-[12px] self-stretch' : 'flex items-start gap-[20px] self-stretch'}>
+                        <div className='flex items-start gap-[12px] self-stretch'>
                             <div className='w-[48px] self-stretch'></div>
 
                             <div className='flex justify-between items-center flex-grow flex-shrink-0 basis-0 p-[2px]'>
-                                <div className={activeChat ? 'flex items-center gap-[4px]' : 'flex items-center gap-[10px]'}>
+                                <div className='flex items-center gap-[4px]'>
                                     <img src={heart} className='w-[16px] h-[16px]' onClick={heartHandle}/>
                                     <div className='text-[14px] font-medium leading-5 text-[#7E7E8D]'>
                                         {post.likeCount} other
@@ -137,7 +137,7 @@ function ShowPost({activeChat, post , setPosts}) {
                         </div>
                     </div>
 
-                    <div className={activeChat ? 'flex items-start gap-[14px] self-stretch mb-[10px]': 'flex items-start gap-[24px] self-stretch mb-[10px]'}>
+                    <div className='flex items-start gap-[14px] self-stretch mb-[10px]'>
 
                         <div className='w-[55px] self-stretch'></div>
 

@@ -141,14 +141,14 @@ function Post({activeChat, setpostLoading}) {
 
     return (
         <section ref={statusRef}>
-            <main className={activeChat ? "flex flex-col items-center gap-[14px] p-[20px] rounded-[8px] self-stretch bg-white" : "flex flex-col  gap-[14px] p-[20px] rounded-[8px] self-stretch bg-white"}>
+            <main className="flex flex-col items-center gap-[14px] p-[20px] rounded-[8px] self-stretch bg-white">
                 <div className="flex flex-col items-center bg-white">
 
-                    <div className={activeChat? "flex flex-col gap-[10px] items-start  self-stretch" : "flex flex-col gap-[20px] items-start  self-stretch"}>
+                    <div className="flex flex-col gap-[10px] items-start  self-stretch">
                         
                         <div className="flex items-start justify-between">
 
-                            <div className={activeChat ? "flex gap-[8px] w-[320px]" : "flex w-[520px] gap-[15px]"}>
+                            <div className="flex gap-[8px] w-[320px]">
 
                                 <div className="w-[38px] h-[38px]">
                                     <img src={john} alt="John" />
@@ -186,7 +186,7 @@ function Post({activeChat, setpostLoading}) {
                         <div className='flex flex-col gap-1 items-start'>
 
                             <div className='flex gap-[12px]'>
-                                <div className={activeChat ? 'w-[32px] h-[14px]' : 'w-[40px] h-[14px]'}></div>
+                                <div className='w-[32px] h-[14px]'></div>
 
                                 <div className='flex gap-[4px] items-center pointer' onClick={handlePostStatus}>
                                     {getAudienceIcon(selectedAudience)}
@@ -221,7 +221,7 @@ function Post({activeChat, setpostLoading}) {
 
                             <div className='flex gap-[12px] items-center'>
 
-                                <div className={activeChat ? 'w-[32px] h-[14px]' : 'w-[40px] h-[14px]'}></div>
+                                <div className='w-[32px] h-[14px]'></div>
 
                                 <div className='flex gap-[10px]'>
                                     <span className='text-[13px] font-normal leading-5'>Trending Now</span>
@@ -241,7 +241,7 @@ function Post({activeChat, setpostLoading}) {
                                 <div className='w-[40px] h-[14px]'></div>
 
                                 <div className='flex flex-col gap-[5px]'>
-                                    <div className={activeChat ? "w-[330px] h-[1px] bg-[#ECF1F4]" :"w-[450px] h-[1px] bg-[#ECF1F4]"}></div>
+                                    <div className="w-[330px] h-[1px] bg-[#ECF1F4]"></div>
 
                                     {image ?
                                         (<div>

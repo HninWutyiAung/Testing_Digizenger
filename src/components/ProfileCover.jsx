@@ -29,7 +29,7 @@ function ProfileCover (){
     }
 
     return(
-        <section className=" flex flex-col pb-6 items-center self-stretch rounded-lg border border-solid border-[#C9DCDE] bg-red-100 ">
+        <section className=" flex flex-col pb-6 items-center self-stretch rounded-lg border border-solid border-[#C9DCDE] bg-white">
                     {/* Cover Image & Profile Image */}
                     <div className="h-60 relative">
                         {/* Cover Image */}

@@ -7,10 +7,12 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import { selectProfileBox } from "../feature/profileSlice";
 import { useAppSelector } from "../hook/Hook";
 import ProfileEditBox from "../components/ProfileEditBox";
+import { selectActiveChatRoom} from "../feature/chatSlice";
 function Homepage (){
 
-    const [activeChat, setActiveChat] = useState(false);
+    const [activeChat, setActiveChat] = useState(true);
     const profileBox = useAppSelector(selectProfileBox);
+    const activeChatRoom = useAppSelector(selectActiveChatRoom);
     console.log(profileBox)
 
     const columnHandle =()=>{
@@ -21,7 +23,7 @@ function Homepage (){
     }
 
     return(
-        <section className={`grid ${activeChat ? "homepage_container" : " homepage_container_without_chat_room"} ${profileBox ? "dimmed" : ""}`}>
+        <section className="homepage_container">
             <div>
             <Routes>
                     <Route index element={<NewFeed activeChat={activeChat} />} />
@@ -32,12 +34,11 @@ function Homepage (){
             <div >
                 <ChatList activeChat={activeChat} columnHandle={columnHandle} className="relative"/>
             </div>
-            {activeChat &&(
+            {activeChatRoom && (
                 <div>
-                     <ChatBox setActiveChat={setActiveChat}/>
+                    <ChatBox activeChatRoom={activeChatRoom} />
                 </div>
-            )
-            }
+            )}
             {profileBox && (
                 <>
                     <div className="home-cover"></div>

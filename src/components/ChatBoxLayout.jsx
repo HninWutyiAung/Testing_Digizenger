@@ -24,11 +24,15 @@ function ChatBoxLayout () {
     const message = chatList.find((msg) => msg.id === activeChatRoom);
     const generateUniqueId = () => '_' + Math.random().toString(36).substr(2, 9); 
 
+    console.log(activeChatRoom);
+    console.log(chatList);
     useEffect(()=>{
         if(lastMessage.current){
             lastMessage.current.scrollIntoView({behavior: "smooth"})
         }
     },[message.messages])
+
+
 
     const sendMessage = (e) => {
         e.preventDefault(); 
