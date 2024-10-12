@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { BASE_URL, PROFILE_IMAGE_ENDPOINT, USERNAME_ENDPOINT, GET_PROFILE_ENDPOINT } from './apiConfig'; // Import from apiConfig.js
 
 export const profileApiSlice = createApi({
   reducerPath: 'profileApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://digizenger.org/api/v1',
+    baseUrl: BASE_URL,  // Use imported base URL
     prepareHeaders: (headers) => {
       const usertoken = localStorage.getItem('user');
       if (usertoken) {
@@ -12,35 +13,32 @@ export const profileApiSlice = createApi({
         console.log(token.token);
       }
       return headers;
-      
     },
   }),
   endpoints: (builder) => ({
     uploadProfileImage: builder.mutation({
-        query:(formData) =>({
-            url: '/profile/p-image',
-            method:'POST',
-            body: formData,
-        })
+      query: (formData) => ({
+        url: PROFILE_IMAGE_ENDPOINT, // Use imported endpoint
+        method: 'POST',
+        body: formData,
+      }),
     }),
 
     uploadUsername: builder.mutation({
-      query: (username) =>({
-        url: 'profile/username',
+      query: (username) => ({
+        url: USERNAME_ENDPOINT, // Use imported endpoint
         method: 'POST',
         body: username,
-      })
+      }),
     }),
-    
+
     getProfile: builder.query({
-      query:()=>({
-        url: '/profile/',
-        method: 'get'
-      })
-    })
-
-  })
-
+      query: () => ({
+        url: GET_PROFILE_ENDPOINT, // Use imported endpoint
+        method: 'GET',
+      }),
+    }),
+  }),
 });
 
-export const { useUploadProfileImageMutation ,useGetProfileQuery } = profileApiSlice;
+export const { useUploadProfileImageMutation, useGetProfileQuery } = profileApiSlice;

@@ -118,13 +118,12 @@ function ProfileEditBox() {
                 <Modal isOpen={showCropper} onRequestClose={() => setShowCropper(false)} contentLabel="Crop Image" className="modal-content" overlayClassName="modal-overlay"
                 style={{
                     content: {
-                        width: '38rem', // Set the modal width to match the profile photo width
-                        height: '425px', // Set the desired height
-                        margin: 'auto', // Center the modal in the viewport
-                        padding: '0', // Remove padding to allow full usage of space
-                        borderRadius: '10px', // Rounded corners
-                        border: 'none', // No border
-                        background: '#ECF1F4' // Background color for the modal
+                        width: '38rem', 
+                        height: '425px', 
+                        margin: 'auto', 
+                        padding: '0', 
+                        borderRadius: '10px',
+                        border: 'none', 
                     }
                 }}
                 >
@@ -146,20 +145,24 @@ function ProfileEditBox() {
                             onCropComplete={onCropComplete}
                         />
                     </div>
+                    <div className='flex justify-between ml-[10px] mr-[10px]'>
+                        <div className='flex flex-col gap-[5px]'>
+                            <div className='mt-2 flex flex-col gap-[10px]'>
+                                <label className='text-[14px] font-normal leading-5 text-[#2C3E50]'>Rotate</label>
+                                <input type="range" min="0" max="360" step="1" value={rotation} onChange={onRotationChange} className='w-[250px] h-[1px] bg-[#8C8CA1]'/>
+                            </div>
 
-                    <div className='mt-2 flex flex-col'>
-                        <label>Rotate</label>
-                        <input type="range" min="0" max="360" step="1" value={rotation} onChange={onRotationChange} className='w-[300px]'/>
-                    </div>
+                            <div className='mt-2 flex flex-col gap-[10px]'>
+                                <label className='text-[14px] font-normal leading-5 text-[#2C3E50]'>Zoom</label>
+                                <input type="range" min="1" max="3" step="0.1" value={zoom} onChange={(e) => setZoom(e.target.value)} className='w-[250px] h-[1px] bg-[#8C8CA1]'/>
+                            </div>
+                        </div>
 
-                    <div className='mt-2 flex flex-col'>
-                        <label>Zoom</label>
-                        <input type="range" min="1" max="3" step="0.1" value={zoom} onChange={(e) => setZoom(e.target.value)} className='w-[300px]'/>
-                    </div>
+                        <div className="modal-actions mt-4 flex self-end justify-between gap-[10px]">
+                            <button onClick={() => setShowCropper(false)} className="p-2 bg-[#ECF1F4] rounded-md w-[120px]">Cancel</button>
+                            <button onClick={onCropSave} className="p-2 bg-[#0097A7] text-white rounded-md w-[120px]">Save</button>
+                        </div>
 
-                    <div className="modal-actions mt-4 flex justify-between">
-                        <button onClick={() => setShowCropper(false)}>Cancel</button>
-                        <button onClick={onCropSave}>Save</button>
                     </div>
                 </Modal>
             )}
