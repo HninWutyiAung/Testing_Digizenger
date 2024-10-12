@@ -60,8 +60,7 @@ function ProfileEditBox() {
                 const reader = new FileReader();
                 reader.onload = () => {
                     setImageSrc(reader.result);
-                    // Optionally, show the cropper after uploading
-                    setCroppedImage(null); // Reset cropped image
+                    setCroppedImage(null); 
                 };
                 reader.readAsDataURL(file);
             }
@@ -133,22 +132,24 @@ function ProfileEditBox() {
                             <IoCloseOutline />
                         </button>
                     </div>
-                    <div className="crop-container" style={{ position: 'relative', width: '100%', height: '250px'}}>
+                    <div className="crop-container" style={{ position: 'relative', width: '100%', height: '250px' , borderRadius:"100%"}}>
                         <Cropper
                             image={imageSrc}
                             crop={crop}
                             zoom={zoom}
-                            rotation={rotation} // Pass rotation to the Cropper
+                            rotation={rotation}
                             aspect={1}
+                            cropShape="round" 
                             onCropChange={setCrop}
                             onZoomChange={setZoom}
                             onCropComplete={onCropComplete}
                         />
                     </div>
+
                     <div className='flex justify-between ml-[10px] mr-[10px]'>
                         <div className='flex flex-col gap-[5px]'>
                             <div className='mt-2 flex flex-col gap-[10px]'>
-                                <label className='text-[14px] font-normal leading-5 text-[#2C3E50]'>Rotate</label>
+                                <label className='text-[14px] font-normal leading-5 text-[#2C3E50]'>Straighten</label>
                                 <input type="range" min="0" max="360" step="1" value={rotation} onChange={onRotationChange} className='w-[250px] h-[1px] bg-[#8C8CA1]'/>
                             </div>
 
