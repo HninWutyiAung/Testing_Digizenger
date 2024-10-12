@@ -6,7 +6,7 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 
 function ChatBoxUserStatusNav({message}){
     return(
-        <section className='absolute top-[3.2rem] px-[10px] bg-[#ECF1F4] w-[30.4%] z-20 chat-box-nav2-responsive'>
+        <section className='absolute top-[3.2rem] px-[10px] py-[8px] bg-[#ECF1F4] w-[30.4%] z-20 chat-box-nav2-responsive'>
             <div className="flex justify-between items-center bg-[#ECF1F4]">
                <div className="flex items-center gap-[12px]">
                     <img src={andrea} className='w-[40px] h-[40px] rounded-[50%]'/>

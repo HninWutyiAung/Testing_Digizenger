@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../hook/Hook.ts';
 import ChatListNav2 from "../components/ChatListNav2.jsx";
 import ChatListBottomNav from "../components/ChatListBottomNav.jsx";
 
-function ChatList({ activeChat, columnHandle }) {
+function ChatList({ activeChat, columnHandle, profileBox }) {
     const dispatch = useAppDispatch();
     const chatList = useAppSelector(selectChatList);
 
@@ -30,7 +30,7 @@ function ChatList({ activeChat, columnHandle }) {
         <section className="relative">
             <div className="relative">
                 <ChatListNav />
-                <ChatListNav2 activeChat={activeChat} />
+                <ChatListNav2 activeChat={activeChat} profileBox={profileBox}/>
                 <ChatListBottomNav/>
                 <div className="h-[945px] overflow-y-auto scrollable pt-[110px] chat-list-responsive">
                     <div onClick={columnHandle}>

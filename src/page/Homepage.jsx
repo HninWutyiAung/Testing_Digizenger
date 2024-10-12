@@ -32,7 +32,7 @@ function Homepage (){
             </Routes>
             </div>
             <div >
-                <ChatList activeChat={activeChat} columnHandle={columnHandle} className="relative"/>
+                <ChatList activeChat={activeChat} columnHandle={columnHandle} profileBox={profileBox} className="relative"/>
             </div>
             {activeChatRoom && (
                 <div>

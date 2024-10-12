@@ -1,15 +1,15 @@
 import edit from '/images/edit.png';
 import { useState } from 'react';
 
-function ChatListNav2({ activeChat }) {
+function ChatListNav2({ activeChat, profileBox}) {
     const [activeButton, setActiveButton] = useState("all");
     
     const buttonHandle = (value) => {
         setActiveButton(value);
     };
-
+    console.log(profileBox);
     return (
-        <section className="flex items-center justify-between px-[10px] py-[20px] bg-[#F8FCFD] absolute mt-[50.1px] w-[100%] border-b border-[#ECF1F4]">
+        <section className={`flex items-center justify-between px-[10px] py-[20px]  absolute mt-[50.1px] w-[100%] border-b border-[#ECF1F4] ${profileBox ? "bg-white !important" : "bg-[#F8FCFD]"}`}>
             <ul className="flex flex-row flex-wrap justify-start ">
                 {["all", "read", "unread", "archived", "group", "family"].map((item) => (
                     <li 
