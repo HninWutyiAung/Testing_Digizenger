@@ -1,7 +1,7 @@
 import './App.css'
 import './Home.css'
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation , Navigate } from "react-router-dom";
 import Nav from './components/Nav';
 import Login from './components/Login';
 // import SignUp from './components/SignUp';
@@ -12,7 +12,7 @@ import Homepage from './page/Homepage';
 import { store } from './feature/store';
 import { Provider } from 'react-redux';
 import ApiFetchExample  from './ApiFetch';
-import { setLoginUserToken} from './feature/loginToken';
+import { setLoginUserToken , selectIsLogged} from './feature/loginToken';
 import { setRegisterInfo } from './feature/authSlice';
 import { useAppSelector, useAppDispatch } from './hook/Hook';
 
@@ -20,7 +20,7 @@ function MainApp() {
   const location = useLocation();
   const hideNav = ["/home", "/home/newfeed" , "/home/profile"];
   const dispatch = useAppDispatch();
-  // const isLoggedIn = useAppSelector(selectIsLoggedIn);
+  const isLoggedIn = useAppSelector(selectIsLogged);
 
   const userToken = JSON.parse(localStorage.getItem("user") || "{}")
 
@@ -34,14 +34,15 @@ function MainApp() {
     "/signup/verify": "mt-[0px]",
     "/signup/verify/requestIdentity": "mt-[20px]"
   };
-
+ 
+  console.log(isLoggedIn)
   return (
     <div className={`${pageSpecificMargin[location.pathname] || 'mt-[0]'}`}>
       {!hideNav.includes(location.pathname) && <Nav />}
       <Routes>
-        <Route path='home/*' element={<Homepage />} >
+        <Route path='home/*' element={isLoggedIn ? <Homepage /> : <Navigate to="/"/>} >
         </Route>
-        <Route path='/' element={<Login />} />
+        <Route path="/" element={isLoggedIn ? <Navigate to="/home" replace /> : <Login />} />
         <Route path='/signup' element={<SignInfo />} />
         <Route path='/signup/verify' element={<VerifyEmail />} />
         <Route path='/signup/verify/requestIdentity' element={<RequestIdentity />} />

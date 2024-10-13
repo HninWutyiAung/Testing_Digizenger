@@ -4,7 +4,7 @@ import { BASE_URL, PROFILE_IMAGE_ENDPOINT, USERNAME_ENDPOINT, GET_PROFILE_ENDPOI
 export const profileApiSlice = createApi({
   reducerPath: 'profileApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL,  // Use imported base URL
+    baseUrl: BASE_URL, 
     prepareHeaders: (headers) => {
       const usertoken = localStorage.getItem('user');
       if (usertoken) {
