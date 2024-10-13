@@ -18,7 +18,7 @@ export const profileApiSlice = createApi({
   endpoints: (builder) => ({
     uploadProfileImage: builder.mutation({
       query: (formData) => ({
-        url: PROFILE_IMAGE_ENDPOINT, // Use imported endpoint
+        url: PROFILE_IMAGE_ENDPOINT,
         method: 'POST',
         body: formData,
       }),
@@ -26,7 +26,7 @@ export const profileApiSlice = createApi({
 
     uploadUsername: builder.mutation({
       query: (username) => ({
-        url: USERNAME_ENDPOINT, // Use imported endpoint
+        url: USERNAME_ENDPOINT,
         method: 'POST',
         body: username,
       }),
@@ -34,7 +34,7 @@ export const profileApiSlice = createApi({
 
     getProfile: builder.query({
       query: () => ({
-        url: GET_PROFILE_ENDPOINT, // Use imported endpoint
+        url: GET_PROFILE_ENDPOINT, 
         method: 'GET',
       }),
     }),

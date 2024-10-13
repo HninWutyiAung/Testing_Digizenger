@@ -13,7 +13,6 @@ export default function getCroppedImg(imageSrc, croppedAreaPixels, rotation = 0)
             ctx.rotate((rotation * Math.PI) / 180);
             ctx.translate(-croppedAreaPixels.width / 2, -croppedAreaPixels.height / 2);
 
-            // Draw the image cropped
             ctx.drawImage(
                 image,
                 croppedAreaPixels.x,

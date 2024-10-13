@@ -9,20 +9,22 @@ import { IoCloseOutline } from "react-icons/io5";
 import React, { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
 import Modal from 'react-modal';
-import getCroppedImg from './cropImage'; // Ensure this utility is available for cropping logic
+import getCroppedImg from './cropImage'; 
 
-Modal.setAppElement('#root'); // Accessibility for modal
+Modal.setAppElement('#root'); 
 
 function ProfileEditBox() {
     const profileBox = useAppSelector(selectProfileBox);
     const dispatch = useAppDispatch();
-    const [imageSrc, setImageSrc] = useState(john); // Image source
+    const [imageSrc, setImageSrc] = useState(); // Image source
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
     const [rotation, setRotation] = useState(0);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-    const [croppedImage, setCroppedImage] = useState(null);
+    const [croppedImage, setCroppedImage] = useState(john);
     const [showCropper, setShowCropper] = useState(false);
+    const [previewActive, setPreviewActive] = useState(false);
+    const [lastCroppedImage, setLastCroppedImage] = useState(john);
 
     const closeProfilebox = () => {
         dispatch(setProfileBox(!profileBox));
@@ -32,12 +34,17 @@ function ProfileEditBox() {
         setCroppedAreaPixels(croppedAreaPixels);
     }, []);
 
+    const previewHandleCancel = () =>{
+        setPreviewActive(false);
+        setShowCropper(false);
+        setImageSrc(croppedImage); 
+    }
     const onCropSave = async () => {
         if (croppedAreaPixels) {
             try {
                 const croppedImageDataUrl = await getCroppedImg(imageSrc, croppedAreaPixels, rotation); // Get the cropped image
-                setCroppedImage(croppedImageDataUrl); // Set the cropped image state
-                setShowCropper(false); // Close the cropper modal
+                setCroppedImage(croppedImageDataUrl); 
+                setShowCropper(false); 
             } catch (error) {
                 console.error("Error cropping image:", error);
             }
@@ -63,6 +70,7 @@ function ProfileEditBox() {
                     setCroppedImage(null); 
                 };
                 reader.readAsDataURL(file);
+                setPreviewActive(true);
             }
         };
         fileInput.click();
@@ -85,7 +93,7 @@ function ProfileEditBox() {
 
                     <div className='flex flex-col items-center justify-center gap-[10px] w-[350px]'>
                         <img 
-                            src={croppedImage || imageSrc} // Show cropped image or original based on state
+                            src={croppedImage || imageSrc} 
                             className='w-[150px] h-[150px] border-[2px] border-[#D9D9D9] rounded-full' 
                             alt="Profile Preview"
                         />
@@ -101,14 +109,23 @@ function ProfileEditBox() {
                             <i className='text-[#2C3E50]'><MdEdit size={20} /></i>
                             <div className='text-[14px] text-[#2C3E50]'>Edit</div>
                         </div>
-                        <div className='flex flex-col items-center gap-[4px] border-r-[1px] border-[#ECF1F4] px-[50px] py-[13px]' onClick={handleUploadNewPhoto}>
+                        <div className={`flex flex-col items-center gap-[4px] border-r-[1px] border-[#ECF1F4] ${previewActive ? "px-[10px]":"px-[50px]"}  py-[13px]`} onClick={handleUploadNewPhoto}>
                             <i className='text-[#2C3E50]'><FaCamera size={20} /></i>
                             <div className='text-[14px] text-[#2C3E50]'>Upload New Photo</div>
                         </div>
-                        <div className='flex flex-col items-center gap-[4px] border-[#ECF1F4] px-[50px] py-[13px]'>
-                            <i className='text-[#2C3E50]'><RiDeleteBin6Fill size={20} /></i>
-                            <div className='text-[14px] text-[#2C3E50]'>Delete</div>
-                        </div>
+                       
+                            {previewActive ?  ( 
+                                <div className="flex text-center justify-between gap-[10px] ml-[15px]">
+                                    <button onClick={previewHandleCancel} className="p-2 bg-[#ECF1F4] rounded-md w-[120px]">Cancel</button>
+                                    <button onClick={onCropSave} className="p-2 bg-[#0097A7] text-white rounded-md w-[120px]">Save</button>
+                                </div>) :
+                                (<div className='flex flex-col items-center gap-[4px] border-[#ECF1F4] px-[50px] py-[13px]'>
+                                    <i className='text-[#2C3E50]'><RiDeleteBin6Fill size={20} /></i>
+                                    <div className='text-[14px] text-[#2C3E50]'>Delete</div>
+                                </div>
+                                )
+                            }
+
                     </div>
                 </div>
             </div>
