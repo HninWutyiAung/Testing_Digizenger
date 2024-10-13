@@ -3,13 +3,15 @@ import { RootState } from "./store";
 
 interface ProfileDetail{
     username : string;
-    profileImage : string | null;
+    profileUploadImage : string | null;
+    profilePreviewImage : string | null;
     profileBox : boolean;
 }
 
 const initialState : ProfileDetail ={
     username: " ",
-    profileImage: null,
+    profileUploadImage: null,
+    profilePreviewImage : null,
     profileBox: false,
 
 }
@@ -20,22 +22,26 @@ const profileSlice = createSlice({
     reducers:{
         setProfile: (state, action: PayloadAction<ProfileDetail>) => {
             state.username = action.payload.username;
-            state.profileImage = action.payload.profileImage;
+            state.profileUploadImage = action.payload.profileUploadImage;
           },
           updateUsername: (state, action: PayloadAction<string>) => {
             state.username = action.payload;
           },
           uploadProfileImage: (state, action: PayloadAction<string | null>) => {
-            state.profileImage = action.payload;
+            state.profileUploadImage = action.payload;
           },
           setProfileBox:(state, action: PayloadAction<boolean>) =>{
             state.profileBox = action.payload;
-          }
+          },
+          setProfilePreivewImage: (state, action: PayloadAction<string | null>) => {
+            state.profilePreviewImage = action.payload;
+          },
     }
 })
 
-export const {setProfile,updateUsername,uploadProfileImage , setProfileBox} = profileSlice.actions;
+export const {setProfile,updateUsername,uploadProfileImage , setProfileBox , setProfilePreivewImage} = profileSlice.actions;
 export default profileSlice.reducer;
 export const selectUsername = (state:RootState) => state.profileData.username;
-export const selectProfileImg = (state:RootState) => state.profileData.profileImage;
+export const selectProfileImg = (state:RootState) => state.profileData.profileUploadImage;
 export const selectProfileBox = (state: RootState) => state.profileData.profileBox;
+export const selectProfilePreview = (state: RootState) => state.profileData.profilePreviewImage;

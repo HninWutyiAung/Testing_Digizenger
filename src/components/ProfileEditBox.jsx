@@ -10,13 +10,14 @@ import React, { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
 import Modal from 'react-modal';
 import getCroppedImg from './cropImage'; 
+import { setProfilePreivewImage , selectProfilePreview} from '../feature/profileSlice';
 
 Modal.setAppElement('#root'); 
 
 function ProfileEditBox() {
+    const imageSrc = useAppSelector(selectProfilePreview);
     const profileBox = useAppSelector(selectProfileBox);
     const dispatch = useAppDispatch();
-    const [imageSrc, setImageSrc] = useState(); // Image source
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
     const [rotation, setRotation] = useState(0);
@@ -37,14 +38,16 @@ function ProfileEditBox() {
     const previewHandleCancel = () =>{
         setPreviewActive(false);
         setShowCropper(false);
-        setImageSrc(croppedImage); 
+        setCroppedImage(lastCroppedImage);
+        dispatch(setProfilePreivewImage(lastCroppedImage))  
     }
+
     const onCropSave = async () => {
         if (croppedAreaPixels) {
             try {
                 const croppedImageDataUrl = await getCroppedImg(imageSrc, croppedAreaPixels, rotation); // Get the cropped image
                 setCroppedImage(croppedImageDataUrl); 
-                setShowCropper(false); 
+                setShowCropper(false);
             } catch (error) {
                 console.error("Error cropping image:", error);
             }
@@ -66,7 +69,7 @@ function ProfileEditBox() {
             if (file) {
                 const reader = new FileReader();
                 reader.onload = () => {
-                    setImageSrc(reader.result);
+                    dispatch(setProfilePreivewImage(reader.result))
                     setCroppedImage(null); 
                 };
                 reader.readAsDataURL(file);
