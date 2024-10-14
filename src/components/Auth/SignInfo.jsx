@@ -4,10 +4,10 @@ import { IoIosCheckmark } from "react-icons/io";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useRegisterUserMutation } from "../api/Auth";
-import { useAppDispatch, useAppSelector } from '../hook/Hook.ts';
-import { setEmailOrPhone , setRegisterInfo, selectEmail ,selectLastName, selectFirstName} from "../feature/authSlice.ts";
-import LoadingSpinner from "./LoadingSpinner.jsx";
+import { useRegisterUserMutation } from "../../apiService/Auth.ts";
+import { useAppDispatch, useAppSelector } from '../../hook/Hook.ts';
+import { setEmailOrPhone , setRegisterInfo, selectEmail ,selectLastName, selectFirstName} from "../../feature/authSlice.ts";
+import LoadingSpinner from "../LoadingSpinner.jsx";
 
 const initialState ={
     firstName: '',

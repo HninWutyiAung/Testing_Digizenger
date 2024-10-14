@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link,useNavigate} from "react-router-dom";
-import { useVerifyEmailOrPhoneMutation } from "../api/Auth";
-import { useAppSelector } from "../hook/Hook";
-import { selectEmail } from "../feature/authSlice";
+import { useVerifyEmailOrPhoneMutation } from "../../apiService/Auth";
+import { useAppSelector } from "../../hook/Hook";
+import { selectEmail } from "../../feature/authSlice";
 
 function VerifyEmail (){
 

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import ProfileCover from "../components/ProfileCover";
-import NewFeedNav from "../components/NewFeedNav";
-import MenuNav from "../components/MenuNav2";
-import ShowPost from "../components/ShowPost";
-import { useGetProfileQuery } from "../api/Profile";
+import ProfileCover from "../components/Profile/ProfileCover";
+import NewFeedNav from "../components/NewFeed Nav/NewFeedNav";
+import MenuNav from "../components/NewFeed Nav/MenuNav2";
+import ShowPost from "../components/Post/AllPostForNewfeed/ShowPost";
+import { useGetProfileQuery } from "../apiService/Profile";
 import PostLoadingSpinner from "../components/LoadingSpinner";
 import { useAppDispatch } from "../hook/Hook";
 import { setRegisterInfo } from "../feature/authSlice";

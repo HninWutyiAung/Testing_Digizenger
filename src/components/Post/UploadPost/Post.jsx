@@ -5,11 +5,11 @@ import mark from '/images/mark.jpg';
 import publicIcon from '/images/public.png';
 import { GoImage } from "react-icons/go";
 import { PiGif } from "react-icons/pi";
-import { useUploadPostMutation } from '../api/Post';
+import { useUploadPostMutation } from '../../../apiService/Post';
 import { FaUsers, FaHome, FaUserFriends } from "react-icons/fa";
-import { addPost, setCurrentPost } from '../feature/postSlice';
-import { useAppDispatch, useAppSelector } from '../hook/Hook';
-import { selectFirstName, selectLastName } from '../feature/authSlice';
+import { addPost, setCurrentPost } from '../../../feature/postSlice';
+import { useAppDispatch, useAppSelector } from '../../../hook/Hook';
+import { selectFirstName, selectLastName } from '../../../feature/authSlice';
 
 
 

@@ -6,10 +6,10 @@ import { FaCamera } from "react-icons/fa6";
 import { PiPresentationChartFill } from "react-icons/pi";
 import { PiMegaphoneSimpleFill } from "react-icons/pi";
 import { PiPencilSimpleFill } from "react-icons/pi";
-import { useUploadProfileImageMutation} from '../api/Profile';
-import { selectFirstName, selectLastName } from '../feature/authSlice';
-import { useAppSelector , useAppDispatch} from '../hook/Hook';
-import { setProfileBox } from '../feature/profileSlice';
+import { useUploadProfileImageMutation} from '../../apiService/Profile';
+import { selectFirstName, selectLastName } from '../../feature/authSlice';
+import { useAppSelector , useAppDispatch} from '../../hook/Hook';
+import { setProfileBox } from '../../feature/profileSlice';
  
 function ProfileCover (){
     const coverRef = useRef();

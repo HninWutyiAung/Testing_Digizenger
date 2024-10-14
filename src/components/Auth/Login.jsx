@@ -5,11 +5,11 @@ import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
-import { useLoginUserMutation } from "../api/Auth";
+import { useLoginUserMutation } from "../../apiService/Auth";
 import { useNavigate } from "react-router-dom";
-import { selectToken, setLoginUserToken } from "../feature/loginToken";
-import { useAppDispatch, useAppSelector } from "../hook/Hook";
-import LoadingSpinner from "./LoadingSpinner";
+import { selectToken, setLoginUserToken } from "../../feature/loginToken";
+import { useAppDispatch, useAppSelector } from "../../hook/Hook";
+import LoadingSpinner from "../LoadingSpinner";
 
 
 function Login() {

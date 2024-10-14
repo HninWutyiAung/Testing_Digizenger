@@ -1,20 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { authApi } from "../api/Auth";
-import chatReducer from './chatSlice.ts'
+import { authApi } from "../apiService/Auth.ts";
+import chatReducer from './chatSlice.ts';
 import registerInfoReducer from './authSlice.ts';
 import uploadPostReducer from './postSlice.ts';
-import { postUploadSlice } from '../api/Post.ts';
+import { postUploadSlice } from '../apiService/Post.ts';
 import loginUserTokenReducer from './loginToken.ts';
-import { profileApiSlice} from "../api/Profile.ts";
+import { profileApiSlice} from "../apiService/Profile.ts";
 import profileDataReducer from './profileSlice.ts';
 
 export const store = configureStore({
     reducer:{
         chat: chatReducer,
         loginUserToken: loginUserTokenReducer,
-        registerInfo: registerInfoReducer,
         uploadPost : uploadPostReducer,
+        registerInfo: registerInfoReducer,
         profileData : profileDataReducer,
         [authApi.reducerPath] : authApi.reducer,
         [postUploadSlice.reducerPath]: postUploadSlice.reducer,

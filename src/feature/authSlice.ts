@@ -40,3 +40,4 @@ export const selectEmail = (state: RootState) => state.registerInfo.email;
 export const selectPhone = (state: RootState) => state.registerInfo.phone;
 export const selectFirstName = (state: RootState) => state.registerInfo.firstName;  
 export const selectLastName = (state: RootState) => state.registerInfo.lastName;
+

@@ -1,5 +1,5 @@
-import { useAppDispatch, useAppSelector } from "../hook/Hook";
-import { selectActiveChatRoom, selectChatList , addMessageToChat } from "../feature/chatSlice";
+import { useAppDispatch, useAppSelector } from "../../hook/Hook";
+import { selectActiveChatRoom, selectChatList , addMessageToChat } from "../../feature/chatSlice";
 import andrea from '/images/andrea.png';
 import { PiChatTeardropFill } from "react-icons/pi";
 import { VscTriangleUp } from "react-icons/vsc";

@@ -6,7 +6,7 @@ import Profile from "./Profilepage";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { selectProfileBox } from "../feature/profileSlice";
 import { useAppSelector } from "../hook/Hook";
-import ProfileEditBox from "../components/ProfileEditBox";
+import ProfileEditBox from "../components/Profile/ProfileEditBox";
 import { selectActiveChatRoom} from "../feature/chatSlice";
 function Homepage (){
 

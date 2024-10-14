@@ -9,10 +9,10 @@ import heart1 from '/images/heart1.png';
 import { useState  } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { EffectFlip } from 'swiper/modules';
-import { useSetLikeOrUnlikeMutation } from '../api/Post';
+import { useSetLikeOrUnlikeMutation } from '../../../apiService/Post.ts';
 
 
-function ShowPost({activeChat, post , setPosts}) {
+function PostLoading({activeChat, post , setPosts}) {
     const [clickHeart, setClickHeart] =useState(post.liked);
     const [showMore, setShowMore] = useState(false);
     const [count, setCount] = useState(0);
@@ -20,8 +20,6 @@ function ShowPost({activeChat, post , setPosts}) {
 
     const postText = post.description;
     const wordLength =post.description.split(" ");
-    
-    const timeAgo = formatDistanceToNow(new Date(post.createdDate), { addSuffix: true });
 
     const heartHandle = async () => {
 
@@ -77,19 +75,19 @@ function ShowPost({activeChat, post , setPosts}) {
                     <div className="flex flex-col items-start gap-[12px] p-[10px] self-stretch">
                         <div className="flex justify-center items-center gap-[12px] self-stretch">
                             <div className='w-[48px] h-[48px]'>
-                                <img src={post.profileDto.profileImageUrl} className='rounded-[50px] w-[48px] h-[48px]'/>
+                                <img src={andrea} className='rounded-[50px] w-[48px] h-[48px]'/>
                             </div>
                             <div className="flex flex-col items-start justify-center gap-[8px]">
                                 <div className="flex justify-between items-center self-stretch">
                                     <div className="flex items-center gap-[8px] w-[320px]">
                                         <div className="flex gap-[2px] items-center">
-                                            <span className="font-bold leading-7 text-[#2C3E50] text-[15px]">{`${post.userDto.firstName} ${post.userDto.lastName}`}</span>
+                                            <span className="font-bold leading-7 text-[#2C3E50] text-[15px]">Hnin wutyi aung</span>
                                             <img src={badges} className='w-[20px] h-[20px]'></img>
                                         </div>
                                         <div className='w-[4px] h-[4px]'>
                                             <img src={dot}></img>
                                         </div>
-                                        <div>{timeAgo}</div>
+                                        <div>Just Now</div>
                                     </div>
                                     <div>
                                         <img src={dotthree}/>
@@ -98,7 +96,7 @@ function ShowPost({activeChat, post , setPosts}) {
                                 <div className='flex items-center gap-[8px] self-stretch'>
                                     <div className='text-[14px] font-normal leading-5 text-[#7E7E8D]'>Verified User</div>
                                     <img src={dot} className='w-[4px] h-[4px]'></img>
-                                    <div className='text-[14px] font-normal leading-5 text-[#7E7E8D]'>{post.userDto.followers} Followers</div>
+                                    <div className='text-[14px] font-normal leading-5 text-[#7E7E8D]'>12 Followers</div>
                                 </div>
                             </div>
                         </div>
@@ -109,8 +107,8 @@ function ShowPost({activeChat, post , setPosts}) {
                                     <div className='w-[330px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-left text-ellipsis '>
                                           {showMore ? postText : postText.split(' ').slice(0, 20).join(' ') + '...'} 
                                           {wordLength>= 20 && (<button onClick={toggleShowMore} className='mr-[20px] text-black font-semibold ml-[5px]'>{showMore ? " show less" : "show more"}</button>)}
-                                          {post.imageUrl ? (
-                                                <img src={post.imageUrl} className='h-[200px] w-[300px] rounded-md mt-[10px]'  />
+                                          {post.image ? (
+                                                <img src={post.image} className='h-[200px] w-[300px] rounded-md mt-[10px]'/>
                                             ) : (
                                                 " " 
                                            )}
@@ -120,14 +118,14 @@ function ShowPost({activeChat, post , setPosts}) {
 
                             </div>
                         </div>
-                        <div className='flex items-start gap-[12px] self-stretch'>
+                        <div className='flex items-start gap-[12px] self-stretch' >
                             <div className='w-[48px] self-stretch'></div>
 
                             <div className='flex justify-between items-center flex-grow flex-shrink-0 basis-0 p-[2px]'>
                                 <div className='flex items-center gap-[4px]'>
                                     <img src={heart} className='w-[16px] h-[16px]' onClick={heartHandle}/>
                                     <div className='text-[14px] font-medium leading-5 text-[#7E7E8D]'>
-                                        {post.likeCount} other
+                                        12 other
                                     </div>
                                 </div>
                                 <div className='text-[14px] font-medium leading-5 text-[#7E7E8D]'>
@@ -165,4 +163,4 @@ function ShowPost({activeChat, post , setPosts}) {
     )
 }
 
-export default ShowPost;
+export default PostLoading;

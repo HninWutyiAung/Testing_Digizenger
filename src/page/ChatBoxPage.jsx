@@ -1,5 +1,5 @@
-import ChatBoxLayout from "../components/ChatBoxLayout";
-import ChatBoxNav from "../components/ChatBoxNav";
+import ChatBoxLayout from "../components/ChatBox/ChatBoxLayout";
+import ChatBoxNav from "../components/ChatBox/ChatBoxNav";
 
 function ChatBox ({setActiveChat}){
     return(

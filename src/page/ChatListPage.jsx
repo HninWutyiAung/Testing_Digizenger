@@ -1,11 +1,11 @@
-import ChatListNav from "../components/ChatListNav";
+import ChatListNav from "../components/ChatList/ChatListNav.jsx";
 import data from "../data";
-import ChatLayout from "../components/ChatLayout";
+import ChatLayout from "../components/ChatList/ChatLayout";
 import { setChatList, setActiveChat, selectChatList, selectActiveChatRoom } from "../feature/chatSlice";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from '../hook/Hook.ts';
-import ChatListNav2 from "../components/ChatListNav2.jsx";
-import ChatListBottomNav from "../components/ChatListBottomNav.jsx";
+import ChatListNav2 from "../components/ChatList/ChatListNav2.jsx";
+import ChatListBottomNav from "../components/ChatList/ChatListBottomNav.jsx";
 
 function ChatList({ activeChat, columnHandle, profileBox }) {
     const dispatch = useAppDispatch();

@@ -2,12 +2,12 @@ import './App.css'
 import './Home.css'
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation , Navigate } from "react-router-dom";
-import Nav from './components/Nav';
-import Login from './components/Login';
+import Nav from './components/Nav/Nav';
+import Login from './components/Auth/Login';
 // import SignUp from './components/SignUp';
-import SignInfo from './components/SignInfo';
+import SignInfo from './components/Auth/SignInfo';
 import RequestIdentity from './page/RequestIdentity';
-import VerifyEmail from './components/VerifyEmail';
+import VerifyEmail from './components/Auth/VerifyEmail';
 import Homepage from './page/Homepage';
 import { store } from './feature/store';
 import { Provider } from 'react-redux';

@@ -3,14 +3,14 @@ import { CiCircleInfo } from "react-icons/ci";
 import { MdEdit } from "react-icons/md";
 import { FaCamera } from "react-icons/fa6";
 import { RiDeleteBin6Fill } from "react-icons/ri";
-import { selectProfileBox, setProfileBox } from "../feature/profileSlice";
-import { useAppDispatch, useAppSelector } from '../hook/Hook';
+import { selectProfileBox, setProfileBox } from "../../feature/profileSlice";
+import { useAppDispatch, useAppSelector } from '../../hook/Hook';
 import { IoCloseOutline } from "react-icons/io5";
 import React, { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
 import Modal from 'react-modal';
 import getCroppedImg from './cropImage'; 
-import { setProfilePreivewImage , selectProfilePreview} from '../feature/profileSlice';
+import { setProfilePreivewImage , selectProfilePreview} from '../../feature/profileSlice';
 
 Modal.setAppElement('#root'); 
 

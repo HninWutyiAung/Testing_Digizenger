@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef, startTransition } from 'react';
-import NewFeedNav from "../components/NewFeedNav";
-import MenuNav from "../components/MenuNav2";
-import Post from "../components/Post";
-import Banner from "../components/banner";
-import { useGetPostQuery } from '../api/Post';
+import NewFeedNav from "../components/NewFeed Nav/NewFeedNav";
+import MenuNav from "../components/NewFeed Nav/MenuNav2";
+import Post from "../components/Post/UploadPost/Post.jsx";
+import Banner from "../components/NewFeed Banner/banner";
+import { useGetPostQuery } from '../apiService/Post.ts';
 import { useAppSelector,useAppDispatch } from '../hook/Hook';
-import ShowPost from '../components/ShowPost';
+import ShowPost from '../components/Post/AllPostForNewfeed/ShowPost';
 import LoadingSpinner from '../components/LoadingSpinner';
-import PostLoadingSpinner from '../components/postLoadingSpinner';
+import PostLoadingSpinner from '../components/Post/PostLoadingUI/postLoadingSpinner';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { selectCurrentPost ,resetCurrentUpload} from '../feature/postSlice';
-import PostLoading from '../components/PostLoading';
+import PostLoading from '../components/Post/PostLoadingUI/PostLoading';
 
 function NewFeed({ activeChat }) {
     const [page, setPage] = useState(0);
