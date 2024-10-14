@@ -10,6 +10,7 @@ import { useState  } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { EffectFlip } from 'swiper/modules';
 import { useSetLikeOrUnlikeMutation } from '../../../apiService/Post';
+import { ProfileIMageUrl } from '../../../page/ProfilePage/profileSerivce';
 
 
 function ShowPost({activeChat, post , setPosts}) {
@@ -20,6 +21,8 @@ function ShowPost({activeChat, post , setPosts}) {
 
     const postText = post.description;
     const wordLength =post.description.split(" ");
+
+    const profileImage = post.profileDto.profileImageUrl;
     
     const timeAgo = formatDistanceToNow(new Date(post.createdDate), { addSuffix: true });
 
@@ -28,10 +31,8 @@ function ShowPost({activeChat, post , setPosts}) {
         const newLikedState = !clickHeart;
         setClickHeart(newLikedState);
 
-        // Optimistically update the like count based on the new liked state
         const updatedLikeCount = newLikedState ? post.likeCount + 1 : post.likeCount - 1;
 
-        // Update the post state immediately with the new like count
         const updatedPost = {
             ...post,
             liked: newLikedState,
@@ -77,7 +78,7 @@ function ShowPost({activeChat, post , setPosts}) {
                     <div className="flex flex-col items-start gap-[12px] p-[10px] self-stretch">
                         <div className="flex justify-center items-center gap-[12px] self-stretch">
                             <div className='w-[48px] h-[48px]'>
-                                <img src={post.profileDto.profileImageUrl} className='rounded-[50px] w-[48px] h-[48px]'/>
+                                <img src={profileImage} className='rounded-[50px] w-[48px] h-[48px]'/>
                             </div>
                             <div className="flex flex-col items-start justify-center gap-[8px]">
                                 <div className="flex justify-between items-center self-stretch">

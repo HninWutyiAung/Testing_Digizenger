@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { selectToken, setLoginUserToken } from "../../feature/loginToken";
 import { useAppDispatch, useAppSelector } from "../../hook/Hook";
 import LoadingSpinner from "../LoadingSpinner";
+import { handleSubmit , RECAPTCHA_SITE_KEY} from "./authService";
 
 
 function Login() {
@@ -58,30 +59,34 @@ function Login() {
     }
   },[])
 
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+    
+  //   if (activeForm === 'form1' && (!email || !password)) {
+  //     console.error("Email and Password are required for Form 1");
+  //     return;
+  //   }
+    
+  //   if (activeForm === 'form2' && (!phone || !password)) {
+  //     console.error("Phone and Password are required for Form 2");
+  //     return;
+  //   }
+  
+  //   const credentials = {
+  //     emailOrPhone: activeForm === 'form1' ? email : phone,
+  //     password,
+  //   };
+  
+  //   try {
+  //     const response = await loginUser(credentials).unwrap();
+  //     console.log("Login Successful", response);
+  //   } catch (err) {
+  //     console.error("Login Failed", err);
+  //   }
+  // };
+
   const handleLogin = async (e) => {
-    e.preventDefault();
-    
-    if (activeForm === 'form1' && (!email || !password)) {
-      console.error("Email and Password are required for Form 1");
-      return;
-    }
-    
-    if (activeForm === 'form2' && (!phone || !password)) {
-      console.error("Phone and Password are required for Form 2");
-      return;
-    }
-  
-    const credentials = {
-      emailOrPhone: activeForm === 'form1' ? email : phone,
-      password,
-    };
-  
-    try {
-      const response = await loginUser(credentials).unwrap();
-      console.log("Login Successful", response);
-    } catch (err) {
-      console.error("Login Failed", err);
-    }
+    await handleSubmit(e, activeForm, email, phone, password, loginUser, dispatch, navigate);
   };
 
   useEffect(()=>{
@@ -157,7 +162,7 @@ function Login() {
                 </div>
                 <div className="login_recaptcha justify-self-center ml-[-42px]">
                     <ReCAPTCHA
-                        sitekey="6LdJnUEqAAAAAOBrwZRBiDZw_yKwqNSsKW7EU7Pt"
+                        sitekey={RECAPTCHA_SITE_KEY}
                         onChange={(val)=> setRecaptcha(val)}
                         grecaptcha={grecaptchaObject}
                         
@@ -208,7 +213,7 @@ function Login() {
                 </div>
                 <div className="justify-self-center login_recaptcha ml-[-40px]">
                     <ReCAPTCHA
-                        sitekey="6LdJnUEqAAAAAOBrwZRBiDZw_yKwqNSsKW7EU7Pt"
+                        sitekey={RECAPTCHA_SITE_KEY}
                         onChange={(val)=> setRecaptcha(val)}
                         grecaptcha={grecaptchaObject}
                     />

@@ -2,7 +2,7 @@ import NewFeed from "./NewFeed";
 import ChatList from "./ChatListPage";
 import { useState } from "react";
 import ChatBox from "./ChatBoxPage";
-import Profile from "./Profilepage";
+import Profile from "./ProfilePage/Profilepage";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { selectProfileBox } from "../feature/profileSlice";
 import { useAppSelector } from "../hook/Hook";

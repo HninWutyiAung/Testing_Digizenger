@@ -62,7 +62,6 @@ export const { setPosts, addPost, updatePost, removePost, setLoading, setCurrent
 
 export default uploadPostSlice.reducer;
 
-// Selectors to get posts and current post from the slice
 export const selectPosts = (state: RootState) => state.uploadPost.posts;
 export const selectCurrentPost = (state: RootState) => state.uploadPost.currentPost; // Selector for currentPost
 export const selectIsLoading = (state: RootState) => state.uploadPost.isLoading;
