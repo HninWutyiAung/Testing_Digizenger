@@ -25,8 +25,6 @@ function Profile({ activeChat }) {
         }
     }, [isSuccess, profile, dispatch]);
 
-    console.log(userName.firstName, userName.lastName);
-
     return (
         <section>
             <NewFeedNav activeChat={activeChat} />

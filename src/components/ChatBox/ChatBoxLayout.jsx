@@ -145,7 +145,7 @@ function ChatBoxLayout () {
                             onClick={inputHandle}
                             className="w-[390px] h-[40px] rounded-[27px] px-[10px] outline-none"
                         />
-                        {!inputStyle && <span className="absolute left-4">Message</span>}
+                        {!inputStyle && <span className="absolute left-4 text-[#ECF1F4]">Message</span>}
                         {inputStyle ? (
                             <i><FaCircleArrowUp className="absolute top-3 right-3 w-[25px] h-[25px] text-[#0097A7]" onClick={sendMessage}/></i>
                         ) : (

@@ -9,7 +9,7 @@ function ChatListBottomNav ({activeChat}) {
         setActiveButton(value);
     }
     return (
-        <section className="flex items-center justify-center  w-[100%] bg-[#5f6d7b] absolute custom-blur bottom-0">
+        <section className="flex items-center justify-center rounded-t-[10px] w-[100%] bg-[#5f6d7b] absolute custom-blur bottom-0">
             <div className="flex flex-col justify-center items-center gap-[2px] w-[100px] h-[70px] " onClick={()=> buttonHandle("message")}>
                 <i className={`flex h-[30px] w-[30px]  items-center justify-center ${activeButton === "message" ? " text-white" : "text-[#ECF1F4]"}`} ><BsChatDotsFill size={30}/></i>
                 <div className={`flex text-[12px] font-medium leading-5   ${activeButton === "message" ? " text-white" : "text-[#ECF1F4]"}`}>Messages</div>

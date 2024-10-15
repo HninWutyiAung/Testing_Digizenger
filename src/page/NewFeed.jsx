@@ -18,7 +18,7 @@ function NewFeed({ activeChat }) {
     const [limit, setLimit] = useState(10);
     const [posts, setPosts] = useState([]);
     const [postLoading, setPostLoading] = useState(false);
-    const currentUpload = useAppSelector(selectCurrentPost); // Use the currentUpload directly as an object
+    const currentUpload = useAppSelector(selectCurrentPost); 
     const observerRef = useRef();
     const [hasMore, setHasMore] = useState(true);
     const toastRef = useRef(null);

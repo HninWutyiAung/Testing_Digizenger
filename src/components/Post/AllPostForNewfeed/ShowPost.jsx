@@ -23,9 +23,9 @@ function ShowPost({activeChat, post , setPosts}) {
     const wordLength =post.description.split(" ");
     
     const profileImage = post?.profileDto?.profileImageUrl || ProfileDto?.profileImageUrl;
-    const firstName = post?.userDto?.firstName || userDto.firstName;
-    const lastName = post?.userDto?.lastName || userDto.lastName;
-    const followers = post?.userDto?.followers || userDto.followersCount;
+    const firstName = post?.userDto?.firstName || userDto?.firstName;
+    const lastName = post?.userDto?.lastName || userDto?.lastName;
+    const followers = post?.userDto?.followers || userDto?.followersCount;
     
     const timeAgo = formatDistanceToNow(new Date(post.createdDate), { addSuffix: true });
 

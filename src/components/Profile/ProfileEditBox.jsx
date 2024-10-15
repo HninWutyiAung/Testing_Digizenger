@@ -9,7 +9,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import React, { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
 import Modal from 'react-modal';
-import getCroppedImg from './cropImage'; 
+import getCroppedImg from './profileEditService.js'; 
 import { setProfilePreivewImage , selectProfilePreview} from '../../feature/profileSlice';
 
 Modal.setAppElement('#root'); 
@@ -45,7 +45,7 @@ function ProfileEditBox() {
     const onCropSave = async () => {
         if (croppedAreaPixels) {
             try {
-                const croppedImageDataUrl = await getCroppedImg(imageSrc, croppedAreaPixels, rotation); // Get the cropped image
+                const croppedImageDataUrl = await getCroppedImg(imageSrc, croppedAreaPixels, rotation);
                 setCroppedImage(croppedImageDataUrl); 
                 setShowCropper(false);
             } catch (error) {

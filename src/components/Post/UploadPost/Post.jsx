@@ -10,6 +10,8 @@ import { FaUsers, FaHome, FaUserFriends } from "react-icons/fa";
 import { addPost, setCurrentPost } from '../../../feature/postSlice';
 import { useAppDispatch, useAppSelector } from '../../../hook/Hook';
 import { selectFirstName, selectLastName } from '../../../feature/authSlice';
+import { IoCloseOutline } from "react-icons/io5";
+import { GrFormEdit } from "react-icons/gr";
 
 
 
@@ -55,7 +57,7 @@ function Post({activeChat, setpostLoading}) {
 
     const uploadImage = () => {
         if (uploadRef.current) {
-            uploadRef.current.click(); // Always trigger file input click
+            uploadRef.current.click(); 
         } else {
             console.log("ref is null");
         }
@@ -70,10 +72,6 @@ function Post({activeChat, setpostLoading}) {
             setIsEditing(false);
         }
     }
-
-    useEffect(() => {
-        console.log("uploadRef.current:", uploadRef.current);
-    }, []);
 
     const handleInput = (e) => {
         const target = e.target;
@@ -238,16 +236,19 @@ function Post({activeChat, setpostLoading}) {
                         {showMedia &&
                             <div className='flex items-start gap-[12px]'>
 
-                                <div className='w-[40px] h-[14px]'></div>
+                                <div className='w-[35px] h-[14px]'></div>
 
                                 <div className='flex flex-col gap-[5px]'>
-                                    <div className="w-[330px] h-[1px] bg-[#ECF1F4]"></div>
+                                    <div className="w-[340px] h-[1px] bg-[#ECF1F4]"></div>
 
                                     {image ?
-                                        (<div>
+                                        (<div className='relative'>
                                             <img src={URL.createObjectURL(image)} className='w-[500px] h-[300px]'/>
-                                            <button  className='ml-2 text-red-500'>Delete</button>
-                                            <button onClick={ uploadImage} className='ml-2 text-blue-500'>Edit</button>
+                                            <div className='absolute top-2 right-2 p-1 bg-slate-50 bg-opacity-20 hover:bg-opacity-40 hover:float rounded-full'><i  className='text-[#ECF1F4]'><IoCloseOutline /></i></div>
+                                            <div className='absolute flex gap-[2px] top-2 left-2 px-2 py-[3px] rounded-[50px] bg-slate-50 bg-opacity-20 hover:bg-opacity-40'>
+                                                <GrFormEdit className='text-[#ECF1F4]'/>
+                                                <span onClick={ uploadImage} className='text-[12px] text-[#ECF1F4]'>Edit</span>
+                                            </div>
                                         </div>) : 
                                         (<div className='flex gap-[10px]'>
                                             <i onClick={uploadImage}><GoImage size={25} className='text-[#0097A7]'/></i>
