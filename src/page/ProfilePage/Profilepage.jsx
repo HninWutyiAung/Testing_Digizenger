@@ -7,7 +7,7 @@ import { useGetProfileQuery } from "../../apiService/Profile";
 import PostLoadingSpinner from "../../components/LoadingSpinner";
 import { useAppDispatch } from "../../hook/Hook";
 import { setRegisterInfo } from "../../feature/authSlice";
-import { profileIMageForMyProfile, ProfileIMageUrl } from './profileSerivce';
+import { IMageForMyProfile} from './profileService';
 
 function Profile({ activeChat }) {
     const { data: profile, isSuccess, isLoading, isError } = useGetProfileQuery();
@@ -17,10 +17,11 @@ function Profile({ activeChat }) {
 
     useEffect(() => {
         if (isSuccess && profile) {
-            profileIMageForMyProfile(isSuccess,profile);
+            IMageForMyProfile(profile);
             setPosts(profile.profileDto.userForProfileDto.postDtoList);
             const { firstName, lastName } = profile.profileDto.userForProfileDto;
             setUserName({ firstName, lastName }); 
+            dispatch(setRegisterInfo({ firstName, lastName }));
         }
     }, [isSuccess, profile, dispatch]);
 

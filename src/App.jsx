@@ -42,7 +42,7 @@ function MainApp() {
       <Routes>
         <Route path='home/*' element={isLoggedIn ? <Homepage /> : <Navigate to="/"/>} >
         </Route>
-        <Route path="/" element={isLoggedIn ? <Navigate to="/home" replace /> : <Login />} />
+        <Route path="/" element={isLoggedIn ? <Navigate to="/home/newfeed" replace /> : <Login />} />
         <Route path='/signup' element={<SignInfo />} />
         <Route path='/signup/verify' element={<VerifyEmail />} />
         <Route path='/signup/verify/requestIdentity' element={<RequestIdentity />} />

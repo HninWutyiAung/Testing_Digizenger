@@ -10,7 +10,7 @@ import { useState  } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { EffectFlip } from 'swiper/modules';
 import { useSetLikeOrUnlikeMutation } from '../../../apiService/Post';
-import { ProfileIMageUrl } from '../../../page/ProfilePage/profileSerivce';
+import { ProfileDto, userDto } from '../../../page/ProfilePage/profileService';
 
 
 function ShowPost({activeChat, post , setPosts}) {
@@ -21,8 +21,11 @@ function ShowPost({activeChat, post , setPosts}) {
 
     const postText = post.description;
     const wordLength =post.description.split(" ");
-
-    const profileImage = post.profileDto.profileImageUrl;
+    
+    const profileImage = post?.profileDto?.profileImageUrl || ProfileDto?.profileImageUrl;
+    const firstName = post?.userDto?.firstName || userDto.firstName;
+    const lastName = post?.userDto?.lastName || userDto.lastName;
+    const followers = post?.userDto?.followers || userDto.followersCount;
     
     const timeAgo = formatDistanceToNow(new Date(post.createdDate), { addSuffix: true });
 
@@ -84,7 +87,7 @@ function ShowPost({activeChat, post , setPosts}) {
                                 <div className="flex justify-between items-center self-stretch">
                                     <div className="flex items-center gap-[8px] w-[320px]">
                                         <div className="flex gap-[2px] items-center">
-                                            <span className="font-bold leading-7 text-[#2C3E50] text-[15px]">{`${post.userDto.firstName} ${post.userDto.lastName}`}</span>
+                                            <span className="font-bold leading-7 text-[#2C3E50] text-[15px]">{`${firstName} ${lastName}`}</span>
                                             <img src={badges} className='w-[20px] h-[20px]'></img>
                                         </div>
                                         <div className='w-[4px] h-[4px]'>
@@ -99,7 +102,7 @@ function ShowPost({activeChat, post , setPosts}) {
                                 <div className='flex items-center gap-[8px] self-stretch'>
                                     <div className='text-[14px] font-normal leading-5 text-[#7E7E8D]'>Verified User</div>
                                     <img src={dot} className='w-[4px] h-[4px]'></img>
-                                    <div className='text-[14px] font-normal leading-5 text-[#7E7E8D]'>{post.userDto.followers} Followers</div>
+                                    <div className='text-[14px] font-normal leading-5 text-[#7E7E8D]'>{followers} Followers</div>
                                 </div>
                             </div>
                         </div>
