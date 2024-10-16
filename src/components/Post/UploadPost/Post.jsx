@@ -77,9 +77,9 @@ function Post({activeChat, setpostLoading}) {
         const target = e.target;
         target.style.height = 'auto'; 
         if (target.value === '') {
-            target.style.height = '20px'; // Set to initial height when empty
+            target.style.height = '20px';
         } else {
-            target.style.height = `${target.scrollHeight}px`; // Set to scroll height
+            target.style.height = `${target.scrollHeight}px`;
         }
         
         setContent(target.value);
@@ -146,7 +146,7 @@ function Post({activeChat, setpostLoading}) {
                         
                         <div className="flex items-start justify-between">
 
-                            <div className="flex gap-[8px] w-[320px]">
+                            <div className="flex gap-[8px] w-[320px] responsive-post">
 
                                 <div className="w-[38px] h-[38px]">
                                     <img src={john} alt="John" />
@@ -217,11 +217,11 @@ function Post({activeChat, setpostLoading}) {
 
                             </div>
 
-                            <div className='flex gap-[12px] items-center'>
+                            <div className='flex gap-[12px] items-center post-tag'>
 
                                 <div className='w-[32px] h-[14px]'></div>
 
-                                <div className='flex gap-[10px]'>
+                                <div className='flex gap-[10px] responsive-post-tag'>
                                     <span className='text-[13px] font-normal leading-5'>Trending Now</span>
 
                                     <div className='flex gap-[8px]'>
@@ -239,7 +239,7 @@ function Post({activeChat, setpostLoading}) {
                                 <div className='w-[35px] h-[14px]'></div>
 
                                 <div className='flex flex-col gap-[5px]'>
-                                    <div className="w-[340px] h-[1px] bg-[#ECF1F4]"></div>
+                                    <div className="w-[340px] h-[1px] bg-[#ECF1F4] responsive-post" ></div>
 
                                     {image ?
                                         (<div className='relative'>

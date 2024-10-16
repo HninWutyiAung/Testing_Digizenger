@@ -70,7 +70,7 @@ function PostLoading({activeChat, post , setPosts}) {
 
     return(
         <>
-            <div className="flex flex-col items-start justify-center rounded-[8px] bg-white ">
+            <div className="flex flex-col items-start justify-center bg-white ">
                 <div className="flex flex-col items-start gap-[16px]">
                     <div className="flex flex-col items-start gap-[12px] p-[10px] self-stretch">
                         <div className="flex justify-center items-center gap-[12px] self-stretch">

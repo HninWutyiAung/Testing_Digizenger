@@ -112,7 +112,7 @@ function ShowPost({activeChat, post , setPosts}) {
 
                                     <div className='w-[330px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-left text-ellipsis '>
                                           {showMore ? postText : postText.split(' ').slice(0, 20).join(' ') + '...'} 
-                                          {wordLength>= 20 && (<button onClick={toggleShowMore} className='mr-[20px] text-black font-semibold ml-[5px]'>{showMore ? " show less" : "show more"}</button>)}
+                                          {wordLength.length>= 10 && (<button onClick={toggleShowMore} className='mr-[20px] text-black font-semibold ml-[5px]'>{showMore ? " show less" : "show more"}</button>)}
                                           {post.imageUrl ? (
                                                 <img src={post.imageUrl} className='h-[200px] w-[300px] rounded-md mt-[10px]'  />
                                             ) : (

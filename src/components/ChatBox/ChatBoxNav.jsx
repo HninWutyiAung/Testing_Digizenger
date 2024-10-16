@@ -9,7 +9,7 @@ function ChatBoxNav({setActiveChat}) {
     }
     return(
             <section className="flex  items-center gap-[18px] px-[12px] bg-white border-b border-[#ECF1F4] z-10 w-[30.4%] absolute chat-box-nav-responsive">
-                <div className="flex flex-col relative w-[350px]">
+                <div className="flex flex-col relative w-[350px] responsive-chatbox-search">
                     <input type="text" className="rounded-[16px] py-[5px] bg-[#ECF1F4]"></input>
                     <div className="flex items-center gap-[10px] absolute top-[5px] left-[4px]">
                         <img src={magnifying} className="w-[24px] h-[24px]" />

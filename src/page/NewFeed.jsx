@@ -107,7 +107,7 @@ function NewFeed({ activeChat }) {
                 <div>
                     {postLoading && currentUpload && (
                         <>
-                            <div className='flex items-center pl-[10px] gap-3 bg-white h-[50px] border-b border-[#ECF1F4] rounded-t-lg'>
+                            <div className='flex items-center pl-[10px] gap-3 bg-white h-[50px] border-b border-[#ECF1F4] rounded-t-lg opacity-[0.5]'>
                                 <PostLoadingSpinner />
                                 <span className='text-left bg-white rounded-t-lg'> Loading Your Post...</span>
                             </div>
