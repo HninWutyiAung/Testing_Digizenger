@@ -6,15 +6,23 @@
 
 // function dataURLtoFile(dataurl, filename) {
 //     const arr = dataurl.split(',');
-//     const mime = arr[0].match(/:(.*?);/)[1];
+//     const mime = arr[0].match(/:(.*?);/)[1]; // Extract MIME type
 //     const bstr = atob(arr[1]);
 //     let n = bstr.length;
 //     const u8arr = new Uint8Array(n);
 //     while (n--) {
 //         u8arr[n] = bstr.charCodeAt(n);
 //     }
-//     return new File([u8arr], filename, { type: mime });
+
+//     // Extract file extension from MIME type
+//     const extension = mime.split('/')[1]; // e.g., 'jpeg', 'png', etc.
+    
+//     // Combine base filename with the correct extension
+//     const completeFilename = `${filename}.${extension}`;
+
+//     return new File([u8arr], completeFilename, { type: mime });
 // }
+
 
 // export const profileUpload = async () => {
 //     if (croppedImage){

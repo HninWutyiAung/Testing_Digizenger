@@ -27,7 +27,8 @@ const profileSlice = createSlice({
           updateUsername: (state, action: PayloadAction<string>) => {
             state.username = action.payload;
           },
-          uploadProfileImage: (state, action: PayloadAction<string | null>) => {
+          uploadProfile: (state, action: PayloadAction<string | null>) => {
+            console.log(action.payload);
             state.profileUploadImage = action.payload;
           },
           setProfileBox:(state, action: PayloadAction<boolean>) =>{
@@ -39,7 +40,7 @@ const profileSlice = createSlice({
     }
 })
 
-export const {setProfile,updateUsername,uploadProfileImage , setProfileBox , setProfilePreivewImage} = profileSlice.actions;
+export const {setProfile,updateUsername,uploadProfile , setProfileBox , setProfilePreivewImage} = profileSlice.actions;
 export default profileSlice.reducer;
 export const selectUsername = (state:RootState) => state.profileData.username;
 export const selectProfileImg = (state:RootState) => state.profileData.profileUploadImage;

@@ -1,3 +1,11 @@
+import { useUploadProfileImageMutation } from "../../apiService/Profile";
+
+export let profileImage = null;
+
+export const setProfileImage = (image) => {
+    profileImage = image; 
+};
+
 export default function getCroppedImg(imageSrc, croppedAreaPixels, rotation = 0) {
     return new Promise((resolve, reject) => {
         const image = new Image();
@@ -33,4 +41,35 @@ export default function getCroppedImg(imageSrc, croppedAreaPixels, rotation = 0)
             reject(error);
         };
     });
+}
+
+export function dataURLtoFile(dataurl, filename) {
+    const arr = dataurl.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1]; // Extract MIME type
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    const extension = mime.split('/')[1]; 
+    
+    const completeFilename = `${filename}.${extension}`;
+
+    return new File([u8arr], completeFilename, { type: mime });
+}
+
+export const handleProfileUpload = async (uploadProfileImage) =>{
+
+    const formData = new FormData();
+    formData.append('file', profileImage);
+
+    try{
+        const response = await uploadProfileImage(formData).unwrap();
+        console.log("Profile Upload uploaded successfully:", response);
+    }catch(error)
+    {
+        console.log("Profile Upload Failed" , error)
+    }
 }

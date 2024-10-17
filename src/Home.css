@@ -188,6 +188,12 @@
     form .responsive-chatbox-messagebox{
         width: 300px;
     }
+    div .responsive-post-box{
+        width: 280px;
+    }
+    div .responsive-post-name-box{
+        width: 280px;
+    }
   }
 
 .hover\:float:hover {
