@@ -58,6 +58,7 @@ function ProfileEditBox() {
 
     const openCropper = () => {
         setShowCropper(true);
+        dispatch(setProfilePreivewImage(lastCroppedImage))
     };
 
     const handleUploadNewPhoto = () => {
