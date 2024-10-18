@@ -85,7 +85,7 @@ function ShowPost({activeChat, post , setPosts}) {
                             </div>
                             <div className="flex flex-col items-start justify-center gap-[8px]">
                                 <div className="flex justify-between items-center self-stretch">
-                                    <div className="flex items-center gap-[8px] w-[320px]">
+                                    <div className="flex items-center gap-[8px] w-[320px] responsive-post-name-box">
                                         <div className="flex gap-[2px] items-center">
                                             <span className="font-bold leading-7 text-[#2C3E50] text-[15px]">{`${firstName} ${lastName}`}</span>
                                             <img src={badges} className='w-[20px] h-[20px]'></img>
@@ -108,9 +108,9 @@ function ShowPost({activeChat, post , setPosts}) {
                         </div>
                         <div>
                             <div className='flex gap-[12px] self-stretch items-start'>
-                                    <div className='w-[48px]'></div>
+                                    <div className='w-[45px]'></div>
 
-                                    <div className='w-[330px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-left text-ellipsis '>
+                                    <div className='w-[330px] text-[15px]  text-[#7E7E8D] font-normal leading-6  text-left text-ellipsis responsive-post-box'>
                                           {showMore ? postText : postText.split(' ').slice(0, 20).join(' ') + '...'} 
                                           {wordLength.length>= 10 && (<button onClick={toggleShowMore} className='mr-[20px] text-black font-semibold ml-[5px]'>{showMore ? " show less" : "show more"}</button>)}
                                           {post.imageUrl ? (
@@ -125,7 +125,7 @@ function ShowPost({activeChat, post , setPosts}) {
                             </div>
                         </div>
                         <div className='flex items-start gap-[12px] self-stretch'>
-                            <div className='w-[48px] self-stretch'></div>
+                            <div className='w-[42px] self-stretch'></div>
 
                             <div className='flex justify-between items-center flex-grow flex-shrink-0 basis-0 p-[2px]'>
                                 <div className='flex items-center gap-[4px]'>
@@ -143,7 +143,7 @@ function ShowPost({activeChat, post , setPosts}) {
 
                     <div className='flex items-start gap-[14px] self-stretch mb-[10px]'>
 
-                        <div className='w-[55px] self-stretch'></div>
+                        <div className='w-[53px] self-stretch'></div>
 
                         <div className='flex justify-between items-start flex-grow flex-shrink-0 basis-0'>
                             <div className='flex w-[96px] h-[28px] items-center gap-[8px]'>

@@ -108,10 +108,10 @@ function Login() {
       <main className="login_main_container text-center">
         <div className="mt-[-10px] grid mb-[10px] ">
           <h1 className="login_header_text1 text-[36px] font-bold">
-            <span className="text-[#00BCD4] text-[36px] ml-[-4rem] font-bold">Connect</span> Anytime,
+            <span className="text-secondary text-[36px] ml-[-4rem] font-bold">Connect</span> Anytime,
           </h1>
           <div className="login_header_text2 ml-[-11rem] text-[36px] font-bold">AnyWhere</div>
-          <div className="login_body_text text-justify hyphens-auto justify-self-center w-[350px]  text-[#8C8CA1] mt-[10px]">
+          <div className="login_body_text text-justify hyphens-auto justify-self-center w-[350px]  text-textGrey mt-[10px]">
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt alias dolorem corporis non labore vitae modi?
           </div>
         </div>
@@ -127,7 +127,7 @@ function Login() {
 
           {/* Active Tab Underline */}
           <div
-            className="h-[2px] bg-[#00BCD4] absolute bottom-0 duration-300"
+            className="h-[2px] bg-secondary absolute bottom-0 duration-300"
             style={{
               width: activeLinkStyles.width,
               left: activeLinkStyles.left,
@@ -139,8 +139,8 @@ function Login() {
         <div>
             {activeForm === "form1" && (
             <form className=" login_form grid grid-row-2 gap-y-[15px] px-[20px] mt-[1rem]  relative text-center">
-                <input type="email" name="email" placeholder="Enter your email" className="h-[45px] w-[350px] pl-[20px] login_input_box rounded-[10px] border  outline-none border-[#00BCD4] justify-self-center" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <input type={open ? "text" : "password"} name="password" placeholder="Enter your password" className="h-[45px] w-[350px] login_input_box pl-[20px] rounded-[10px] bg-[#ECF1F4] outline-none justify-self-center" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                <input type="email" name="email" placeholder="Enter your email" className="h-[45px] w-[350px] pl-[20px] login_input_box rounded-[10px] border  outline-none border-secondary justify-self-center" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input type={open ? "text" : "password"} name="password" placeholder="Enter your password" className="h-[45px] w-[350px] login_input_box pl-[20px] rounded-[10px] bg-accent outline-none justify-self-center" value={password} onChange={(e) => setPassword(e.target.value)}/>
                 {open ? 
                 (<button className="eye_button1 absolute top-[4.7rem] left-[20rem]" 
                   onClick={(e)=> {
@@ -168,11 +168,11 @@ function Login() {
                         
                     />
                 </div>
-                <button type="submit" onClick={handleLogin} className="py-[10px] bg-[#00BCD4] login_input_box w-[350px] justify-self-center text-white rounded-lg" disabled={!recaptcha}>Login</button>
+                <button type="submit" onClick={handleLogin} className="py-[10px] bg-secondary login_input_box w-[350px] justify-self-center text-background rounded-lg" disabled={!recaptcha}>Login</button>
                 <div className="w-[350px] bg-slate-100 h-[2px] login_input_box justify-self-center mt-[-5px]"></div>
                 <div className="justify-self-center mt-[15px]">
                     <span className="text-slate-400">Not On Digizenger Yet?</span>
-                    <button className="block font-semibold text-black py-[10px]  login_input_box hover:bg-[#C9DCDE] w-[350px] justify-self-center bg-[#ECF1F4] rounded-lg mt-[10px]">Create An Account</button>
+                    <button className="block font-semibold text-black py-[10px]  login_input_box hover:bg-darkAccent w-[350px] justify-self-center bg-accent rounded-lg mt-[10px]">Create An Account</button>
                 </div>
             </form>
             )}
@@ -189,9 +189,9 @@ function Login() {
                     type="phone" 
                     name="phone" 
                     placeholder="Enter your phone number" 
-                    className="h-[45px] w-[350px] login_input_box pl-[20px] rounded-[10px] border z-20 outline-none justify-self-center border-[#00BCD4] " 
+                    className="h-[45px] w-[350px] login_input_box pl-[20px] rounded-[10px] border z-20 outline-none justify-self-center border-secondary " 
                 />
-                <input type={open ? "text" : "password"} name="password" placeholder="Enter your password" className="h-[45px] w-[350px] pl-[20px] rounded-[10px] bg-[#ECF1F4] login_input_box outline-none justify-self-center" />
+                <input type={open ? "text" : "password"} name="password" placeholder="Enter your password" className="h-[45px] w-[350px] pl-[20px] rounded-[10px] bg-accent login_input_box outline-none justify-self-center" />
                 {open ? 
                 (<button className="eye_button1 absolute top-[4.7rem] left-[20rem]" 
                   onClick={(e)=> {
@@ -218,11 +218,11 @@ function Login() {
                         grecaptcha={grecaptchaObject}
                     />
                 </div>
-                <button type="submit" onClick={handleLogin} className="py-[10px] bg-[#00BCD4] w-[350px] login_input_box justify-self-center text-white rounded-lg" disabled={!recaptcha}>Login</button>
+                <button type="submit" onClick={handleLogin} className="py-[10px] bg-secondary w-[350px] login_input_box justify-self-center text-background rounded-lg" disabled={!recaptcha}>Login</button>
                 <div className="w-[350px] login_input_box bg-slate-100 h-[2px] justify-self-center mt-[-5px]"></div>
                 <div className="justify-self-center mt-[15px]">
                     <span className="text-slate-400 login_account_button login_input_box">Not On Digizenger Yet?</span>
-                    <button className="block font-semibold login_input_box text-black py-[10px]  w-[350px] justify-self-center bg-[#ECF1F4] hover:bg-[#C9DCDE] rounded-lg mt-[10px]">Create An Account</button>
+                    <button className="block font-semibold login_input_box text-black py-[10px]  w-[350px] justify-self-center bg-accent hover:bg-darkAccent rounded-lg mt-[10px]">Create An Account</button>
                 </div>
             </form>
             )}

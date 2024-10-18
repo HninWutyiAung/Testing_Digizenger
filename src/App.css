@@ -11,6 +11,27 @@ body{
   font-family: "DM Sans";
 }
 
+:root {
+  --color-primary: #0097A7; 
+  --color-secondary: #00BCD4; 
+  --color-background: #ffffff; 
+  --color-dark-blue: #2C3E50;
+  --color-text-grey: #8C8CA1;
+  --color-accent: #ECF1F4;
+  --color-light-accent: #FBFCFD;
+  --color-dark-accent: #C9DCDE;
+  --color-black: #000000;
+}
+
+
+.dark {
+  --color-primary: #1e3a8a; 
+  --color-secondary: #f97316;
+  --color-background: #111827;
+  --color-text: #ffffff; 
+}
+
+
 .or::before{
   content: " ";
   height: 1px;

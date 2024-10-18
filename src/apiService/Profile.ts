@@ -33,8 +33,8 @@ export const profileApiSlice = createApi({
     }),
 
     getProfile: builder.query({
-      query: () => ({
-        url: GET_PROFILE_ENDPOINT, 
+      query: ({page,limit}) => ({
+        url: `${GET_PROFILE_ENDPOINT}?_page=${page}&_limit=${limit}`, 
         method: 'GET',
       }),
     }),

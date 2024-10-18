@@ -11,10 +11,15 @@ import Cropper from 'react-easy-crop';
 import Modal from 'react-modal';
 import getCroppedImg from './profileEditService.js'; 
 import { setProfilePreivewImage , selectProfilePreview} from '../../feature/profileSlice';
+import { handleProfileUpload } from './profileEditService.js';
+import { useUploadProfileImageMutation } from '../../apiService/Profile';
+import { dataURLtoFile , profileImage ,setProfileImage} from './profileEditService.js';
+import { uploadProfile } from '../../feature/profileSlice';
 
 Modal.setAppElement('#root'); 
 
 function ProfileEditBox() {
+    const [uploadProfileImage,{isSuccess, isError , isLoading} ] = useUploadProfileImageMutation();
     const imageSrc = useAppSelector(selectProfilePreview);
     const profileBox = useAppSelector(selectProfileBox);
     const dispatch = useAppDispatch();
@@ -83,6 +88,16 @@ function ProfileEditBox() {
         setRotation(Number(e.target.value));
     };
 
+    const handleProfileUploadImage = async () => {
+        const convertImage = imageSrc || croppedImage;
+
+        if(convertImage){
+            setProfileImage(dataURLtoFile(convertImage , "profile"));
+            dispatch(uploadProfile(profileImage.name))
+        }
+        await handleProfileUpload( uploadProfileImage);
+    }
+
     return (
         <div className="profile-edit-box-overlay">
             <div className="profile-edit-box">
@@ -120,7 +135,7 @@ function ProfileEditBox() {
                             {previewActive ?  ( 
                                 <div className="flex text-center justify-between gap-[10px] ml-[15px]">
                                     <button onClick={previewHandleCancel} className="p-2 bg-[#ECF1F4] rounded-md w-[120px]">Cancel</button>
-                                    <button onClick={onCropSave} className="p-2 bg-[#0097A7] text-white rounded-md w-[120px]">Save</button>
+                                    <button onClick={handleProfileUploadImage} className="p-2 bg-[#0097A7] text-white rounded-md w-[120px]">Save</button>
                                 </div>) :
                                 (<div className='flex flex-col items-center gap-[4px] border-[#ECF1F4] px-[50px] py-[13px]'>
                                     <i className='text-[#2C3E50]'><RiDeleteBin6Fill size={20} /></i>

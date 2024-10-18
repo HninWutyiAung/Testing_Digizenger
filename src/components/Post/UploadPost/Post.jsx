@@ -25,12 +25,9 @@ function Post({activeChat, setpostLoading}) {
     const uploadRef = useRef(null);
     const [uploadPost,{isLoading,isSuccess, isError}] = useUploadPostMutation();
     const [postStatus, setPostStatus] = useState(false);
-    // const firstName = useAppSelector(selectFirstName);
-    // const lastName = useAppSelector(selectLastName);
     const [selectedAudience, setSelectedAudience] = useState('Everyone');
     const dispatch = useAppDispatch();
     const statusRef = useRef();
-    // console.log(firstName,lastName);
 
     const handleAudienceSelect = (audience) => {
         setSelectedAudience(audience); 
@@ -41,11 +38,11 @@ function Post({activeChat, setpostLoading}) {
     const getAudienceIcon = (audience) => {
         switch (audience) {
             case 'Everyone':
-                return <FaUsers className='w-[16px] h-[16px] text-[#0097A7]' />;
+                return <FaUsers className='w-[16px] h-[16px] text-primary' />;
             case 'Neighbors':
-                return <FaHome className='w-[16px] h-[16px] text-[#0097A7]' />;
+                return <FaHome className='w-[16px] h-[16px] text-primary' />;
             case 'Followers':
-                return <FaUserFriends className='w-[16px] h-[16px] text-[#0097A7]' />;
+                return <FaUserFriends className='w-[16px] h-[16px] text-primary' />;
             default:
                 return null;
         }
@@ -139,8 +136,8 @@ function Post({activeChat, setpostLoading}) {
 
     return (
         <section ref={statusRef}>
-            <main className="flex flex-col items-center gap-[14px] p-[20px] rounded-[8px] self-stretch bg-white">
-                <div className="flex flex-col items-center bg-white">
+            <main className="flex flex-col items-center gap-[14px] p-[20px] rounded-[8px] self-stretch bg-background">
+                <div className="flex flex-col items-center bg-background">
 
                     <div className="flex flex-col gap-[10px] items-start  self-stretch">
                         
@@ -174,7 +171,7 @@ function Post({activeChat, setpostLoading}) {
                                 </div>
                             </div>
 
-                            <div className={`flex justify-center p-[8px_20px] items-center rounded-[8px] h-[36px] bg-[#0097A7] ${isButtonDisabled ? "opacity-50 cursor-not-allowed" : "opacity-1 cursor-pointer"}}`}>
+                            <div className={`flex justify-center p-[8px_20px] items-center rounded-[8px] h-[36px] bg-primary ${isButtonDisabled ? "opacity-50 cursor-not-allowed" : "opacity-1 cursor-pointer"}}`}>
 
                                 <button onClick={handlePostSubmit} disabled={isButtonDisabled}>Post</button>
 
@@ -188,26 +185,26 @@ function Post({activeChat, setpostLoading}) {
 
                                 <div className='flex gap-[4px] items-center pointer' onClick={handlePostStatus}>
                                     {getAudienceIcon(selectedAudience)}
-                                    <span className='text-[14px] text-[#0097A7] font-medium leading-5'>{selectedAudience}</span>
+                                    <span className='text-[14px] text-primary font-medium leading-5'>{selectedAudience}</span>
                                 </div>
 
                                 {postStatus &&(
-                                    <div className='flex flex-col gap-[10px] absolute items-start bg-[#ECF1F4] left-16 top-200 z-20 p-[20px] w-[300px]'>
+                                    <div className='flex flex-col gap-[10px] absolute items-start bg-accent left-16 top-200 z-20 p-[20px] w-[300px]'>
                                         <span>Who can see you post?</span>
                                         <span>Choose who can see your post.<br /></span>
                                         <span className='text-left'>Everyone you mentioned in the post can still see it.</span>
                                         <div className='flex flex-col gap-[5px]'>
                                             <div className='flex gap-[5px]' onClick={() => handleAudienceSelect('Everyone')}>
                                                 <img src={publicIcon} className='w-[16px] h-[16px]' alt="Public Icon" />
-                                                <span className='text-[14px] text-[#0097A7] font-medium leading-5'>Everyone</span>
+                                                <span className='text-[14px] text-primary font-medium leading-5'>Everyone</span>
                                             </div>
                                             <div className='flex gap-[5px]' onClick={() => handleAudienceSelect('Neighbors')}>
                                                 <img src={publicIcon} className='w-[16px] h-[16px]' alt="Public Icon" />
-                                                <span className='text-[14px] text-[#0097A7] font-medium leading-5'>Neighbor</span>
+                                                <span className='text-[14px] text-primary font-medium leading-5'>Neighbor</span>
                                             </div>
                                             <div className='flex gap-[5px]'onClick={() => handleAudienceSelect('Followers')}>
                                                 <img src={publicIcon} className='w-[16px] h-[16px]' alt="Public Icon" />
-                                                <span className='text-[14px] text-[#0097A7] font-medium leading-5'>Follower</span>
+                                                <span className='text-[14px] text-primary font-medium leading-5'>Follower</span>
                                             </div>
                                         
                                         </div>
@@ -225,9 +222,9 @@ function Post({activeChat, setpostLoading}) {
                                     <span className='text-[13px] font-normal leading-5'>Trending Now</span>
 
                                     <div className='flex gap-[8px]'>
-                                        <span className='text-[13px] text-[#0097A7]'>#appleevent</span>
-                                        <span className='text-[13px] text-[#0097A7]'>#ipone16</span>
-                                        <span className='text-[13px] text-[#0097A7]'>#myanmarwin</span>
+                                        <span className='text-[13px] text-primary'>#appleevent</span>
+                                        <span className='text-[13px] text-primary'>#ipone16</span>
+                                        <span className='text-[13px] text-primary'>#myanmarwin</span>
                                     </div>
 
                                 </div>
@@ -236,24 +233,24 @@ function Post({activeChat, setpostLoading}) {
                         {showMedia &&
                             <div className='flex items-start gap-[12px]'>
 
-                                <div className='w-[35px] h-[14px]'></div>
+                                <div className='w-[36px] h-[14px]'></div>
 
                                 <div className='flex flex-col gap-[5px]'>
-                                    <div className="w-[340px] h-[1px] bg-[#ECF1F4] responsive-post" ></div>
+                                    <div className="w-[340px] h-[1px] bg-accent responsive-post" ></div>
 
                                     {image ?
                                         (<div className='relative'>
                                             <img src={URL.createObjectURL(image)} className='w-[500px] h-[300px]'/>
-                                            <div className='absolute top-2 right-2 p-1 bg-slate-50 bg-opacity-20 hover:bg-opacity-40 hover:float rounded-full'><i  className='text-[#ECF1F4]'><IoCloseOutline /></i></div>
+                                            <div className='absolute top-2 right-2 p-1 bg-slate-50 bg-opacity-20 hover:bg-opacity-40 hover:float rounded-full'><i  className='text-accent'><IoCloseOutline /></i></div>
                                             <div className='absolute flex gap-[2px] top-2 left-2 px-2 py-[3px] rounded-[50px] bg-slate-50 bg-opacity-20 hover:bg-opacity-40'>
-                                                <GrFormEdit className='text-[#ECF1F4]'/>
-                                                <span onClick={ uploadImage} className='text-[12px] text-[#ECF1F4]'>Edit</span>
+                                                <GrFormEdit className='text-accent'/>
+                                                <span onClick={ uploadImage} className='text-[12px] text-accent'>Edit</span>
                                             </div>
                                         </div>) : 
                                         (<div className='flex gap-[10px]'>
-                                            <i onClick={uploadImage}><GoImage size={25} className='text-[#0097A7]'/></i>
+                                            <i onClick={uploadImage}><GoImage size={25} className='text-primary'/></i>
                                             
-                                            <i><PiGif size={25} className='text-[#0097A7]'/></i>
+                                            <i><PiGif size={25} className='text-primary'/></i>
                                         </div>)
                                     
                                     }
