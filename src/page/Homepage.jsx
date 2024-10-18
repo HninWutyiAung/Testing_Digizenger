@@ -8,6 +8,7 @@ import { selectProfileBox } from "../feature/profileSlice";
 import { useAppSelector } from "../hook/Hook";
 import ProfileEditBox from "../components/Profile/ProfileEditBox";
 import { selectActiveChatRoom} from "../feature/chatSlice";
+import ProfileInformation from "../components/Profile_Information/ProfileInformation";
 function Homepage (){
 
     const [activeChat, setActiveChat] = useState(true);
@@ -22,6 +23,9 @@ function Homepage (){
         setActiveChat(!activeChat);
     }
 
+    //For check profile route
+    const showChatList = window.location.pathname.includes("/profile");
+
     return(
         <section className="homepage_container">
             <div>
@@ -31,9 +35,17 @@ function Homepage (){
                     <Route path="/profile" element={<Profile activeChat={activeChat}/>} />
             </Routes>
             </div>
-            <div >
-                <ChatList activeChat={activeChat} columnHandle={columnHandle} profileBox={profileBox} className="relative"/>
-            </div>
+            {showChatList ? (
+                <div>
+                    <div>
+                        <ProfileInformation/>
+                    </div>
+                </div>
+            ):
+                <div >
+                    <ChatList activeChat={activeChat} columnHandle={columnHandle} profileBox={profileBox} className="relative"/>
+                </div>
+            }
             {activeChatRoom && (
                 <div className="responsive-chatbox-column">
                     <ChatBox activeChatRoom={activeChatRoom} />
