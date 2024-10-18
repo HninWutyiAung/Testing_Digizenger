@@ -1,9 +1,10 @@
 import { useUploadProfileImageMutation } from "../../apiService/Profile";
 
-export let profileImage = null;
+export let profileImage;
 
 export const setProfileImage = (image) => {
     profileImage = image; 
+    console.log(profileImage);
 };
 
 export default function getCroppedImg(imageSrc, croppedAreaPixels, rotation = 0) {
@@ -64,6 +65,7 @@ export const handleProfileUpload = async (uploadProfileImage) =>{
 
     const formData = new FormData();
     formData.append('file', profileImage);
+    console.log(profileImage)
 
     try{
         const response = await uploadProfileImage(formData).unwrap();

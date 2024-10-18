@@ -12,9 +12,9 @@ import Modal from 'react-modal';
 import getCroppedImg from './profileEditService.js'; 
 import { setProfilePreivewImage , selectProfilePreview} from '../../feature/profileSlice';
 import { handleProfileUpload } from './profileEditService.js';
-import { uploadProfile, selectProfileImg } from "../../feature/profileSlice";
 import { useUploadProfileImageMutation } from '../../apiService/Profile';
 import { dataURLtoFile , profileImage ,setProfileImage} from './profileEditService.js';
+import { uploadProfile } from '../../feature/profileSlice';
 
 Modal.setAppElement('#root'); 
 
@@ -93,6 +93,7 @@ function ProfileEditBox() {
 
         if(convertImage){
             setProfileImage(dataURLtoFile(convertImage , "profile"));
+            dispatch(uploadProfile(profileImage.name))
         }
         await handleProfileUpload( uploadProfileImage);
     }

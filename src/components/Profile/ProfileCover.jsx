@@ -6,23 +6,16 @@ import { FaCamera } from "react-icons/fa6";
 import { PiPresentationChartFill } from "react-icons/pi";
 import { PiMegaphoneSimpleFill } from "react-icons/pi";
 import { PiPencilSimpleFill } from "react-icons/pi";
-import { useUploadProfileImageMutation} from '../../apiService/Profile';
 import { selectFirstName, selectLastName } from '../../feature/authSlice';
 import { useAppSelector , useAppDispatch} from '../../hook/Hook';
-import { setProfileBox } from '../../feature/profileSlice';
+import { setProfileBox} from '../../feature/profileSlice';
+import { ProfileDto } from '../../page/ProfilePage/profileService';
+
  
 function ProfileCover (){
-    const coverRef = useRef();
-    const profileRef = useRef();
-    const [coverImage, setcoverImage] = useState(null);
-    const [coverImageUrl, setcoverImageUrl] = useState(null);
-    const [profileImage, setprofileImage] = useState(null);
-    const [profileImageUrl, setprofileImageUrl] = useState(null);
     const firstName = useAppSelector(selectFirstName);
     const lastName = useAppSelector(selectLastName);
-    const [uploadProfileImage,{isSuccess,isError, isLoading, error }] = useUploadProfileImageMutation();
     const dispatch = useAppDispatch();
-
 
     const profileHandleBox = () =>{
         dispatch(setProfileBox(true));
@@ -43,7 +36,7 @@ function ProfileCover (){
                         {/* Profile Image */}
                         <div className="w-[150px] h-[150px] left-[15px] top-[60px] flex items-center justify-center absolute ">
                             <input type="file"  className='hidden' /> 
-                            <img className="w-[150px] h-[150px] absolute rounded-full border-4 border-solid border-white" src={john} alt="Profile" />
+                            <img className="w-[150px] h-[150px] absolute rounded-full border-4 border-solid border-white" src={ProfileDto.profileImageUrl} alt="Profile" />
                             <div className="w-7 h-7 left-[110px] top-[115px] absolute bg-[#ecf1f4] rounded-full shadow flex justify-center items-center" onClick={profileHandleBox}>
                                 <FaCamera className='text-[#2C3E50]' />
                             </div>

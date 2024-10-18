@@ -10,7 +10,9 @@ import { setRegisterInfo } from "../../feature/authSlice";
 import { IMageForMyProfile} from './profileService';
 
 function Profile({ activeChat }) {
-    const { data: profile, isSuccess, isLoading, isError } = useGetProfileQuery();
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
+    const { data: profile, isSuccess, isLoading, isError } = useGetProfileQuery({page,limit});
     const [posts, setPosts] = useState([]);
     const [userName, setUserName] = useState({ firstName: '', lastName: '' });
     const dispatch = useAppDispatch();
@@ -37,7 +39,7 @@ function Profile({ activeChat }) {
                 {isError && <div>Error loading profile data</div>}
                 {isSuccess && (
                     <>   
-                        <div className=" ">
+                        <div className="">
                             {
                                 posts.map((profilePost) => (
                                     <ShowPost key={profilePost.id} activeChat={activeChat} post={profilePost} setPosts={setPosts} />
