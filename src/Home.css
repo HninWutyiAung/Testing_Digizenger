@@ -205,6 +205,9 @@
         width: 18px;
         height: 18px;
     }
+    .responsive-time{
+        font-size: 15px;
+    }
   }
 
 .hover\:float:hover {

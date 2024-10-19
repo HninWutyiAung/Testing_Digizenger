@@ -6,6 +6,7 @@ interface ProfileDetail{
     profileUploadImage : string | null;
     profilePreviewImage : string | null;
     profileBox : boolean;
+    coverBox: boolean;
 }
 
 const initialState : ProfileDetail ={
@@ -13,6 +14,7 @@ const initialState : ProfileDetail ={
     profileUploadImage: null,
     profilePreviewImage : null,
     profileBox: false,
+    coverBox: false,
 
 }
 
@@ -37,10 +39,13 @@ const profileSlice = createSlice({
           setProfilePreivewImage: (state, action: PayloadAction<string | null>) => {
             state.profilePreviewImage = action.payload;
           },
+          setCoverBox:(state,action:PayloadAction<boolean>) => {
+            state.coverBox = action.payload;
+          }
     }
 })
 
-export const {setProfile,updateUsername,uploadProfile , setProfileBox , setProfilePreivewImage} = profileSlice.actions;
+export const {setProfile,updateUsername,uploadProfile , setProfileBox , setProfilePreivewImage , setCoverBox} = profileSlice.actions;
 export default profileSlice.reducer;
 export const selectUsername = (state:RootState) => state.profileData.username;
 export const selectProfileImg = (state:RootState) => state.profileData.profileUploadImage;

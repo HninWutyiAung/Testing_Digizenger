@@ -6,7 +6,7 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import { selectProfileBox, setProfileBox } from "../../feature/profileSlice";
 import { useAppDispatch, useAppSelector } from '../../hook/Hook';
 import { IoCloseOutline } from "react-icons/io5";
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Cropper from 'react-easy-crop';
 import Modal from 'react-modal';
 import getCroppedImg from './profileEditService.js'; 
@@ -14,7 +14,7 @@ import { setProfilePreivewImage , selectProfilePreview} from '../../feature/prof
 import { handleProfileUpload } from './profileEditService.js';
 import { useUploadProfileImageMutation } from '../../apiService/Profile';
 import { dataURLtoFile , profileImage ,setProfileImage} from './profileEditService.js';
-import { uploadProfile } from '../../feature/profileSlice';
+import LoadingSpinner from '../LoadingSpinner.jsx';
 
 Modal.setAppElement('#root'); 
 
@@ -95,7 +95,7 @@ function ProfileEditBox() {
             setProfileImage(dataURLtoFile(convertImage , "profile"));
         }
         await handleProfileUpload( uploadProfileImage);
-        setShowCropper(false);
+        
     }
 
     return (
@@ -110,11 +110,17 @@ function ProfileEditBox() {
                     </div>
 
                     <div className='flex flex-col items-center justify-center gap-[10px] w-[350px]'>
-                        <img 
-                            src={croppedImage || imageSrc} 
-                            className='w-[150px] h-[150px] border-[2px] border-[#D9D9D9] rounded-full' 
-                            alt="Profile Preview"
-                        />
+                        {isLoading ? (
+                                <div className="w-[150px] h-[150px] flex justify-center items-center border-[2px] border-[#D9D9D9] rounded-full">
+                                    <LoadingSpinner />
+                                </div>
+                            ) : (
+                                <img 
+                                    src={croppedImage || imageSrc} 
+                                    className='w-[150px] h-[150px] border-[2px] border-[#D9D9D9] rounded-full' 
+                                    alt="Profile Preview"
+                                />
+                        )}
                         <span className='text-[14px] text-[#2C3E50] font-bold'>Preview</span>
                         <div className='flex justify-center text-[12px] gap-[4px] text-[#7E7E8D] font-normal leading-5'>
                             <i className='text-[18px] ml-[10px]'><CiCircleInfo /></i>

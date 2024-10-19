@@ -1,6 +1,9 @@
 import { useUploadProfileImageMutation } from "../../apiService/Profile";
 
 export let profileImage;
+export let profileImageUrl;
+
+console.log(profileImageUrl)
 
 export const setProfileImage = (image) => {
     profileImage = image; 
@@ -70,6 +73,9 @@ export const handleProfileUpload = async (uploadProfileImage) =>{
     try{
         const response = await uploadProfileImage(formData).unwrap();
         console.log("Profile Upload uploaded successfully:", response);
+        if(response && response.profileImageUrl){
+            profileImageUrl = response.profileImageUrl;
+        }
     }catch(error)
     {
         console.log("Profile Upload Failed" , error)

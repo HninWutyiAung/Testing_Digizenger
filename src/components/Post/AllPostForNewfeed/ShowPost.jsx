@@ -11,6 +11,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { EffectFlip } from 'swiper/modules';
 import { useSetLikeOrUnlikeMutation } from '../../../apiService/Post';
 import { ProfileDto, userDto } from '../../../page/ProfilePage/profileService';
+import { customLocale } from './ShowPostService';
 
 
 function ShowPost({activeChat, post , setPosts}) {
@@ -27,7 +28,7 @@ function ShowPost({activeChat, post , setPosts}) {
     const lastName = post?.userDto?.lastName || userDto?.lastName;
     const followers = post?.userDto?.followers || userDto?.followersCount;
     
-    const timeAgo = formatDistanceToNow(new Date(post.createdDate), { addSuffix: true });
+    const timeAgo = formatDistanceToNow(new Date(post.createdDate), { addSuffix: true ,locale: customLocale,});
 
     const heartHandle = async () => {
 
@@ -93,7 +94,7 @@ function ShowPost({activeChat, post , setPosts}) {
                                         <div className='w-[4px] h-[4px]'>
                                             <img src={dot}></img>
                                         </div>
-                                        <div>{timeAgo}</div>
+                                        <div className='responsive-time'>{timeAgo}</div>
                                     </div>
                                     <div>
                                         <img src={dotthree}/>
