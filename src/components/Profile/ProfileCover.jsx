@@ -36,7 +36,7 @@ function ProfileCover (){
                         {/* Profile Image */}
                         <div className="w-[150px] h-[150px] left-[15px] top-[60px] flex items-center justify-center absolute ">
                             <input type="file"  className='hidden' /> 
-                            <img className="w-[150px] h-[150px] absolute rounded-full border-4 border-solid border-white" src={ProfileDto.profileImageUrl} alt="Profile" />
+                            <img className="w-[150px] h-[150px] absolute rounded-full border-4 border-solid border-white" src={ProfileDto?.profileImageUrl || '/images/defaultProfile.png'} alt="Profile" />
                             <div className="w-7 h-7 left-[110px] top-[115px] absolute bg-[#ecf1f4] rounded-full shadow flex justify-center items-center" onClick={profileHandleBox}>
                                 <FaCamera className='text-[#2C3E50]' />
                             </div>
