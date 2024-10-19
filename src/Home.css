@@ -194,6 +194,17 @@
     div .responsive-post-name-box{
         width: 280px;
     }
+    .responsive-profile-button{
+        margin-top: 15px;
+    }
+    div .responsive-profile-button-constainer{
+        padding: 5px;
+        gap: 4px;
+    }
+    section .responsive-profile-button-icon{
+        width: 18px;
+        height: 18px;
+    }
   }
 
 .hover\:float:hover {

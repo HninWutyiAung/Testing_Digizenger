@@ -93,9 +93,9 @@ function ProfileEditBox() {
 
         if(convertImage){
             setProfileImage(dataURLtoFile(convertImage , "profile"));
-            dispatch(uploadProfile(profileImage.name))
         }
         await handleProfileUpload( uploadProfileImage);
+        setShowCropper(false);
     }
 
     return (
