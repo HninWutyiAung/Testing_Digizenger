@@ -27,9 +27,12 @@ function Post({activeChat, setpostLoading}) {
     const dispatch = useAppDispatch();
     const statusRef = useRef();
     const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
+    const loginImage = JSON.parse(localStorage.getItem("ImageUrl") || "{}");
     const firstName = loginInfo.LoginFirstName;
     const lastName = loginInfo.LoginLastName;
-    const uploadPImageUrl = loginInfo.profileUploadImageUrl;
+    const uploadPImageUrl = loginImage.profileUploadImageUrl;
+
+    console.log(uploadPImageUrl);
 
     const handleAudienceSelect = (audience) => {
         setSelectedAudience(audience); 

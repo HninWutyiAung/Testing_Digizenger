@@ -37,25 +37,19 @@ const registerInfoSlice = createSlice({
             state.lastName = action.payload.lastName;
 
         },
-        setLoginInfo: (state, action: PayloadAction<{ LoginFirstName?: string | null; LoginLastName?: string | null; profileUploadImageUrl: string | null }>) => {
-            state.LoginFirstName = action.payload.LoginFirstName ?? state.LoginFirstName;
-            state.LoginLastName = action.payload.LoginLastName ?? state.LoginLastName;
-        
+        setLoginInfo: (state, action: PayloadAction<{ LoginFirstName: string | null, LoginLastName: string | null}>) =>{
+            localStorage.setItem("LoginInfo", JSON.stringify({ LoginFirstName: action.payload.LoginFirstName , LoginLastName: action.payload.LoginLastName}));
+            state.LoginFirstName = action.payload.LoginFirstName;
+            state.LoginLastName = action.payload.LoginLastName;
+        },
+        setLoginImage : (state, action: PayloadAction<{profileUploadImageUrl: string | null; }>) =>{
+            localStorage.setItem("ImageUrl", JSON.stringify({ profileUploadImageUrl : action.payload.profileUploadImageUrl}));
             state.profileUploadImageUrl = action.payload.profileUploadImageUrl;
-        
-            const currentLoginInfo = {
-                LoginFirstName: state.LoginFirstName,
-                LoginLastName: state.LoginLastName,
-                profileUploadImageUrl: state.profileUploadImageUrl,
-            };
-            localStorage.setItem("LoginInfo", JSON.stringify(currentLoginInfo));
         }
-        
-        
     }
 })
 
-export const {setEmailOrPhone ,setRegisterInfo, setLoginInfo} = registerInfoSlice.actions;
+export const {setEmailOrPhone ,setRegisterInfo, setLoginInfo ,setLoginImage} = registerInfoSlice.actions;
 export default registerInfoSlice.reducer;
 export const selectEmail = (state: RootState) => state.registerInfo.email;
 export const selectPhone = (state: RootState) => state.registerInfo.phone;

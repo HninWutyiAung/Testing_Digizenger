@@ -14,7 +14,7 @@ import { handleProfileUpload } from './profileEditService.js';
 import { useUploadProfileImageMutation } from '../../apiService/Profile';
 import { dataURLtoFile , profileImageUrl ,setProfileImage} from './profileEditService.js';
 import LoadingSpinner from '../LoadingSpinner.jsx';
-import { setLoginInfo } from '../../feature/authSlice.ts';
+import { setLoginImage} from '../../feature/authSlice.ts';
 
 
 Modal.setAppElement('#root'); 
@@ -101,7 +101,7 @@ function ProfileEditBox() {
 
     useEffect(()=>{
         if(isSuccess){
-            dispatch(setLoginInfo({profileUploadImageUrl: profileImageUrl}));
+            dispatch(setLoginImage({profileUploadImageUrl: profileImageUrl}));
         }
     })
 
