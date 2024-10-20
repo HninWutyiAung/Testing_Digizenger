@@ -1,39 +1,40 @@
-import john from '/images/emma.jpg';
+import cover from '/images/default_cover.jpg';
 import { CiCircleInfo } from "react-icons/ci";
 import { MdEdit } from "react-icons/md";
 import { FaCamera } from "react-icons/fa6";
 import { RiDeleteBin6Fill } from "react-icons/ri";
-import { selectProfileBox, setProfileBox } from "../../feature/profileSlice";
+import { selectCoverBox, setCoverBox } from "../../feature/profileSlice";
 import { useAppDispatch, useAppSelector } from '../../hook/Hook';
 import { IoCloseOutline } from "react-icons/io5";
 import React, { useState, useCallback, useEffect } from 'react';
 import Cropper from 'react-easy-crop';
 import Modal from 'react-modal';
-import getCroppedImg from './profileEditService.js'; 
-import { setProfilePreivewImage , selectProfilePreview} from '../../feature/profileSlice';
-import { handleProfileUpload } from './profileEditService.js';
-import { useUploadProfileImageMutation } from '../../apiService/Profile';
-import { dataURLtoFile , profileImage ,setProfileImage} from './profileEditService.js';
+import getCoverCroppedImg from './CoverEditService.js'; 
+import { setCoverPreivewImage , selectCoverPreview} from '../../feature/profileSlice';
+import { handleCoverUpload } from './CoverEditService.js';
+import { useUploadCoverImageMutation } from '../../apiService/Profile';
+import { dataURLtoFile ,setCoverImage} from './CoverEditService.js';
 import LoadingSpinner from '../LoadingSpinner.jsx';
 
 Modal.setAppElement('#root'); 
 
-function ProfileEditBox() {
-    const [uploadProfileImage,{isSuccess, isError , isLoading} ] = useUploadProfileImageMutation();
-    const imageSrc = useAppSelector(selectProfilePreview);
-    const profileBox = useAppSelector(selectProfileBox);
+function CoverEditBox() {
+    const [uploadCoverImage,{isSuccess, isError , isLoading} ] = useUploadCoverImageMutation();
+    const imageSrc = useAppSelector(selectCoverPreview);
+    const coverBox = useAppSelector(selectCoverBox);
     const dispatch = useAppDispatch();
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
     const [rotation, setRotation] = useState(0);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-    const [croppedImage, setCroppedImage] = useState(john);
+    const [coverCroppedImage, setCoverCroppedImage] = useState(cover);
     const [showCropper, setShowCropper] = useState(false);
     const [previewActive, setPreviewActive] = useState(false);
-    const [lastCroppedImage, setLastCroppedImage] = useState(john);
+    const [lastCroppedImage, setLastCroppedImage] = useState(cover);
+
 
     const closeProfilebox = () => {
-        dispatch(setProfileBox(!profileBox));
+        dispatch(setCoverBox(!coverBox));
     };
 
     const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
@@ -43,15 +44,15 @@ function ProfileEditBox() {
     const previewHandleCancel = () =>{
         setPreviewActive(false);
         setShowCropper(false);
-        setCroppedImage(lastCroppedImage);
-        dispatch(setProfilePreivewImage(lastCroppedImage))  
+        setCoverCroppedImage(lastCroppedImage);
+        dispatch(setCoverPreivewImage(lastCroppedImage))  
     }
 
     const onCropSave = async () => {
         if (croppedAreaPixels) {
             try {
-                const croppedImageDataUrl = await getCroppedImg(imageSrc, croppedAreaPixels, rotation);
-                setCroppedImage(croppedImageDataUrl); 
+                const croppedImageDataUrl = await getCoverCroppedImg(imageSrc, croppedAreaPixels, rotation);
+                setCoverCroppedImage(croppedImageDataUrl); 
                 setShowCropper(false);
             } catch (error) {
                 console.error("Error cropping image:", error);
@@ -74,8 +75,8 @@ function ProfileEditBox() {
             if (file) {
                 const reader = new FileReader();
                 reader.onload = () => {
-                    dispatch(setProfilePreivewImage(reader.result))
-                    setCroppedImage(null); 
+                    dispatch(setCoverPreivewImage(reader.result))
+                    setCoverCroppedImage(null); 
                 };
                 reader.readAsDataURL(file);
                 setPreviewActive(true);
@@ -88,47 +89,49 @@ function ProfileEditBox() {
         setRotation(Number(e.target.value));
     };
 
-    const handleProfileUploadImage = async () => {
-        const convertImage = imageSrc || croppedImage;
+    const handleCoverUploadImage = async () => {
+        const convertImage = imageSrc || coverCroppedImage;
 
         if(convertImage){
-            setProfileImage(dataURLtoFile(convertImage , "profile"));
+            setCoverImage(dataURLtoFile(convertImage , "cover"));
         }
-        await handleProfileUpload( uploadProfileImage);
+        await handleCoverUpload( uploadCoverImage);
         
     }
+
+    // useEffect(()=>{
+    //     if(!isLoading){
+    //         dispatch(setCoverBox(false));
+    //     }
+    // })
 
     return (
         <div className="profile-edit-box-overlay">
             <div className="profile-edit-box">
                 <div className="flex flex-col justify-center items-center gap-[20px]">
                     <div className="flex items-center p-[14px] self-stretch justify-between bg-[#ECF1F4] rounded-t-[10px]">
-                        <div className="text-[#2C3E50] font-bold text-[20px]">Profile Photo</div>
+                        <div className="text-[#2C3E50] font-bold text-[20px]">Cover Photo</div>
                         <i className="text-[#2C3E50] text-[20px]" onClick={closeProfilebox}>
                             <IoCloseOutline />
                         </i>
                     </div>
 
-                    <div className='flex flex-col items-center justify-center gap-[10px] w-[350px]'>
+                    <div className='flex flex-col items-center justify-center gap-[10px] w-[550px]'>
                         {isLoading ? (
-                                <div className="w-[150px] h-[150px] flex justify-center items-center border-[2px] border-[#D9D9D9] rounded-full">
+                                <div className="w-[550px] h-[200px] flex justify-center items-center border-[2px] border-[#D9D9D9]">
                                     <LoadingSpinner />
                                 </div>
                             ) : (
                                 <img 
-                                    src={croppedImage || imageSrc} 
-                                    className='w-[150px] h-[150px] border-[2px] border-[#D9D9D9] rounded-full' 
-                                    alt="Profile Preview"
+                                    src={coverCroppedImage || imageSrc} 
+                                    className='w-[550px] h-[200px] border-[2px] border-[#D9D9D9] ' 
+                                    alt="Cover Preview"
                                 />
                         )}
                         <span className='text-[14px] text-[#2C3E50] font-bold'>Preview</span>
-                        <div className='flex justify-center text-[12px] gap-[4px] text-[#7E7E8D] font-normal leading-5'>
-                            <i className='text-[18px] ml-[10px]'><CiCircleInfo /></i>
-                            <span className='text-left'>Recommended: Upload a clear profile picture to help others recognize you easily on the platform.</span>
-                        </div>
                     </div>
 
-                    <div className='flex items-center self-stretch justify-center border-t-[1px] border-[#ECF1F4] py-[14px] px-[28px]'>
+                    <div className='flex items-center self-stretch justify-center border-t-[1px] border-accent py-[14px] px-[28px]'>
                         <div className='flex flex-col items-center gap-[4px] border-r-[1px] border-[#ECF1F4] px-[50px] py-[13px]' onClick={openCropper}>
                             <i className='text-[#2C3E50]'><MdEdit size={20} /></i>
                             <div className='text-[14px] text-[#2C3E50]'>Edit</div>
@@ -141,7 +144,7 @@ function ProfileEditBox() {
                             {previewActive ?  ( 
                                 <div className="flex text-center justify-between gap-[10px] ml-[15px]">
                                     <button onClick={previewHandleCancel} className="p-2 bg-[#ECF1F4] rounded-md w-[120px]">Cancel</button>
-                                    <button onClick={handleProfileUploadImage} className="p-2 bg-[#0097A7] text-white rounded-md w-[120px]">Save</button>
+                                    <button onClick={handleCoverUploadImage} className="p-2 bg-[#0097A7] text-white rounded-md w-[120px]">Save</button>
                                 </div>) :
                                 (<div className='flex flex-col items-center gap-[4px] border-[#ECF1F4] px-[50px] py-[13px]'>
                                     <i className='text-[#2C3E50]'><RiDeleteBin6Fill size={20} /></i>
@@ -212,4 +215,4 @@ function ProfileEditBox() {
     );
 }
 
-export default ProfileEditBox;
+export default CoverEditBox;

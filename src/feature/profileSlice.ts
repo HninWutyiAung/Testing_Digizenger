@@ -5,14 +5,18 @@ interface ProfileDetail{
     username : string;
     profileUploadImage : string | null;
     profilePreviewImage : string | null;
+    coverPreviewImage : string | null;
     profileBox : boolean;
+    coverBox: boolean;
 }
 
 const initialState : ProfileDetail ={
     username: " ",
     profileUploadImage: null,
     profilePreviewImage : null,
+    coverPreviewImage : null,
     profileBox: false,
+    coverBox: false,
 
 }
 
@@ -37,12 +41,20 @@ const profileSlice = createSlice({
           setProfilePreivewImage: (state, action: PayloadAction<string | null>) => {
             state.profilePreviewImage = action.payload;
           },
+          setCoverPreivewImage: (state, action: PayloadAction<string | null>) => {
+            state.coverPreviewImage = action.payload;
+          },
+          setCoverBox:(state,action:PayloadAction<boolean>) => {
+            state.coverBox = action.payload;
+          }
     }
 })
 
-export const {setProfile,updateUsername,uploadProfile , setProfileBox , setProfilePreivewImage} = profileSlice.actions;
+export const {setProfile,updateUsername,uploadProfile , setProfileBox , setProfilePreivewImage , setCoverPreivewImage, setCoverBox} = profileSlice.actions;
 export default profileSlice.reducer;
 export const selectUsername = (state:RootState) => state.profileData.username;
 export const selectProfileImg = (state:RootState) => state.profileData.profileUploadImage;
 export const selectProfileBox = (state: RootState) => state.profileData.profileBox;
 export const selectProfilePreview = (state: RootState) => state.profileData.profilePreviewImage;
+export const selectCoverBox = (state: RootState) => state.profileData.coverBox;
+export const selectCoverPreview = (state : RootState) => state.profileData.coverPreviewImage;

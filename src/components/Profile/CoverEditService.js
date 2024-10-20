@@ -1,14 +1,14 @@
-export let profileImage;
-export let profileImageUrl;
+export let coverImage;
+export let coverImageUrl;
 
-console.log(profileImageUrl)
+console.log(coverImageUrl)
 
-export const setProfileImage = (image) => {
-    profileImage = image; 
-    console.log(profileImage);
+export const setCoverImage = (image) => {
+    coverImage = image; 
+    console.log(coverImage);
 };
 
-export default function getCroppedImg(imageSrc, croppedAreaPixels, rotation = 0) {
+export default function getCoverCroppedImg(imageSrc, croppedAreaPixels, rotation = 0) {
     return new Promise((resolve, reject) => {
         const image = new Image();
         image.src = imageSrc;
@@ -62,20 +62,20 @@ export function dataURLtoFile(dataurl, filename) {
     return new File([u8arr], completeFilename, { type: mime });
 }
 
-export const handleProfileUpload = async (uploadProfileImage) =>{
+export const handleCoverUpload = async (uploadCoverImage) =>{
 
     const formData = new FormData();
-    formData.append('file', profileImage);
-    console.log(profileImage)
+    formData.append('file', coverImage);
+    console.log(coverImage)
 
     try{
-        const response = await uploadProfileImage(formData).unwrap();
-        console.log("Profile Upload uploaded successfully:", response);
-        if(response && response.profileImageUrl){
-            profileImageUrl = response.profileImageUrl;
+        const response = await uploadCoverImage(formData).unwrap();
+        console.log("Cover Upload uploaded successfully:", response);
+        if(response && response.coverImageUrl){
+            coverImageUrl = response.coverImageUrl;
         }
     }catch(error)
     {
-        console.log("Profile Upload Failed" , error)
+        console.log("Cover Upload Failed" , error)
     }
 }

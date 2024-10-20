@@ -3,6 +3,7 @@ import { useEffect } from "react";
 export let ProfileDto;
 export let userDto;
 
+
 export const IMageForMyProfile = (profileData) => {
     console.log(profileData);
 
