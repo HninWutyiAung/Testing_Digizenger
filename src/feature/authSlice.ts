@@ -6,6 +6,9 @@ interface registerState {
     phone : string | null;
     firstName: string | null;
     lastName: string | null;
+    LoginFirstName: string | null;
+    LoginLastName: string | null;
+    profileUploadImageUrl: string | null;
 
 }
 
@@ -13,7 +16,10 @@ const initialState : registerState = {
     email : null,
     phone : null,
     firstName: null,
-    lastName: null
+    lastName: null,
+    LoginFirstName: null,
+    LoginLastName: null,
+    profileUploadImageUrl: null,
 }
 
 const registerInfoSlice = createSlice({
@@ -30,14 +36,32 @@ const registerInfoSlice = createSlice({
             state.firstName = action.payload.firstName;
             state.lastName = action.payload.lastName;
 
+        },
+        setLoginInfo: (state, action: PayloadAction<{ LoginFirstName?: string | null; LoginLastName?: string | null; profileUploadImageUrl: string | null }>) => {
+            state.LoginFirstName = action.payload.LoginFirstName ?? state.LoginFirstName;
+            state.LoginLastName = action.payload.LoginLastName ?? state.LoginLastName;
+        
+            state.profileUploadImageUrl = action.payload.profileUploadImageUrl;
+        
+            const currentLoginInfo = {
+                LoginFirstName: state.LoginFirstName,
+                LoginLastName: state.LoginLastName,
+                profileUploadImageUrl: state.profileUploadImageUrl,
+            };
+            localStorage.setItem("LoginInfo", JSON.stringify(currentLoginInfo));
         }
+        
+        
     }
 })
 
-export const {setEmailOrPhone ,setRegisterInfo} = registerInfoSlice.actions;
+export const {setEmailOrPhone ,setRegisterInfo, setLoginInfo} = registerInfoSlice.actions;
 export default registerInfoSlice.reducer;
 export const selectEmail = (state: RootState) => state.registerInfo.email;
 export const selectPhone = (state: RootState) => state.registerInfo.phone;
 export const selectFirstName = (state: RootState) => state.registerInfo.firstName;  
 export const selectLastName = (state: RootState) => state.registerInfo.lastName;
+export const selectLoginFirstName = (state: RootState) => state.registerInfo.LoginFirstName;  
+export const selectLoginLastName = (state: RootState) => state.registerInfo.LoginLastName;
+export const selectLoginProfileImage = (state : RootState) => state.registerInfo.profileUploadImageUrl;
 

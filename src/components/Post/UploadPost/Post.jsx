@@ -9,9 +9,9 @@ import { useUploadPostMutation } from '../../../apiService/Post';
 import { FaUsers, FaHome, FaUserFriends } from "react-icons/fa";
 import { addPost, setCurrentPost } from '../../../feature/postSlice';
 import { useAppDispatch, useAppSelector } from '../../../hook/Hook';
-import { selectFirstName, selectLastName } from '../../../feature/authSlice';
 import { IoCloseOutline } from "react-icons/io5";
 import { GrFormEdit } from "react-icons/gr";
+import { profileImageUrl } from '../../Profile/profileEditService';
 
 function Post({activeChat, setpostLoading}) {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -26,6 +26,10 @@ function Post({activeChat, setpostLoading}) {
     const [selectedAudience, setSelectedAudience] = useState('Everyone');
     const dispatch = useAppDispatch();
     const statusRef = useRef();
+    const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
+    const firstName = loginInfo.LoginFirstName;
+    const lastName = loginInfo.LoginLastName;
+    const uploadPImageUrl = loginInfo.profileUploadImageUrl;
 
     const handleAudienceSelect = (audience) => {
         setSelectedAudience(audience); 
@@ -144,14 +148,14 @@ function Post({activeChat, setpostLoading}) {
                             <div className="flex gap-[8px] w-[320px] responsive-post">
 
                                 <div className="w-[38px] h-[38px]">
-                                    <img src={john} alt="John" />
+                                    <img src={profileImageUrl || uploadPImageUrl} className="w-[38px] h-[38px] rounded-full" alt="John" />
                                     <img src={active} className='relative top-[-11px] left-6' alt="Active" />
                                </div>
 
                                 <div className='flex flex-col gap-2 items-start w-[250px]'>
 
                                     <div className='flex items-center h-[20px] gap-[8px]'>
-                                        <span className='text-[16px] font-bold leading-8'>John Doe</span>
+                                        <span className='text-[16px] font-bold leading-8'>{`${firstName} ${lastName}`}</span>
                                         <img src={mark} alt="Mark" />
                                     </div>
 

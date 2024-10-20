@@ -1,5 +1,5 @@
 import HomeLogo from "/images/home.png";
-import Postcast from "/images/Postcast.png";
+import Postcast from "/images/postcast.png";
 import Digizen from "/images/digizen.png";
 import Profile from "/images/profile.png";
 import { useEffect, useState } from "react";

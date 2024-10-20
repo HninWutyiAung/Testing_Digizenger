@@ -6,6 +6,7 @@ import heart from '/images/heart2.jpg';
 import flick from '/images/flick.png';
 import graph from '/images/graph.png';
 import heart1 from '/images/heart1.png';
+import default_image from '/images/default_profile.jpg';
 import { useState  } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { EffectFlip } from 'swiper/modules';
@@ -23,7 +24,7 @@ function ShowPost({activeChat, post , setPosts}) {
     const postText = post.description;
     const wordLength =post.description.split(" ");
     
-    const profileImage = post?.profileDto?.profileImageUrl || ProfileDto?.profileImageUrl;
+    const profileImage = post?.profileDto?.profileImageUrl || ProfileDto?.profileImageUrl || default_image;
     const firstName = post?.userDto?.firstName || userDto?.firstName;
     const lastName = post?.userDto?.lastName || userDto?.lastName;
     const followers = post?.userDto?.followers || userDto?.followersCount;
