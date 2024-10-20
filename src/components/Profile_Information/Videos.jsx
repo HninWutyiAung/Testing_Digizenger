@@ -49,7 +49,7 @@ const Videos = () => {
               <div key={video.id}>
                 <div className="self-stretch h-[89px] justify-start items-start gap-2 inline-flex">
                   <div className="w-[130px] h-[89.10px] relative">
-                    <div className="w-[130px] h-[89.10px] left-0 top-0 absolute bg-black/20"></div>
+                    <div className="w-[130px] h-[89.10px] left-0 top-0 absolute bg-[#00000033]"></div>
                     <div className="w-9 h-9 left-[47px] top-[26.27px] absolute flex items-center justify-center">
                       <div className="w-9 h-9 absolute bg-[#00bcd4] rounded-full backdrop-blur-sm flex items-center justify-center"></div>
                       <FaPlay className="w-[18.34px] h-[18.4px] absolute text-white cursor-pointer"></FaPlay>

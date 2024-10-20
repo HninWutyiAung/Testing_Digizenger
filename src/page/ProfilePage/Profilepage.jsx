@@ -8,6 +8,8 @@ import PostLoadingSpinner from "../../components/LoadingSpinner";
 import { useAppDispatch } from "../../hook/Hook";
 import { setRegisterInfo } from "../../feature/authSlice";
 import { IMageForMyProfile} from './profileService';
+import Featured from "../../components/Profile_Information/Featured";
+import About from "../../components/Profile_Information/About";
 
 function Profile({ activeChat }) {
     const [page, setPage] = useState(1);
@@ -35,6 +37,8 @@ function Profile({ activeChat }) {
             <div className="flex relative flex-col p-[20px] pt-[140px] bg-[#ECF1F4] gap-[12px] w-full h-[945px] overflow-y-auto scrollable newfeed-responsive">
 
                 <ProfileCover firstName={userName.firstName} lastName={userName.lastName} />
+                <Featured/>
+                <About/>
                 {isLoading && <div className="absolute top-[25rem] left-[12rem]"><PostLoadingSpinner/></div>}
                 {isError && <div>Error loading profile data</div>}
                 {isSuccess && (
