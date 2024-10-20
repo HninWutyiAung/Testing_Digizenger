@@ -13,8 +13,6 @@ import { selectFirstName, selectLastName } from '../../../feature/authSlice';
 import { IoCloseOutline } from "react-icons/io5";
 import { GrFormEdit } from "react-icons/gr";
 
-
-
 function Post({activeChat, setpostLoading}) {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [content, setContent] = useState('');

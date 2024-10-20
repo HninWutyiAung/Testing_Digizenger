@@ -1,5 +1,3 @@
-import { useUploadProfileImageMutation } from "../../apiService/Profile";
-
 export let profileImage;
 export let profileImageUrl;
 

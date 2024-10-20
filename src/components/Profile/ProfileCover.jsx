@@ -8,9 +8,10 @@ import { PiMegaphoneSimpleFill } from "react-icons/pi";
 import { PiPencilSimpleFill } from "react-icons/pi";
 import { selectFirstName, selectLastName } from '../../feature/authSlice';
 import { useAppSelector , useAppDispatch} from '../../hook/Hook';
-import { setProfileBox} from '../../feature/profileSlice';
+import { setProfileBox ,setCoverBox} from '../../feature/profileSlice';
 import { ProfileDto } from '../../page/ProfilePage/profileService';
 import { profileImageUrl} from './profileEditService';
+import {coverImageUrl} from './CoverEditService'
 
  
 function ProfileCover (){
@@ -22,6 +23,10 @@ function ProfileCover (){
         dispatch(setProfileBox(true));
     }
 
+    const coverHandleBox = () =>{
+        dispatch(setCoverBox(true))
+    }
+
     return(
         <section className=" flex flex-col pb-6 items-center self-stretch rounded-lg border border-solid border-[#C9DCDE] bg-white">
 
@@ -29,8 +34,8 @@ function ProfileCover (){
 
                         <div className="rounded-t-lg">
                             <input type="file"className='hidden'/>
-                            <img src={cover} className="h-[160px]"  alt="Cover" />
-                            <div className="w-7 h-7 right-[10px] top-[16px] absolute bg-[#ecf1f4] rounded-full shadow flex justify-center items-center">
+                            <img src={coverImageUrl || ProfileDto?.coverImageUrl || cover} className="h-[160px] w-[600px]"  alt="Cover" />
+                            <div className="w-7 h-7 right-[10px] top-[16px] absolute bg-[#ecf1f4] rounded-full shadow flex justify-center items-center" onClick={coverHandleBox}>
                                 <FaCamera className='text-[#2C3E50]' />
                             </div>
                         </div>

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BASE_URL, PROFILE_IMAGE_ENDPOINT, USERNAME_ENDPOINT, GET_PROFILE_ENDPOINT } from './apiConfig'; // Import from apiConfig.js
+import { BASE_URL, PROFILE_IMAGE_ENDPOINT, USERNAME_ENDPOINT, GET_PROFILE_ENDPOINT , COVER_IMAGE_ENDPOINT} from './apiConfig'; // Import from apiConfig.js
 
 export const profileApiSlice = createApi({
   reducerPath: 'profileApi',
@@ -38,7 +38,15 @@ export const profileApiSlice = createApi({
         method: 'GET',
       }),
     }),
+
+    uploadCoverImage: builder.mutation({
+      query: (formData) =>({
+        url: COVER_IMAGE_ENDPOINT,
+        method : 'POST',
+        body: formData,
+      })
+    })
   }),
 });
 
-export const { useUploadProfileImageMutation, useGetProfileQuery } = profileApiSlice;
+export const { useUploadProfileImageMutation, useGetProfileQuery , useUploadCoverImageMutation} = profileApiSlice;

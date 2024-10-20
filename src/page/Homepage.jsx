@@ -4,14 +4,16 @@ import { useState } from "react";
 import ChatBox from "./ChatBoxPage";
 import Profile from "./ProfilePage/Profilepage";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { selectProfileBox } from "../feature/profileSlice";
+import { selectProfileBox , selectCoverBox } from "../feature/profileSlice";
 import { useAppSelector } from "../hook/Hook";
 import ProfileEditBox from "../components/Profile/ProfileEditBox";
+import CoverEditBox from "../components/Profile/CoverEditBox";
 import { selectActiveChatRoom} from "../feature/chatSlice";
 function Homepage (){
 
     const [activeChat, setActiveChat] = useState(true);
     const profileBox = useAppSelector(selectProfileBox);
+    const coverBox = useAppSelector(selectCoverBox);
     const activeChatRoom = useAppSelector(selectActiveChatRoom);
     console.log(profileBox)
 
@@ -43,6 +45,13 @@ function Homepage (){
                 <>
                     <div className="home-cover"></div>
                     <ProfileEditBox />
+                </>
+            )}
+
+            {coverBox && (
+                <>
+                    <div className="home-cover"></div>
+                    <CoverEditBox />
                 </>
             )}
         </section>
