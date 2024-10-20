@@ -53,10 +53,10 @@ const About = () => {
         <div className="w-[426px] h-auto p-4 bg-white rounded-lg border border-solid border-[#C9DCDE] flex-col justify-start items-start gap-2 inline-flex mt-[10px]">
             <div className="w-[400px] h-auto self-stretch flex-col justify-start items-start gap-3 flex">
                 <div className="w-full h-[20px] self-stretch justify-between items-center inline-flex">
-                    <div className="w-[44px] h-[20px] text-[#2C3E50] text-lg font-bold font-['DM Sans']">About</div>
+                    <div className="w-[44px] h-[20px] text-[#2C3E50] text-xl font-bold font-['DM Sans']">About</div>
                     <div className="w-[56px] h-[18px] justify-start items-center gap-2 flex">
-                        <HiOutlinePlus className="w-5 h-5 text-[#2C3E50]" />
-                        <PiPencilSimpleFill className="w-5 h-5 text-[#2C3E50]" />
+                        <HiOutlinePlus className="w-6 h-6 text-[#2C3E50]" />
+                        <PiPencilSimpleFill className="w-6 h-6 text-[#2C3E50]" />
                     </div>
                 </div>
                 {/* Career History */}
