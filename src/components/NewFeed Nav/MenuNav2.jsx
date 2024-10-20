@@ -8,7 +8,6 @@ function MenuNav({activeChat}){
     const [activeButton, setActiveButton] = useState ("newfeed");
     const navigate = useNavigate();
     const buttonHandle = (value) => {
-         // Prevent setting state if it's already active
         setActiveButton(value);
         
             if (value === "newfeed") {
