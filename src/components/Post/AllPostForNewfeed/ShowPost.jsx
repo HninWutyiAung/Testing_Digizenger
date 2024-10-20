@@ -13,6 +13,7 @@ import { EffectFlip } from 'swiper/modules';
 import { useSetLikeOrUnlikeMutation } from '../../../apiService/Post';
 import { ProfileDto, userDto } from '../../../page/ProfilePage/profileService';
 import { customLocale } from './ShowPostService';
+import { useLocation } from 'react-router-dom';
 
 
 function ShowPost({activeChat, post , setPosts}) {
@@ -23,8 +24,16 @@ function ShowPost({activeChat, post , setPosts}) {
 
     const postText = post.description;
     const wordLength =post.description.split(" ");
+
+    const location = useLocation();
+
+    const isProfileRoute = location.pathname.includes("/profile");
+
+    const profileImage = isProfileRoute 
+        ? ProfileDto?.profileImageUrl || default_image 
+        : post?.profileDto?.profileImageUrl || default_image;
     
-    const profileImage = post?.profileDto?.profileImageUrl || ProfileDto?.profileImageUrl || default_image;
+    // const profileImage = post?.profileDto?.profileImageUrl || ProfileDto?.profileImageUrl || default_image;
     const firstName = post?.userDto?.firstName || userDto?.firstName;
     const lastName = post?.userDto?.lastName || userDto?.lastName;
     const followers = post?.userDto?.followers || userDto?.followersCount;

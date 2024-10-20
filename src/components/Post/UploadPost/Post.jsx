@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../../hook/Hook';
 import { IoCloseOutline } from "react-icons/io5";
 import { GrFormEdit } from "react-icons/gr";
 import { profileImageUrl } from '../../Profile/profileEditService';
+import { selectLoginProfileImage } from '../../../feature/authSlice';
 
 function Post({activeChat, setpostLoading}) {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -33,6 +34,7 @@ function Post({activeChat, setpostLoading}) {
     const uploadPImageUrl = loginImage.profileUploadImageUrl;
 
     console.log(uploadPImageUrl);
+
 
     const handleAudienceSelect = (audience) => {
         setSelectedAudience(audience); 
@@ -151,7 +153,7 @@ function Post({activeChat, setpostLoading}) {
                             <div className="flex gap-[8px] w-[320px] responsive-post">
 
                                 <div className="w-[38px] h-[38px]">
-                                    <img src={profileImageUrl || uploadPImageUrl} className="w-[38px] h-[38px] rounded-full" alt="John" />
+                                    <img src={uploadPImageUrl} className="w-[38px] h-[38px] rounded-full" alt="John" />
                                     <img src={active} className='relative top-[-11px] left-6' alt="Active" />
                                </div>
 
