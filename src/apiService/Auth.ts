@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BASE_URL, REGISTER_ENDPOINT, VERIFY_ACCOUNT_ENDPOINT, LOGIN_ENDPOINT, RESEND_CODE_ENDPOINT } from './apiConfig'; // Import from apiConfig.js
+import { BASE_URL, REGISTER_ENDPOINT, VERIFY_ACCOUNT_ENDPOINT, LOGIN_ENDPOINT, RESEND_CODE_ENDPOINT } from './apiConfig'; 
 
 export const authApi = createApi({
   reducerPath: 'authApi',
