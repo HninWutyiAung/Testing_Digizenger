@@ -3,18 +3,19 @@ import { CiCircleInfo } from "react-icons/ci";
 import { MdEdit } from "react-icons/md";
 import { FaCamera } from "react-icons/fa6";
 import { RiDeleteBin6Fill } from "react-icons/ri";
-import { selectProfileBox, setProfileBox } from "../../feature/profileSlice";
+import { selectProfileBox, setProfileBox ,setProfilePreivewImage , selectProfilePreview} from "../../feature/profileSlice";
 import { useAppDispatch, useAppSelector } from '../../hook/Hook';
 import { IoCloseOutline } from "react-icons/io5";
 import React, { useState, useCallback, useEffect } from 'react';
 import Cropper from 'react-easy-crop';
 import Modal from 'react-modal';
 import getCroppedImg from './profileEditService.js'; 
-import { setProfilePreivewImage , selectProfilePreview} from '../../feature/profileSlice';
 import { handleProfileUpload } from './profileEditService.js';
 import { useUploadProfileImageMutation } from '../../apiService/Profile';
-import { dataURLtoFile , profileImage ,setProfileImage} from './profileEditService.js';
+import { dataURLtoFile , profileImageUrl ,setProfileImage} from './profileEditService.js';
 import LoadingSpinner from '../LoadingSpinner.jsx';
+import { setLoginImage} from '../../feature/authSlice.ts';
+
 
 Modal.setAppElement('#root'); 
 
@@ -97,6 +98,12 @@ function ProfileEditBox() {
         await handleProfileUpload( uploadProfileImage);
         
     }
+
+    useEffect(()=>{
+        if(isSuccess){
+            dispatch(setLoginImage({profileUploadImageUrl: profileImageUrl}));
+        }
+    })
 
     return (
         <div className="profile-edit-box-overlay">

@@ -1,5 +1,5 @@
 import HomeLogo from "/images/home.png";
-import Postcast from "/images/Postcast.png";
+import Postcast from "/images/postcast.png";
 import Digizen from "/images/digizen.png";
 import Profile from "/images/profile.png";
 import { useEffect, useState } from "react";
@@ -8,7 +8,6 @@ function MenuNav({activeChat}){
     const [activeButton, setActiveButton] = useState ("newfeed");
     const navigate = useNavigate();
     const buttonHandle = (value) => {
-         // Prevent setting state if it's already active
         setActiveButton(value);
         
             if (value === "newfeed") {

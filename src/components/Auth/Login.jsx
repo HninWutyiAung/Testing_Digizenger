@@ -11,6 +11,7 @@ import { selectToken, setLoginUserToken } from "../../feature/loginToken";
 import { useAppDispatch, useAppSelector } from "../../hook/Hook";
 import LoadingSpinner from "../LoadingSpinner";
 import { handleSubmit , RECAPTCHA_SITE_KEY} from "./authService";
+import { setLoginInfo ,setLoginImage} from "../../feature/authSlice";
 
 
 function Login() {
@@ -93,7 +94,8 @@ function Login() {
     if(isSuccess){
       dispatch(setLoginUserToken({token:data.token}));
       navigate("/home")
-
+      dispatch(setLoginInfo({LoginFirstName: data.profileDto.userForProfileDto?.firstName , LoginLastName: data.profileDto.userForProfileDto?.lastName}))
+      dispatch(setLoginImage({profileUploadImageUrl: data.profileDto.profileImageUrl}));
     }
   })
 

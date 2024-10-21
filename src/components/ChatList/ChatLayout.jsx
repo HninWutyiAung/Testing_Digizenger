@@ -1,4 +1,4 @@
-import emma from '/images/Emma.jpg';
+import emma from '/images/emma.jpg';
 import badges from '/images/Badges.png';
 import read from '/images/read.png';
 
