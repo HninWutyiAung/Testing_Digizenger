@@ -10,16 +10,16 @@
 
 @media (max-width:1536px) {
     .homepage_container{
-        height: 800px !important;
+        height: 700px !important;
     }
     .chat-layout-responsive{
-        height: 730px !important;
+        height: 660px !important;
     }
     .chat-list-responsive{
-        height: 800px !important;
+        height: 730px !important;
     }
     .newfeed-responsive{
-        height: 800px !important;
+        height: 730px !important;
     }
     .logo-nav-big-screen{
         width: 45.5% !important;
@@ -38,6 +38,9 @@
     }
     .chat-box-nav2-responsive{
         width: 38% !important;
+    }
+    div .responsive-main-profile{
+        height: 730px;
     }
 }
 

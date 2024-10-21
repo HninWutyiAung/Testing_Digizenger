@@ -95,7 +95,7 @@ function ChatBoxLayout () {
 
     return (
         <main className="">
-            <img src={cover} className="chat-bg"></img>
+            {/* <img src={cover} className="chat-bg"></img> */}
             <ChatBoxUserStatusNav message={message}/>
             <section className="flex flex-col items-start pt-[150px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive">
                 {message.messages.map((text,index) => (
