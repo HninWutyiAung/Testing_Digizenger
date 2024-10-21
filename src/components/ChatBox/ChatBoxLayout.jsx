@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "../../hook/Hook";
 import { selectActiveChatRoom, selectChatList , addMessageToChat } from "../../feature/chatSlice";
+import cover from '../../../images/chat bg.png'
 import andrea from '/images/andrea.png';
 import { PiChatTeardropFill } from "react-icons/pi";
 import { VscTriangleUp } from "react-icons/vsc";
@@ -93,7 +94,8 @@ function ChatBoxLayout () {
     };
 
     return (
-        <main className="chat-bg">
+        <main className="">
+            <img src={cover} className="chat-bg"></img>
             <ChatBoxUserStatusNav message={message}/>
             <section className="flex flex-col items-start pt-[150px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive">
                 {message.messages.map((text,index) => (

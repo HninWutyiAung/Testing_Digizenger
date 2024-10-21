@@ -44,9 +44,10 @@ function Homepage (){
                     </div>
                 </div>
             ):
-                <div >
+               ( <div >
+                    
                     <ChatList activeChat={activeChat} columnHandle={columnHandle} profileBox={profileBox} className="relative"/>
-                </div>
+                </div>)
             }
             {activeChatRoom && (
                 <div className="responsive-chatbox-column">

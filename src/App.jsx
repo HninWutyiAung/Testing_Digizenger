@@ -43,15 +43,14 @@ function MainApp() {
     if (isLoggedIn) {
       const lastPath = localStorage.getItem("lastPath");
       if (lastPath === "/") {
-        localStorage.setItem("lastPath", "/home/newfeed"); // Set to home/newfeed if lastPath is "/"
+        localStorage.setItem("lastPath", "/home/newfeed"); 
       }
     }
   }, [isLoggedIn]);
 
-  // Store the current path in localStorage when it changes
   useEffect(() => {
     if (isLoggedIn) {
-      localStorage.setItem("lastPath", location.pathname); // Store path for logged-in user
+      localStorage.setItem("lastPath", location.pathname); 
     }
   }, [location.pathname, isLoggedIn]);
 

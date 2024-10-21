@@ -92,11 +92,15 @@
 }
 
 .chat-bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
-    background-image: url('images/chat bg.png');
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
+    height: 100%;
+    object-fit: cover; /* Use 'contain' if you want the entire image to be visible */
+    z-index: -1; 
 }
 
 .chat-msg-container{
