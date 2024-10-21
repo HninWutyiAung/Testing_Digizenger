@@ -2,8 +2,8 @@ import { PiPencilSimpleFill } from "react-icons/pi";
 
 const ProfileLink = () => {
     return(
-        <div>
-            <div className="w-full max-w-[349px] h-auto max-h-[68px] px-3 py-4 bg-white border-b border-[#ecf1f4] justify-start items-center gap-2 inline-flex
+        <div className="fixed top-[3.1rem] z-20">
+            <div className="w-[348px] max-w-[349px] h-auto max-h-[68px] px-3 py-4 bg-white border-b border-[#ecf1f4] justify-start items-center gap-2 inline-flex
                             sm:px-2 sm:py-3
                             md:px-2 md:py-3
                             lg:px-2 lg:py-3

@@ -73,6 +73,9 @@
     .chat-box-nav2-responsive{
         width: 40.7%!important;
     }
+    div .responsive-main-profile{
+        height: 600px;
+    }
     
 }
 .homepage_container_without_chat_room{
