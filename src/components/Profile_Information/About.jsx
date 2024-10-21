@@ -6,8 +6,24 @@ import Bright from "../../../images/Bright.png";
 import Aurelia from "../../../images/Aurelia.png";
 import Solara from "../../../images/Solara.png";
 import { useState } from "react";
+import EditAboutInfo from "./EditAboutInfo";
 
 const About = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleSaveModal = () => {
+        // Add logic to handle save changes in modal
+        setIsModalOpen(false);
+    };
+
     const [careerHistory] = useState([
         {
             companyName: "Creatix Studios",
@@ -56,7 +72,7 @@ const About = () => {
                     <div className="w-[44px] h-[20px] text-[#2C3E50] text-xl font-bold font-['DM Sans']">About</div>
                     <div className="w-[56px] h-[18px] justify-start items-center gap-2 flex">
                         <HiOutlinePlus className="w-6 h-6 text-[#2C3E50]" />
-                        <PiPencilSimpleFill className="w-6 h-6 text-[#2C3E50]" />
+                        <PiPencilSimpleFill className="w-6 h-6 text-[#2C3E50] cursor-pointer" onClick={handleOpenModal} />
                     </div>
                 </div>
                 {/* Career History */}
@@ -126,6 +142,7 @@ const About = () => {
                     </div>
                 </div>
             </div>
+            <EditAboutInfo isOpen={isModalOpen} onClose={handleCloseModal} onSave={handleSaveModal} />
         </div>
     );
 };
