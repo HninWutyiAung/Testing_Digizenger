@@ -18,7 +18,7 @@ import { useAppSelector, useAppDispatch } from './hook/Hook';
 
 function MainApp() {
   const location = useLocation();
-  const hideNav = ["/home", "/home/newfeed" , "/home/profile"];
+  const hideNav = ["/home", "/home/newfeed" , "/home/profile" ,"/home/newfeed/message"];
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(selectIsLogged);
   const navigate = useNavigate();

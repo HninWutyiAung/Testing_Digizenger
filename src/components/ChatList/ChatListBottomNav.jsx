@@ -3,10 +3,15 @@ import { TbPhoneFilled } from "react-icons/tb";
 import { IoMdNotifications } from "react-icons/io";
 import { IoMdSettings } from "react-icons/io";
 import { useState } from "react";
-function ChatListBottomNav ({activeChat}) {
+import { useNavigate } from "react-router-dom";
+function ChatListBottomNav ({setBottomValue,bottomNavValue }) {
     const [activeButton, setActiveButton] = useState ("message");
+    console.log(setBottomValue)
     const buttonHandle = (value) => {
+        console.log(value)
         setActiveButton(value);
+        setBottomValue(value);
+        console.log(bottomNavValue);
     }
     return (
         <section className="flex items-center justify-center rounded-t-[10px] w-[100%] bg-[#5f6d7b] absolute custom-blur bottom-0">

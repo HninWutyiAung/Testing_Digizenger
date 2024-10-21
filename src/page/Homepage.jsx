@@ -27,14 +27,16 @@ function Homepage (){
     return(
         <section className="homepage_container">
             <div>
-            <Routes>
-                    <Route index element={<NewFeed activeChat={activeChat} />} />
-                    <Route path="/newfeed" element={<NewFeed activeChat={activeChat} />} />
-                    <Route path="/profile" element={<Profile activeChat={activeChat}/>} />
-            </Routes>
+                <Routes>
+                        <Route index element={<NewFeed activeChat={activeChat} />} />
+                        <Route path="/newfeed" element={<NewFeed activeChat={activeChat} />} />
+                        <Route path="/profile" element={<Profile activeChat={activeChat}/>} />
+                </Routes>
             </div>
             <div >
                 <ChatList activeChat={activeChat} columnHandle={columnHandle} profileBox={profileBox} className="relative"/>
+                    
+                
             </div>
             {activeChatRoom && (
                 <div className="responsive-chatbox-column">

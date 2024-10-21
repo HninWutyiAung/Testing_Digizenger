@@ -2,7 +2,7 @@ import ChatListNav from "../components/ChatList/ChatListNav.jsx";
 import data from "../data";
 import ChatLayout from "../components/ChatList/ChatLayout";
 import { setChatList, setActiveChat, selectChatList, selectActiveChatRoom } from "../feature/chatSlice";
-import { useEffect } from "react";
+import { useEffect , useState } from "react";
 import { useAppDispatch, useAppSelector } from '../hook/Hook.ts';
 import ChatListNav2 from "../components/ChatList/ChatListNav2.jsx";
 import ChatListBottomNav from "../components/ChatList/ChatListBottomNav.jsx";
@@ -10,6 +10,9 @@ import ChatListBottomNav from "../components/ChatList/ChatListBottomNav.jsx";
 function ChatList({ activeChat, columnHandle, profileBox }) {
     const dispatch = useAppDispatch();
     const chatList = useAppSelector(selectChatList);
+    const [bottomNavValue , setBottomValue] =useState("message");
+    console.log(bottomNavValue);
+    console.log(setBottomValue);
 
     useEffect(() => {
         dispatch(setChatList(data));
@@ -25,25 +28,28 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
         console.log(id)
     };
 
-    console.log(chatList);
     return (
         <section className="relative">
             <div className="relative">
                 <ChatListNav />
                 <ChatListNav2 activeChat={activeChat} profileBox={profileBox}/>
-                <ChatListBottomNav/>
+                <ChatListBottomNav setBottomValue={setBottomValue} bottomNavValue={bottomNavValue}/>
                 <div className="h-[945px] overflow-y-auto scrollable pt-[110px] chat-list-responsive">
-                    <div onClick={columnHandle}>
-                        {chatList.map((chat) => (                            
-                                <ChatLayout
-                                key={chat.id}
-                                chat={chat}
-                                activeChat={activeChat}
-                                activeChatRoomHandle={activeChatRoomHandle}
-                            />
-                        ))}
-                    </div>
-                    <ChatListBottomNav activeChat={activeChat}/>
+                    {bottomNavValue ==="message" &&
+                        <div onClick={columnHandle}>
+                            {chatList.map((chat) => (                            
+                                    <ChatLayout
+                                    key={chat.id}
+                                    chat={chat}
+                                    activeChat={activeChat}
+                                    activeChatRoomHandle={activeChatRoomHandle}
+                                />
+                            ))}
+                        </div>
+                    }
+
+                    {bottomNavValue==="noti"&& <div>hello</div>}
+                    <ChatListBottomNav activeChat={activeChat} setBottomValue={setBottomValue}/>
                 </div>
                 
                 
