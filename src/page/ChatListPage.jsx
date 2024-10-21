@@ -6,6 +6,7 @@ import { useEffect , useState } from "react";
 import { useAppDispatch, useAppSelector } from '../hook/Hook.ts';
 import ChatListNav2 from "../components/ChatList/ChatListNav2.jsx";
 import ChatListBottomNav from "../components/ChatList/ChatListBottomNav.jsx";
+import GuardModeToggle from "../components/Profile_Information/GuardModeToggle.jsx";
 
 function ChatList({ activeChat, columnHandle, profileBox }) {
     const dispatch = useAppDispatch();
@@ -31,7 +32,8 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
     return (
         <section className="relative">
             <div className="relative">
-                <ChatListNav />
+                {/* <ChatListNav /> */}
+                <GuardModeToggle/>
                 <ChatListNav2 activeChat={activeChat} profileBox={profileBox}/>
                 <ChatListBottomNav setBottomValue={setBottomValue} bottomNavValue={bottomNavValue}/>
                 <div className="h-[945px] overflow-y-auto scrollable pt-[110px] chat-list-responsive">

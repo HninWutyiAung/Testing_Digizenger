@@ -79,6 +79,7 @@ function ChatBoxLayout () {
     const handleClickOutside = (e) => {
         if (chatRef.current && !chatRef.current.contains(e.target)) {
             setInputStyle(false);
+            setInputValue("");
         }
     };
 
@@ -94,10 +95,10 @@ function ChatBoxLayout () {
     };
 
     return (
-        <main className="">
-            {/* <img src={cover} className="chat-bg"></img> */}
+        <main className="relative">
+            <img src={cover} className="chat-bg"></img>
             <ChatBoxUserStatusNav message={message}/>
-            <section className="flex flex-col items-start pt-[150px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive">
+            <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive">
                 {message.messages.map((text,index) => (
                     <main key={text.id} className={`flex flex-col w-full ${text.sender === "server" ? "sender" : "user"}`}>
                         <div className="chat-msg-container">
@@ -147,7 +148,7 @@ function ChatBoxLayout () {
                             onClick={inputHandle}
                             className="w-[390px] h-[40px] rounded-[27px] px-[10px] outline-none responsive-chatbox-messagebox"
                         />
-                        {!inputStyle && <span className="absolute left-4 text-[#ECF1F4]">Message</span>}
+                        {!inputStyle && <span className="absolute left-4 text-black">Message</span>}
                         {inputStyle ? (
                             <i><FaCircleArrowUp className="absolute top-3 right-3 w-[25px] h-[25px] text-[#0097A7]" onClick={sendMessage}/></i>
                         ) : (

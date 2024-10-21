@@ -45,7 +45,6 @@ function Homepage (){
                 </div>
             ):
                ( <div >
-                    
                     <ChatList activeChat={activeChat} columnHandle={columnHandle} profileBox={profileBox} className="relative"/>
                 </div>)
             }
