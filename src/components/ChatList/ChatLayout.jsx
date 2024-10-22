@@ -18,15 +18,15 @@ function ChatLayout({activeChat, chat , activeChatRoomHandle}) {
                         <div className='flex flex-col justify-center items-start'>
                             <div className='flex items-center justify-between gap-[2px] w-[240px] '>
                                 <div className='flex items-center gap-[5px]'>
-                                    <span className='text-[16px] font-bold leading-7'>{chat.title}</span>
+                                    <span className='text-[14px] font-bold leading-7'>{chat.title}</span>
                                     <img src={badges} className='w-[20px] h-[20px]'></img>
                                 </div>
                                 <div>
-                                    <span className='text-[14px] text-[#7E7E8D] font-normal leading-5'>12:00PM</span>
+                                    <span className='text-[12px] text-[#7E7E8D] font-normal leading-5'>12:00PM</span>
                                 </div>
                             </div>
                             <div className='flex items-start justify-between w-[220px]'>
-                                <div className='text-[16px] font-normal leading-6 text-[#7E7E8D]'>
+                                <div className='text-[14px] font-normal leading-6 text-[#7E7E8D]'>
                                     <span>{chat.messages[lastMessage].content}</span>
                                 </div>
                                 <div className='w-[24px] h-[24px]'>

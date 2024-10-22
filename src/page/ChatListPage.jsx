@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../hook/Hook.ts';
 import ChatListNav2 from "../components/ChatList/ChatListNav2.jsx";
 import ChatListBottomNav from "../components/ChatList/ChatListBottomNav.jsx";
 import GuardModeToggle from "../components/Profile_Information/GuardModeToggle.jsx";
+import LikeNoti from "../components/Notification/LikeNoti/LikeNoti.jsx";
 
 function ChatList({ activeChat, columnHandle, profileBox }) {
     const dispatch = useAppDispatch();
@@ -18,12 +19,12 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
     useEffect(() => {
         dispatch(setChatList(data));
         if (data.length > 0) {
-            const defaultChatId = data[0].id;  // Set the first chat as default
+            const defaultChatId = data[0].id;  
             dispatch(setActiveChat(defaultChatId));
         }
     }, [dispatch]);
 
-    // Correct function invocation for click event
+
     const activeChatRoomHandle = (id) => {
         dispatch(setActiveChat(id));
         console.log(id)
@@ -34,7 +35,9 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
             <div className="relative">
                 {/* <ChatListNav /> */}
                 <GuardModeToggle/>
-                <ChatListNav2 activeChat={activeChat} profileBox={profileBox}/>
+                {bottomNavValue ==="message" &&
+                     <ChatListNav2 activeChat={activeChat} profileBox={profileBox}/>
+                }
                 <ChatListBottomNav setBottomValue={setBottomValue} bottomNavValue={bottomNavValue}/>
                 <div className="h-[945px] overflow-y-auto scrollable pt-[110px] chat-list-responsive">
                     {bottomNavValue ==="message" &&
@@ -50,7 +53,12 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
                         </div>
                     }
 
-                    {bottomNavValue==="noti"&& <div>hello</div>}
+                    {bottomNavValue==="noti"&& 
+                        <div className="">
+                            <LikeNoti/>
+                        </div>
+                    
+                    }
                     <ChatListBottomNav activeChat={activeChat} setBottomValue={setBottomValue}/>
                 </div>
                 

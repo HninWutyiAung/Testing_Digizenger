@@ -8,7 +8,7 @@
 
 }
 
-@media (max-width:1536px) {
+@media (max-width:1536px), (max-width: 2200px) {
     .homepage_container{
         height: 700px !important;
     }
@@ -36,15 +36,18 @@
     .chat-box-nav-responsive{
         width: 38% !important;
     }
-    .chat-box-nav2-responsive{
-        width: 38% !important;
-    }
     div .responsive-main-profile{
         height: 730px;
     }
+    .chat-box-nav2-responsive{
+        width: 100%!important;
+    }
+    .chat-bg{
+        height: 660px;
+    }
 }
 
-@media (max-width: 1400px) 
+@media (max-width: 1400px) ,(max-width:1480px)
 {
     .homepage_container{
         height: 600px !important;
@@ -71,7 +74,7 @@
         width: 49.9% !important;
     }
     .chat-box-nav-responsive{
-        width: 40.7% !important;
+        width: 41.5% !important;
     }
     .chat-box-nav2-responsive{
         width: 100%!important;
@@ -79,6 +82,11 @@
     div .responsive-main-profile{
         height: 600px;
     }
+    .chat-bg{
+        height: 530px;
+        width: 100%;
+    }
+
     
 }
 .homepage_container_without_chat_room{
@@ -100,7 +108,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    object-fit: cover; /* Use 'contain' if you want the entire image to be visible */
+    object-fit: cover;
     z-index: -1; 
 }
 
@@ -121,7 +129,7 @@
 }
 
 .profile-edit-box-overlay{
-    position: fixed; /* Fixed positioning for the overlay */
+    position: fixed;
     top: 5rem;
     left: 0;
     right: 0;
@@ -132,10 +140,6 @@
     width: 600px;
     height: 430px;
     border-radius: 10px;
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
-
 }
 
 .home-cover {

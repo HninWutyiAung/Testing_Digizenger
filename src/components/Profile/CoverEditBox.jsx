@@ -96,14 +96,12 @@ function CoverEditBox() {
             setCoverImage(dataURLtoFile(convertImage , "cover"));
         }
         await handleCoverUpload( uploadCoverImage);
+        setPreviewActive(false);
         
     }
 
-    // useEffect(()=>{
-    //     if(!isLoading){
-    //         dispatch(setCoverBox(false));
-    //     }
-    // })
+    console.log(coverCroppedImage);
+    console.log(imageSrc);
 
     return (
         <div className="profile-edit-box-overlay">

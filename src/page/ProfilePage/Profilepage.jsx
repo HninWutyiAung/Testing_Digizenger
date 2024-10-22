@@ -41,7 +41,7 @@ function Profile({ activeChat }) {
                 <About/>
                 {isLoading && <div className="absolute top-[25rem] left-[12rem]"><PostLoadingSpinner/></div>}
                 {isError && <div>Error loading profile data</div>}
-                {isSuccess && (
+                {/* {isSuccess && (
                     <>   
                         <div className="">
                             {
@@ -51,7 +51,7 @@ function Profile({ activeChat }) {
                             }
                         </div>
                     </>
-                )}
+                )} */}
             </div>
         </section>
     );
