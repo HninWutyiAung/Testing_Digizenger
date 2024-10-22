@@ -124,9 +124,9 @@ const Featured = () => {
                 `}
             </style>
             {/* Featured Section Component */}
-            <section className="w-[426px] h-auto flex flex-col justify-start items-start gap-3 mt-[12px]">
+            <section className="h-auto flex flex-col justify-start items-start gap-3 mt-[12px]">
                 <div className="self-stretch h-auto p-4 bg-white rounded-lg border border-solid border-[#c9dcde] flex-col justify-start items-start gap-2.5 flex">
-                    <div className="self-stretch w-[394px] flex-col justify-start items-center gap-5 flex">
+                    <div className="self-stretch flex-col justify-start items-center gap-5 flex">
                         <div className="self-stretch flex-col justify-start items-start gap-5 flex">
                             <div className="h-[30px] self-stretch justify-between items-center inline-flex">
                                 <div className="w-[88px] h-[30px] text-[#2C3E50] text-xl font-bold font-['DM Sans'] leading-[30px]">Featured</div>
@@ -136,19 +136,19 @@ const Featured = () => {
                             </div>
 
                             {/* Swiper or Scroll */}
-                            <div className="w-[394px] relative overflow-hidden">
-                                <div ref={containerRef} className="w-[394px] flex gap-2.5 overflow-x-scroll no-scrollbar">
+                            <div className="relative overflow-hidden max-w-full">
+                                <div ref={containerRef} className="flex gap-2.5 overflow-x-scroll no-scrollbar">
                                     {featuredItems.map((item) => (
-                                        <div key={item.id} className="w-[180px] flex-col justify-start items-start gap-2 inline-flex">
-                                            <img className="w-[180px] h-[100px]" src={item.imgSrc} alt={item.title} />
-                                            <div className="w-[180px] flex-col justify-start items-start flex">
-                                                <div className="w-[180px] text-left text-[#2C3E50] overflow-hidden text-ellipsis font-['DM Sans'] text-sm font-normal">
+                                        <div key={item.id} className="min-w-[180px] max-w-[200px] flex-col justify-start items-start gap-2 inline-flex">
+                                            <img className="w-full h-[100px]" src={item.imgSrc} alt={item.title} />
+                                            <div className="w-full flex-col justify-start items-start flex">
+                                                <div className="w-full text-left text-[#2C3E50] overflow-hidden text-ellipsis font-['DM Sans'] text-sm font-normal">
                                                     {item.type}
                                                 </div>
-                                                <div className="w-[180px] h-[48px] line-clamp-2 text-left text-[#2C3E50] text-ellipsis text-base font-bold font-['DM Sans']">
+                                                <div className="w-full h-[48px] line-clamp-2 text-left text-[#2C3E50] text-ellipsis text-base font-bold font-['DM Sans']">
                                                     {item.title}
                                                 </div>
-                                                <div className="w-[180px] text-[#7E7E8D] font-['DM Sans'] text-sm font-normal line-clamp-2 text-left">
+                                                <div className="w-full text-[#7E7E8D] font-['DM Sans'] text-sm font-normal line-clamp-2 text-left">
                                                     {item.description}
                                                 </div>
                                             </div>
@@ -156,7 +156,7 @@ const Featured = () => {
                                     ))}
                                 </div>
 
-                                {/* Left Arrow (only show when you can scroll left) */}
+                                {/* Left Arrow */}
                                 {canScrollLeft && (
                                     <div className="absolute left-0 top-0 h-full flex items-center justify-center bg-gradient-to-r from-white to-transparent">
                                         <button onClick={handleScrollLeft} className="p-2 bg-[#2C3E50] rounded-full">
@@ -165,7 +165,7 @@ const Featured = () => {
                                     </div>
                                 )}
 
-                                {/* Right Arrow (only show when you can scroll right) */}
+                                {/* Right Arrow */}
                                 {canScrollRight && (
                                     <div className="absolute right-0 top-0 h-full flex items-center justify-center bg-gradient-to-l from-white to-transparent">
                                         <button onClick={handleScrollRight} className="p-2 bg-[#2C3E50] rounded-full">

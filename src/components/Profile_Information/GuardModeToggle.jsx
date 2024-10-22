@@ -9,12 +9,12 @@ const GuardModeToggle = () => {
 
     return(
         <div className="fixed bg-white z-20">
-            <div className="w-[349px] max-h-[50px] h-14 p-4 justify-end items-center gap-[100px] inline-flex border
-                            sm:w-[300px] sm:h-12 sm:p-3 sm:gap-[70px] sm:max-h-[50px]
-                            md:w-[330px] md:h-12 md:p-3 md:gap-[80px] md:max-h-[50px]
-                            lg:w-[340px] lg:h-13 lg:p-4 lg:gap-[90px] lg:max-h-[50px]
-                            xl:w-[349px] xl:h-14 xl:p-4 xl:gap-[100px] xl:max-h-[50px]
-                            2xl:w-[349px] 2xl:h-14 2xl:p-4 2xl:gap-[100px] 2xl:max-h-[50px]">
+            <div className="w-[349px] p-4 justify-end items-center gap-[100px] inline-flex
+                             sm:p-3 sm:gap-[70px] 
+                             md:p-3 md:gap-[80px] 
+                             lg:p-4 lg:gap-[90px] 
+                             xl:p-4 xl:gap-[100px] 
+                             2xl:p-4 2xl:gap-[100px]">
                 <div className="justify-start items-center gap-2 flex">
                     <div className="text-[#2c3e50] text-sm font-bold font-['DM Sans'] sm:text-xs md:text-sm lg:text-base xl:text-base">Guard Mode</div>
                         <div className={`w-10 h-5 sm:w-[35px] sm:h-[18px] md:w-[38px] md:h-[19px] lg:w-[40px] lg:h-[20px] relative flex items-center cursor-pointer rounded-full shadow-inner transition-colors duration-300 ${isGuardModeOn ? 'bg-[#00BCD4]' : 'bg-[#c9dcde]'}`} onClick={handleToggle}>

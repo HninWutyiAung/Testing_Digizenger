@@ -7,7 +7,7 @@ const ProfileInformation = () =>{
         <div className="">
             <GuardModeToggle/>
             <ProfileLink/>
-            <div className="h-[945px] overflow-y-auto scrollable pt-[110px] responsive-main-profile">
+            <div className="h-[945px] overflow-y-auto scrollable pt-[118px] responsive-main-profile">
                  <ProfileMainInfo/>
             </div>
             
