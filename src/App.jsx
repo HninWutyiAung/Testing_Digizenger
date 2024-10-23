@@ -39,12 +39,13 @@ function MainApp() {
 
 
   useEffect(() => {
-    // Check if user is logged in and localStorage lastPath is "/"
     if (isLoggedIn) {
       const lastPath = localStorage.getItem("lastPath");
       if (lastPath === "/") {
         localStorage.setItem("lastPath", "/home/newfeed"); 
       }
+    }else {
+      localStorage.setItem("lastPath", "/home/newfeed");
     }
   }, [isLoggedIn]);
 

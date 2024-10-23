@@ -16,6 +16,7 @@ export default {
         lightAccent: 'var(--color-light-accent)',
         darkAccent: 'var(--color-dark-accent)',
         black: 'var(--color-black)',
+        textGrey2: 'var(--color-text-grey-2)',
       },
     },
   },

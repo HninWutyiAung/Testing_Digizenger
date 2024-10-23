@@ -1,4 +1,4 @@
-import Photos from "./Photos";
+import Photos from "./ProfileImageCollection/Photos";
 import Subscription from "./Subscription";
 import Videos from "./Videos";
 

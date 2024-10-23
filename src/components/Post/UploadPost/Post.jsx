@@ -126,9 +126,6 @@ function Post({activeChat, setpostLoading}) {
             console.error("Failed to upload post:", error);
         }finally{
             setpostLoading(false);
-            // setContent('');
-            // setImage(null);
-            // setImageFile(null);
         }
     };
 

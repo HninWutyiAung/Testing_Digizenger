@@ -33,8 +33,15 @@ export const profileApiSlice = createApi({
     }),
 
     getProfile: builder.query({
+      query: () => ({
+        url: GET_PROFILE_ENDPOINT, 
+        method: 'GET',
+      }),
+    }),
+
+    getMyPosts: builder.query({
       query: ({page,limit}) => ({
-        url: `${GET_PROFILE_ENDPOINT}?_page=${page}&_limit=${limit}`, 
+        url: `${GET_PROFILE_ENDPOINT}posts?_page=${page}&_limit=${limit}`, 
         method: 'GET',
       }),
     }),
@@ -49,4 +56,4 @@ export const profileApiSlice = createApi({
   }),
 });
 
-export const { useUploadProfileImageMutation, useGetProfileQuery , useUploadCoverImageMutation} = profileApiSlice;
+export const { useUploadProfileImageMutation, useGetProfileQuery , useUploadCoverImageMutation , useGetMyPostsQuery} = profileApiSlice;

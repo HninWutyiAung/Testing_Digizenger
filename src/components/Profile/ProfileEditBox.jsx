@@ -96,6 +96,7 @@ function ProfileEditBox() {
             setProfileImage(dataURLtoFile(convertImage , "profile"));
         }
         await handleProfileUpload( uploadProfileImage);
+        setPreviewActive(false);
         
     }
 
