@@ -28,7 +28,6 @@ function Login() {
   const navigate = useNavigate();
   const token = useAppSelector(selectToken);
 
-  console.log(token)
   useEffect(() => {
     console.log("Phone value updated:", phone);
 }, [phone]);

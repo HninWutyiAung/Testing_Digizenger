@@ -8,6 +8,8 @@ import { useRegisterUserMutation } from "../../apiService/Auth.ts";
 import { useAppDispatch, useAppSelector } from '../../hook/Hook.ts';
 import { setEmailOrPhone , setRegisterInfo, selectEmail ,selectLastName, selectFirstName} from "../../feature/authSlice.ts";
 import LoadingSpinner from "../LoadingSpinner.jsx";
+import { selectPhone } from "../../feature/authSlice.ts";
+// import { validForm } from "./authService.js";
 
 const initialState ={
     firstName: '',
@@ -37,7 +39,9 @@ function SignInfo() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const emailValue = useAppSelector(selectEmail);
+    const phoneValue = useAppSelector(selectPhone);
     console.log(emailValue);
+
     
 
     const generateDays = () => Array.from({ length: 31 }, (_, i) => i + 1);
@@ -55,7 +59,7 @@ function SignInfo() {
       }
     
       function isPhoneNumber(input) {
-        const phonePattern = /^\+?[0-9]{7,15}$/; // Adjust this regex for your use case
+        const phonePattern = /^\+?[0-9]{7,15}$/;
         return phonePattern.test(input);
       }
 
@@ -91,25 +95,31 @@ function SignInfo() {
         });
     }
 
+    console.log("Is Phone Number Valid:", isPhoneNumber(inputValue));
+
     const formSubmit = async(e) => {
         e.preventDefault();
 
-        if(isEmail){ 
-             dispatch(setEmailOrPhone({email: email, phone:null , firstName: firstName, lastName: lastName}))
-        }else{
-            dispatch(setEmailOrPhone({email:null, phone: phone , firstName: firstName, lastName: lastName}))
-        }
+        // validForm(firstName);
+
+        if(email){ 
+            dispatch(setEmailOrPhone({email: email, phone:null , firstName: firstName, lastName: lastName}))
+            console.log(email);
+       }else if(phone){ 
+           dispatch(setEmailOrPhone({email:null, phone: phone , firstName: firstName, lastName: lastName}))
+           console.log(phone);
+       }
 
         if (password===confirmPass) {  
             try {
-                const response = await registerUser({firstName,lastName,email,password,phone,dateOfBirth,gender,country,city}).unwrap(); // Call the mutation
+                const response = await registerUser({firstName,lastName,email,password,phone,dateOfBirth,gender,country,city}).unwrap();
                 console.log("Registration successful:", response);
                 
                 if (response.data) {
-                    // Handle success, like navigating to a new page
+
                 }
             } catch (error) {
-                console.error("Registra failed:", error.response ? error.response.data : error); // Handle error response
+                console.error("Registra failed:", error.response ? error.response.data : error);
             }
         } else {
             console.log("Passwords do not match.");
@@ -180,7 +190,7 @@ function SignInfo() {
                 </div>
         </div>
 
-        <form className="user_info_form_container  grid grid-cols-2 gap-2 px-4"  >
+        <form className="user_info_form_container  grid grid-cols-2 gap-2 px-4">
             <div className="user_info_form1_container space-y-4 px-5 mt-4 ml-16 " >
                 <div className="user_info_input_container flex gap-4">
                     <div className="grid w-full">
@@ -222,7 +232,7 @@ function SignInfo() {
                       <label className="block place-self-start text-slate-500 mb-[10px]">Date Of Birth:</label>
                       <div className="flex gap-3">
                           <div className="grid">
-                              <select id="day" name="day" value={selectedDay}  className="w-[96.5px] h-[40px] px-[10px] border-2 border-[#ECF1F4] rounded-[5px] text-slate-400 " onChange={(e) => handleDateChange('day', e.target.value)}>
+                              <select id="day" name="day" value={selectedDay} className="w-[96.5px] h-[40px] px-[10px] border-2 border-[#ECF1F4] rounded-[5px] text-slate-400 " onChange={(e) => handleDateChange('day', e.target.value)}>
                                     <option value="">Day</option>
                                     {generateDays().map((day) => (
                                     <option key={day} value={day}>{day}</option>
@@ -230,7 +240,7 @@ function SignInfo() {
                               </select>
                           </div>
                           <div className="">
-                              <select id="month" name="month" value={selectedMonth}  className="w-[96.5px] h-[40px] px-[10px] text-slate-400 rounded-[5px] border-2 border-[#ECF1F4]" onChange={(e) => handleDateChange('month', e.target.value)}>
+                              <select id="month" name="month" value={selectedMonth} className="w-[96.5px] h-[40px] px-[10px] text-slate-400 rounded-[5px] border-2 border-[#ECF1F4]" onChange={(e) => handleDateChange('month', e.target.value)}>
                                         <option value="">Month</option>
                                         {generateMonths().map((month) => (
                                         <option key={month} value={month}>{month}</option>
@@ -373,7 +383,7 @@ function SignInfo() {
                 </div>
                 <label htmlFor="agree" className="user_info_agree text-[#8C8CA1] ml-2  text-left">By singing up,you accept our terms,privacy policy and cookie policy. policy and cookie policy.policy and cookie policy</label>
             </div>
-              <button type="submit"  onClick={formSubmit} className="w-[315px] user_info_button px-14 py-1 mt-[20px] text-lg  font-semibold  bg-[#0097A7] text-white rounded-md">
+              <button type="submit"  disabled={!checked} onClick={formSubmit} className={`w-[315px] user_info_button px-14 py-1 mt-[20px] text-lg  font-semibold  bg-[#0097A7] text-white rounded-md ${checked? "opacity-1 cursor-pointer " : "opacity-50 cursor-not-allowed"}`}>
                 <span className=" flex items-center justify-center w-full  h-full">Sign Up</span>
               </button>
             

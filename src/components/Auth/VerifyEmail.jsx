@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link,useNavigate} from "react-router-dom";
 import { useVerifyEmailOrPhoneMutation } from "../../apiService/Auth";
 import { useAppSelector } from "../../hook/Hook";
-import { selectEmail } from "../../feature/authSlice";
+import { selectEmail,selectPhone } from "../../feature/authSlice";
 
 function VerifyEmail (){
 
@@ -11,8 +11,10 @@ function VerifyEmail (){
     const [timer, setTimer] = useState("60");
     const [verifyEmailOrPhone,{isLoading, isError, isSuccess}] = useVerifyEmailOrPhoneMutation();
     const email = useAppSelector(selectEmail);
+    const phone = useAppSelector(selectPhone);  
     const navigate = useNavigate();
     console.log(typeof code);
+    console.log(phone)
 
 
   useEffect(()=>{
@@ -34,7 +36,6 @@ function VerifyEmail (){
 
   const handleChange = (e) => {
     const value = e.target.value;
-    // Only accept numbers and limit input to 6 digits
     if (/^\d{0,6}$/.test(value)) {
       setCode(value);
     }
@@ -47,9 +48,11 @@ function VerifyEmail (){
   };
 
   const handleVerify = async () => {
+    const emailOrPhone = email || phone;
+
     if(code){
         try {
-            const result = await verifyEmailOrPhone({ emailOrPhone: email, otp: Number(code) }).unwrap();
+            const result = await verifyEmailOrPhone({ emailOrPhone: emailOrPhone, otp: Number(code) }).unwrap();
             console.log("Verification successful:", result);
         } catch (error) {
             console.error("Verification failed:", error);
