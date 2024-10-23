@@ -1,20 +1,22 @@
 import { useState, useEffect } from "react";
 import { Link,useNavigate} from "react-router-dom";
-import { useVerifyEmailOrPhoneMutation } from "../../apiService/Auth";
+import { useVerifyEmailOrPhoneMutation , useResendCodeMutation} from "../../apiService/Auth";
 import { useAppSelector } from "../../hook/Hook";
 import { selectEmail,selectPhone } from "../../feature/authSlice";
+import {RingLoader} from 'react-spinners';
 
 function VerifyEmail (){
 
     const [code, setCode] = useState("");
     const [isTimeOut, setTimeOut] =useState(false);
     const [timer, setTimer] = useState("60");
-    const [verifyEmailOrPhone,{isLoading, isError, isSuccess}] = useVerifyEmailOrPhoneMutation();
+    const [verifyEmailOrPhone,{isLoading: verifyLoading, isError, isSuccess}] = useVerifyEmailOrPhoneMutation();
+    const [resendCode,{isLoading: resendLoading}] = useResendCodeMutation();
     const email = useAppSelector(selectEmail);
     const phone = useAppSelector(selectPhone);  
     const navigate = useNavigate();
     console.log(typeof code);
-    console.log(phone)
+
 
 
   useEffect(()=>{
@@ -68,10 +70,11 @@ useEffect(()=> {
 })
 
     const handleResendCode = async () => {
+        const emailOrPhone = email || phone;
         try {
-            const response = await resendCode(email).unwrap();
+            const response = await resendCode(emailOrPhone).unwrap();
             console.log("Resend code successful" , response);
-            setTimer(60); // Reset timer
+            setTimer(60); 
             setTimeOut(false);
         } catch (error) {
             console.error("Failed to resend code:", error);
@@ -80,7 +83,7 @@ useEffect(()=> {
 
     return(
         <section className="flex justify-center pt-[100px]">
-            <main className="verify_header text-wrap  max-width-[375px] px-[20px]">
+            <main className="verify_header text-wrap max-width-[375px] px-[20px]">
                 <div>
                     <article className="grid text-wrap ">
                         <h1 className=" text-[32px] font-semibold justify-self-start"><span className="text-[#00BCD4]">Verify </span> Your Email</h1>
@@ -90,6 +93,17 @@ useEffect(()=> {
                         </div>
                     </article>
                 </div>
+                {verifyLoading && (
+                    <div className="absolute left-[48%]">
+                        <RingLoader color="#0097A7" size={50} loading={verifyLoading} />
+                    </div>
+                    )}
+                {resendLoading && (
+                    <div className="absolute left-[48%]">
+                        <RingLoader color="#0097A7" size={50} loading={resendLoading} />
+                        {console.log('Resend loading is active')}
+                    </div>
+                )}
                 <div className="relative w-full mt-[20px] mb-[20px]">
                     <input
                     type="text"
@@ -103,7 +117,7 @@ useEffect(()=> {
                 </div>
                 <p style={{ color: isTimeOut ? "red" : "black" }}>
                     {isTimeOut
-                        ? <span>Time is up. <button onClick={handleResendCode} className="text-blue-500">Resend Code</button></span>
+                        ? <span>Time is up. <button onClick={handleResendCode} className={`text-blue-500 ${resendLoading ? 'cursor-not-allowed opacity-50' : ''}`}>Resend Code</button></span>
                         : `Time remaining: ${timeFormat(timer)}`}
                 </p>
                 
