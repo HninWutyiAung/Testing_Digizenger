@@ -226,7 +226,7 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
     return (
         <div className="fixed inset-0 bg-[#00000080] bg-opacity-50 z-[999] flex flex-col justify-center items-center">
             {isAboutInfoVisible && (
-            <div className="2xl:w-[790px] 2xl:h-[500px] xl:w-[700px] xl:h-[450px] lg:w-[600px] lg:h-[400px] md:w-[500px] md:h-[350px] sm:h-[300px] sm:w-[400px] relative bg-white rounded-lg border border-solid border-[#c9dcde] overflow-hidden flex flex-col">
+            <div className="w-full max-w-[400px] h-full max-h-[300px] 2xl:max-w-[790px] 2xl:max-h-[500px] xl:max-w-[700px] xl:max-h-[450px] lg:max-w-[600px] lg:max-h-[400px] md:max-w-[500px] md:max-h-[350px] sm:max-h-[300px] sm:max-w-[400px] relative bg-white rounded-lg border border-solid border-[#c9dcde] overflow-hidden flex flex-col">
                 <div className="w-full p-3 bg-[#ecf1f4] border-b border-solid border-[#ecf1f4] justify-start items-center gap-2.5 inline-flex">
                     <div className="text-center text-[#2c3e50] text-lg font-bold font-['DM Sans']">Edit About Info</div>
                 </div>
