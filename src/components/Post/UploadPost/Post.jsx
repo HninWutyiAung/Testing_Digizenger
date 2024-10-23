@@ -33,8 +33,6 @@ function Post({activeChat, setpostLoading}) {
     const lastName = loginInfo.LoginLastName;
     const uploadPImageUrl = loginImage.profileUploadImageUrl;
 
-    console.log(uploadPImageUrl);
-
 
     const handleAudienceSelect = (audience) => {
         setSelectedAudience(audience); 
