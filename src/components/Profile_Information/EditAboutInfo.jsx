@@ -147,7 +147,7 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
         logoUrl: 'https://via.placeholder.com/60x60', 
         },
     ]);
-    // Start Education Modal logic
+    
     const [isEducationModalOpen, setIsEducationModalOpen] = useState(false);
     const [isAddEducationModalOpen, setIsAddEducationModalOpen] = useState(false);
     const [currentEducation, setCurrentEducation] = useState(null);
@@ -185,7 +185,6 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
         setEducationHistory((prev) => [...prev, newEducation]);
         handleCloseAddEducationModal();
     };
-    // End Education Modal logic
     // End Education History
 
     //Start Service Provided
@@ -423,7 +422,7 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
             {isAddCareerModalOpen && <AddCareerHistory isOpenAddCar={isAddCareerModalOpen} onClose={handleCloseAddCareerModal} onSave={handleAddCareer} />}
             {isAddEducationModalOpen && <AddEducation isOpenAddEdu={isAddEducationModalOpen} onClose={handleCloseAddEducationModal} onSave={handleAddEducation}/>}
             {isEducationModalOpen && <EditEducation isOpenEditEdu={isEducationModalOpen} onClose={handleCloseEducationModal} onSave={handleSaveEducation} education={currentEducation}/>}
-            <AddServices isOpenAddSer={isAddServiceModalOpen} onClose={handleCloseAddServiceModal} onSave={handleSaveServices} existingServices={services}/>
+            {isAddServiceModalOpen && <AddServices isOpenAddSer={isAddServiceModalOpen} onClose={handleCloseAddServiceModal} onSave={handleSaveServices} existingServices={services}/>}
         </div>
     );
 };

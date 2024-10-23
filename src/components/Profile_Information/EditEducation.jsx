@@ -1,4 +1,3 @@
-// EditEducation.jsx
 import React, { useState, useEffect } from 'react';
 
 const EditEducation = ({ isOpenEditEdu, onClose, onSave, education }) => {

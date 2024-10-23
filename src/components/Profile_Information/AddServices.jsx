@@ -7,7 +7,6 @@ const AddServices = ({ isOpenAddSer, onClose, onSave, existingServices = [] }) =
     const [newService, setNewService] = useState('');
     const [services, setServices] = useState([]);
 
-    // Load existing services when the modal opens
     useEffect(() => {
         setServices(existingServices);
     }, [existingServices]);
@@ -15,7 +14,7 @@ const AddServices = ({ isOpenAddSer, onClose, onSave, existingServices = [] }) =
     const handleAddService = () => {
         if (newService.trim() !== '' && !services.includes(newService)) {
             setServices([...services, newService]);
-            setNewService(''); // Clear input after adding
+            setNewService(''); 
         }
     };
 
@@ -24,15 +23,14 @@ const AddServices = ({ isOpenAddSer, onClose, onSave, existingServices = [] }) =
     };
 
     const handleSave = () => {
-        onSave(services); // Pass the updated list of services back to the parent
-        onClose(); // Close the modal and re-show the EditAboutInfo
+        onSave(services); 
+        onClose(); 
     };
 
-    // Add service when "Enter" key is pressed
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-            e.preventDefault(); // Prevent default form submission or newline behavior
-            handleAddService(); // Call function to add service
+            e.preventDefault(); 
+            handleAddService(); 
         }
     };
 
@@ -47,7 +45,7 @@ const AddServices = ({ isOpenAddSer, onClose, onSave, existingServices = [] }) =
                         type="text"
                         value={newService}
                         onChange={(e) => setNewService(e.target.value)}
-                        onKeyDown={handleKeyDown} // Handle Enter key press
+                        onKeyDown={handleKeyDown} 
                         className="w-full px-3 py-2 border border-[#c9dcde] rounded-lg"
                         placeholder="Enter a service..."
                     />

@@ -1,4 +1,3 @@
-// AddEducation.jsx
 import React, { useState } from 'react';
 
 const AddEducation = ({ isOpenAddEdu, onClose, onSave }) => {
@@ -9,11 +8,11 @@ const AddEducation = ({ isOpenAddEdu, onClose, onSave }) => {
 
     const handleSave = () => {
         const newEducation = {
-            id: Date.now(),  // Assign a unique ID
+            id: Date.now(),
             degree,
             institution,
             period,
-            logoUrl: logoUrl || 'https://via.placeholder.com/60x60', // Default logo if not provided
+            logoUrl: logoUrl || 'https://via.placeholder.com/60x60',
         };
 
         onSave(newEducation);
