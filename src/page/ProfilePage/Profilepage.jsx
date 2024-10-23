@@ -3,7 +3,7 @@ import ProfileCover from "../../components/Profile/ProfileCover";
 import NewFeedNav from "../../components/NewFeed Nav/NewFeedNav";
 import MenuNav from "../../components/NewFeed Nav/MenuNav2";
 import ShowPost from "../../components/Post/AllPostForNewfeed/ShowPost";
-import { useGetProfileQuery } from "../../apiService/Profile";
+import { useGetProfileQuery , useGetMyPostsQuery } from "../../apiService/Profile";
 import PostLoadingSpinner from "../../components/LoadingSpinner";
 import { useAppDispatch } from "../../hook/Hook";
 import { setRegisterInfo } from "../../feature/authSlice";
@@ -14,7 +14,8 @@ import About from "../../components/Profile_Information/About";
 function Profile({ activeChat }) {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
-    const { data: profile, isSuccess, isLoading, isError } = useGetProfileQuery({page,limit});
+    const { data: profile, isSuccess, isLoading, isError } = useGetProfileQuery();
+    const {data: myPost , isSuccess: myPostSuccess , isLoading: myPostLoading, isError: myPostError} = useGetMyPostsQuery({page,limit})
     const [posts, setPosts] = useState([]);
     const [userName, setUserName] = useState({ firstName: '', lastName: '' });
     const dispatch = useAppDispatch();
@@ -22,12 +23,19 @@ function Profile({ activeChat }) {
     useEffect(() => {
         if (isSuccess && profile) {
             IMageForMyProfile(profile);
-            setPosts(profile.profileDto.userForProfileDto.postDtoList);
             const { firstName, lastName } = profile.profileDto.userForProfileDto;
             setUserName({ firstName, lastName }); 
             dispatch(setRegisterInfo({ firstName, lastName }));
         }
     }, [isSuccess, profile, dispatch]);
+
+    useEffect(()=>{
+        if(myPostSuccess && myPost){
+            setPosts(myPost.postDtoList);
+        }
+    }, [myPostLoading, myPost])
+
+    console.log(posts);
 
     return (
         <section>
@@ -39,11 +47,11 @@ function Profile({ activeChat }) {
                 <ProfileCover firstName={userName.firstName} lastName={userName.lastName} />
                 <Featured/>
                 <About/>
-                {isLoading && <div className="absolute top-[25rem] left-[12rem]"><PostLoadingSpinner/></div>}
-                {isError && <div>Error loading profile data</div>}
-                {/* {isSuccess && (
+                {myPostLoading && <div className="absolute top-[25rem] left-[12rem]"><PostLoadingSpinner/></div>}
+                {myPostError && <div>Error loading profile data</div>}
+                {myPostSuccess && (
                     <>   
-                        <div className="">
+                        <div>
                             {
                                 posts.map((profilePost) => (
                                     <ShowPost key={profilePost.id} activeChat={activeChat} post={profilePost} setPosts={setPosts} />
@@ -51,7 +59,7 @@ function Profile({ activeChat }) {
                             }
                         </div>
                     </>
-                )} */}
+                )}
             </div>
         </section>
     );
