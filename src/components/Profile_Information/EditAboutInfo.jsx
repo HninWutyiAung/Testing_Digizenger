@@ -65,23 +65,26 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
     const [careerHistory, setCareerHistory] = useState([
         {
             id: 1,
-            title: 'Senior UI/UX Designer',
+            designation: 'Senior UI/UX Designer',
             company: 'Creatix Studios',
-            period: '2021 – Present',
+            startDate: '2021',
+            endDate: 'Present',
             logoUrl: 'https://via.placeholder.com/60x60',
         },
         {
             id: 2,
-            title: 'Former UI/UX Designer',
+            designation: 'Former UI/UX Designer',
             company: 'Innovate Design Co.',
-            period: '2017 – 2021',
+            startDate: '2017',
+            endDate: '2021',
             logoUrl: 'https://via.placeholder.com/60x60',
         },
         {
             id: 3,
-            title: 'Former Junior UI/UX Designer',
+            designation: 'Former Junior UI/UX Designer',
             company: 'Bright Ideas Agency',
-            period: '2014 – 2017',
+            startDate: '2014',
+            endDate: '2017',
             logoUrl: 'https://via.placeholder.com/60x60',
         },
     ]);
@@ -336,14 +339,14 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
                                         <div className="grow shrink basis-0 h-[69px] justify-between items-start flex">
                                             <div className="flex-col justify-start items-start inline-flex">
                                                 <div className="text-[#2c3e50] text-sm font-bold font-['DM Sans']">
-                                                    {career.title}
+                                                    {career.designation}
                                                 </div>
                                                 <div className="flex-col justify-start items-start flex">
                                                     <div className="text-[#2c3e50] text-sm font-normal font-['DM Sans']">
                                                         {career.company}
                                                     </div>
                                                     <div className="text-[#2c3e50] text-xs font-normal font-['DM Sans']">
-                                                        {career.period}
+                                                        {career.startDate} – {career.endDate}
                                                     </div>
                                                 </div>
                                             </div>
