@@ -90,9 +90,9 @@ function CoverEditBox() {
     };
 
     const handleCoverUploadImage = async () => {
-        const convertImage = coverCroppedImage;
+        const convertImage = imageSrc || coverCroppedImage;
 
-        if(coverCroppedImage){
+        if(convertImage){
             setCoverImage(dataURLtoFile(convertImage , "cover"));
         }
         await handleCoverUpload( uploadCoverImage);
