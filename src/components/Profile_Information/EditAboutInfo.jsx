@@ -411,10 +411,10 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
                 </div>
                 {/* Start Cancle and Save Button */}
                 <div className="w-full py-2 px-4 bg-white border-t border-[#ecf1f4] flex justify-end items-center gap-4">
-                    <div className="w-24 px-6 py-2 bg-[#ecf1f4] rounded-lg flex justify-center items-center cursor-pointer" onClick={onClose}>
+                    <div className="w-24 px-6 py-2 bg-[#ecf1f4] rounded-lg flex justify-center items-center cursor-pointer hover:bg-[#d0e3e6]" onClick={onClose}>
                         <div className="text-[#2c3e50] text-sm font-bold font-['DM Sans']">Cancel</div>
                     </div>
-                    <div className="w-24 px-6 py-2 bg-[#0097a7] rounded-lg flex justify-center items-center cursor-pointer" onClick={onSave}>
+                    <div className="w-24 px-6 py-2 bg-[#0097a7] rounded-lg flex justify-center items-center cursor-pointer hover:bg-[#007f82]" onClick={onSave}>
                         <div className="text-white text-sm font-bold font-['DM Sans']">Save</div>
                     </div>
                 </div>
