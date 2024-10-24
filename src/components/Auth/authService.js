@@ -25,3 +25,10 @@ export const handleSubmit = async (e, activeForm, email, phone, password, loginU
   };
 
   export const RECAPTCHA_SITE_KEY = "6LdJnUEqAAAAAOBrwZRBiDZw_yKwqNSsKW7EU7Pt"; 
+
+
+  // export const validForm = (firstName) => {    
+  //     if(firstName === " "){
+  //         console.log("First Name is required");
+  //     }
+  // }

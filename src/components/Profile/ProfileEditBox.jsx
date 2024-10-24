@@ -90,7 +90,7 @@ function ProfileEditBox() {
     };
 
     const handleProfileUploadImage = async () => {
-        const convertImage = imageSrc || croppedImage;
+        const convertImage = croppedImage || imageSrc;
 
         if(convertImage){
             setProfileImage(dataURLtoFile(convertImage , "profile"));

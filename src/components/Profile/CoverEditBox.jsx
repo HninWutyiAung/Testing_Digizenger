@@ -54,6 +54,7 @@ function CoverEditBox() {
                 const croppedImageDataUrl = await getCoverCroppedImg(imageSrc, croppedAreaPixels, rotation);
                 setCoverCroppedImage(croppedImageDataUrl); 
                 setShowCropper(false);
+                setPreviewActive(true);
             } catch (error) {
                 console.error("Error cropping image:", error);
             }
@@ -90,18 +91,16 @@ function CoverEditBox() {
     };
 
     const handleCoverUploadImage = async () => {
-        const convertImage = imageSrc || coverCroppedImage;
+        const convertImage = coverCroppedImage || imageSrc;
 
         if(convertImage){
-            setCoverImage(dataURLtoFile(convertImage , "cover"));
+            setCoverImage(dataURLtoFile(convertImage, "cover"));
         }
         await handleCoverUpload( uploadCoverImage);
         setPreviewActive(false);
         
     }
-
-    console.log(coverCroppedImage);
-    console.log(imageSrc);
+    // console.log(coverCroppedImage);
 
     return (
         <div className="profile-edit-box-overlay">

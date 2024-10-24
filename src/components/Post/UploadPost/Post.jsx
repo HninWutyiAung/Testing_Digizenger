@@ -33,8 +33,6 @@ function Post({activeChat, setpostLoading}) {
     const lastName = loginInfo.LoginLastName;
     const uploadPImageUrl = loginImage.profileUploadImageUrl;
 
-    console.log(uploadPImageUrl);
-
 
     const handleAudienceSelect = (audience) => {
         setSelectedAudience(audience); 
@@ -194,7 +192,10 @@ function Post({activeChat, setpostLoading}) {
 
                                 {postStatus &&(
                                     <div className='flex flex-col gap-[10px] absolute items-start bg-accent left-16 top-200 z-20 p-[20px] w-[300px]'>
-                                        <span>Who can see you post?</span>
+                                        <div className='flex justify-between self-stretch items-center'>
+                                            <span>Who can see you post?</span>
+                                            <div onClick={handlePostStatus}><IoCloseOutline /></div>
+                                        </div>
                                         <span>Choose who can see your post.<br /></span>
                                         <span className='text-left'>Everyone you mentioned in the post can still see it.</span>
                                         <div className='flex flex-col gap-[5px]'>

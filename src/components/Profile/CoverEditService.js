@@ -5,7 +5,6 @@ console.log(coverImageUrl)
 
 export const setCoverImage = (image) => {
     coverImage = image; 
-    console.log(coverImage);
 };
 
 export default function getCoverCroppedImg(imageSrc, croppedAreaPixels, rotation = 0) {
@@ -66,7 +65,6 @@ export const handleCoverUpload = async (uploadCoverImage) =>{
 
     const formData = new FormData();
     formData.append('file', coverImage);
-    console.log(coverImage)
 
     try{
         const response = await uploadCoverImage(formData).unwrap();

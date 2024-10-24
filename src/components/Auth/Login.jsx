@@ -28,7 +28,6 @@ function Login() {
   const navigate = useNavigate();
   const token = useAppSelector(selectToken);
 
-  console.log(token)
   useEffect(() => {
     console.log("Phone value updated:", phone);
 }, [phone]);
@@ -170,7 +169,7 @@ function Login() {
                         
                     />
                 </div>
-                <button type="submit" onClick={handleLogin} className="py-[10px] bg-secondary login_input_box w-[350px] justify-self-center text-background rounded-lg" disabled={!recaptcha}>Login</button>
+                <button type="submit" onClick={handleLogin} className="py-[10px] bg-secondary login_input_box w-[350px] justify-self-center text-background rounded-lg" >Login</button>
                 <div className="w-[350px] bg-slate-100 h-[2px] login_input_box justify-self-center mt-[-5px]"></div>
                 <div className="justify-self-center mt-[15px]">
                     <span className="text-slate-400">Not On Digizenger Yet?</span>
@@ -220,7 +219,7 @@ function Login() {
                         grecaptcha={grecaptchaObject}
                     />
                 </div>
-                <button type="submit" onClick={handleLogin} className="py-[10px] bg-secondary w-[350px] login_input_box justify-self-center text-background rounded-lg" disabled={!recaptcha}>Login</button>
+                <button type="submit" onClick={handleLogin} className="py-[10px] bg-secondary w-[350px] login_input_box justify-self-center text-background rounded-lg" >Login</button>
                 <div className="w-[350px] login_input_box bg-slate-100 h-[2px] justify-self-center mt-[-5px]"></div>
                 <div className="justify-self-center mt-[15px]">
                     <span className="text-slate-400 login_account_button login_input_box">Not On Digizenger Yet?</span>

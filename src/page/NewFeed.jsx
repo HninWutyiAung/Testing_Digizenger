@@ -26,7 +26,7 @@ function NewFeed({ activeChat }) {
 
     const { data, isSuccess, isLoading } = useGetPostQuery(
         { page, limit },
-        { skip: page === 1 && posts.length > 0 }
+        { skip: page === 0 && posts.length > 0 }
     );
 
     useEffect(() => {
@@ -40,6 +40,8 @@ function NewFeed({ activeChat }) {
 
                 if (newPosts.length < limit) {
                     setHasMore(false);
+                }else if(newPosts.length === limit){
+                    setHasMore(true);
                 }
             });
         }
@@ -47,7 +49,7 @@ function NewFeed({ activeChat }) {
 
     useEffect(() => {
         const observer = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting) {
+            if (entries[0].isIntersecting && hasMore) {
                 setPage(prevPage => prevPage + 1);
             }
         }, { threshold: 0.5 });
@@ -59,7 +61,7 @@ function NewFeed({ activeChat }) {
     }, [hasMore]);
 
     useEffect(() => {
-        console.log(`Requesting page: ${page}, limit: ${limit}`);
+        console.log(`Requesting page: ${page}, limit: ${limit} , hasMor : ${hasMore}`);
     }, [page, limit]);
 
     useEffect(() => {

@@ -43,8 +43,9 @@ export const authApi = createApi({
     resendCode: builder.mutation({
       query: (emailOrPhone) => {
         return {
-          url: `${RESEND_CODE_ENDPOINT}?emailOrPhone=${emailOrPhone}`, 
+          url: RESEND_CODE_ENDPOINT, 
           method: 'PUT',
+          params: { emailOrPhone},
           headers: {
             'Content-Type': 'application/json',
           },

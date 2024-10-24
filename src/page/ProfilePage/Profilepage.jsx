@@ -42,19 +42,21 @@ function Profile({ activeChat }) {
             <NewFeedNav activeChat={activeChat} />
             <MenuNav activeChat={activeChat} />
             
-            <div className="flex relative flex-col p-[20px] pt-[140px] bg-[#ECF1F4] gap-[12px] w-full h-[945px] overflow-y-auto scrollable newfeed-responsive">
+            <div className="flex relative flex-col p-[20px] pt-[140px] bg-accent gap-[12px] w-full h-[945px] overflow-y-auto scrollable newfeed-responsive">
 
                 <ProfileCover firstName={userName.firstName} lastName={userName.lastName} />
                 <Featured/>
                 <About/>
-                {myPostLoading && <div className="absolute top-[25rem] left-[12rem]"><PostLoadingSpinner/></div>}
+                {myPostLoading && <div className=" "><PostLoadingSpinner/></div>}
                 {myPostError && <div>Error loading profile data</div>}
                 {myPostSuccess && (
                     <>   
                         <div>
                             {
                                 posts.map((profilePost) => (
-                                    <ShowPost key={profilePost.id} activeChat={activeChat} post={profilePost} setPosts={setPosts} />
+                                    <div className="mt-[10px]">
+                                        <ShowPost key={profilePost.id} activeChat={activeChat} post={profilePost} setPosts={setPosts}/>
+                                    </div>
                                 ))
                             }
                         </div>

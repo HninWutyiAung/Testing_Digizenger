@@ -15,8 +15,9 @@ import {coverImageUrl} from './CoverEditService'
 
  
 function ProfileCover (){
-    const firstName = useAppSelector(selectFirstName);
-    const lastName = useAppSelector(selectLastName);
+    const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
+    const firstName = loginInfo.LoginFirstName;
+    const lastName = loginInfo.LoginLastName;
     const dispatch = useAppDispatch();
 
     const profileHandleBox = () =>{
