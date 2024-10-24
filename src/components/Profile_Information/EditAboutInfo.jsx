@@ -5,10 +5,8 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { PiPencilSimpleFill } from "react-icons/pi";
 import { PiList } from "react-icons/pi";
 import { IoCloseCircle } from "react-icons/io5";
-import EditCareerHistory from './EditCareerHistory';
 import AddAndUpdateCareerHistory from './AddAndUpdateCareerHistory';
 import AddAndUpdateEducation from './AddAndUpdateEducation';
-import EditEducation from './EditEducation';
 import AddServices from './AddServices';
 
 const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
