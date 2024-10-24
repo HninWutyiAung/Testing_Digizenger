@@ -6,8 +6,8 @@ import { PiPencilSimpleFill } from "react-icons/pi";
 import { PiList } from "react-icons/pi";
 import { IoCloseCircle } from "react-icons/io5";
 import EditCareerHistory from './EditCareerHistory';
-import AddCareerHistory from './AddCareerHistory';
-import AddEducation from './AddEducation';
+import AddAndUpdateCareerHistory from './AddAndUpdateCareerHistory';
+import AddAndUpdateEducation from './AddAndUpdateEducation';
 import EditEducation from './EditEducation';
 import AddServices from './AddServices';
 
@@ -90,69 +90,61 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
     ]);
 
     const [isCareerModalOpen, setIsCareerModalOpen] = useState(false);
-    const [isAddCareerModalOpen, setIsAddCareerModalOpen] = useState(false);
     const [currentCareer, setCurrentCareer] = useState(null);
-    const [isAboutInfoVisible, setIsAboutInfoVisible] = useState(true); 
-
+    const [isAboutInfoVisible, setIsAboutInfoVisible] = useState(true);
+   
+       
     const handleOpenCareerModal = (career = null) => {
         setCurrentCareer(career);
-        setIsCareerModalOpen(true); 
+        setIsCareerModalOpen(true);
         setIsAboutInfoVisible(false);
     };
 
     const handleCloseCareerModal = () => {
         setIsCareerModalOpen(false);
-        setIsAboutInfoVisible(true);  
+        setIsAboutInfoVisible(true);
         setCurrentCareer(null);
     };
-
+   
     const handleSaveCareer = (newCareer) => {
         if (currentCareer) {
-            setCareerHistory((prev) => 
-                prev.map((career) => (career.id === currentCareer.id ? newCareer : career))
+            
+            setCareerHistory((prev) =>
+                prev.map((career) =>
+                    career.id === newCareer.id ? newCareer : career
+                )
             );
         } else {
+            
             setCareerHistory((prev) => [...prev, newCareer]);
         }
         handleCloseCareerModal();
-    };
-
-    const handleOpenAddCareerModal = () => {
-        setIsAddCareerModalOpen(true);
-        setIsAboutInfoVisible(false); 
-    };
-
-    const handleCloseAddCareerModal = () => {
-        setIsAddCareerModalOpen(false);
-        setIsAboutInfoVisible(true);
-    };
-
-    const handleAddCareer = (newCareer) => {
-        setCareerHistory((prev) => [...prev, newCareer]);
-        handleCloseAddCareerModal();
     };
     //End Career
 
     // Start Education History 
     const [educationHistory, setEducationHistory] = useState([
         {
-        id: 1,
-        degree: 'Bachelor of Computer Science',
-        institution: 'Aurelia Institute of Technology',
-        period: '2021 – 2022',
-        logoUrl: 'https://via.placeholder.com/60x60', 
+            id: 1,
+            school: 'Aurelia Institute of Technology', 
+            degree: 'Bachelor of Computer Science',    
+            study: 'Computer Science',                 
+            startDate: '2021',                         
+            endDate: '2022',                           
+            logoUrl: 'https://via.placeholder.com/60x60', 
         },
         {
-        id: 2,
-        degree: 'Diploma in Art in Digital Communication',
-        institution: 'University of Solara',
-        period: '2015 – 2019',
-        logoUrl: 'https://via.placeholder.com/60x60', 
+            id: 2,
+            school: 'University of Solara',            
+            degree: 'Diploma in Art in Digital Communication', 
+            study: 'Digital Communication',            
+            startDate: '2015',                         
+            endDate: '2019',                           
+            logoUrl: 'https://via.placeholder.com/60x60', 
         },
-    ]);
+    ]);    
     
     const [isEducationModalOpen, setIsEducationModalOpen] = useState(false);
-    const [isAddEducationModalOpen, setIsAddEducationModalOpen] = useState(false);
     const [currentEducation, setCurrentEducation] = useState(null);
 
     const handleOpenEducationModal = (education = null) => {
@@ -167,27 +159,21 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
         setCurrentEducation(null);
     };
 
-    const handleSaveEducation = (updatedEducation) => {
-        setEducationHistory(prev =>
-            prev.map(edu => (edu.id === currentEducation.id ? updatedEducation : edu))
-        );
+    const handleSaveEducation = (newEducation) => {
+        if (currentEducation) {
+            
+            setEducationHistory((prev) =>
+                prev.map((education) =>
+                    education.id === newEducation.id ? newEducation : education
+                )
+            );
+        } else {
+            
+            setEducationHistory((prev) => [...prev, newEducation]);
+        }
         handleCloseEducationModal();
     };
-
-    const handleOpenAddEducationModal = () => {
-        setIsAddEducationModalOpen(true);
-        setIsAboutInfoVisible(false);
-    };
-
-    const handleCloseAddEducationModal = () => {
-        setIsAddEducationModalOpen(false);
-        setIsAboutInfoVisible(true);
-    };
-
-    const handleAddEducation = (newEducation) => {
-        setEducationHistory((prev) => [...prev, newEducation]);
-        handleCloseAddEducationModal();
-    };
+    
     // End Education History
 
     //Start Service Provided
@@ -322,7 +308,7 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
                     <div className="self-stretch bg-white flex-col justify-start items-start gap-3 flex">
                         <div className="self-stretch justify-between items-center inline-flex">
                             <div className="text-[#2c3e50] text-base font-bold font-['DM Sans']">Career History</div>
-                            <div className="justify-start items-center gap-3 flex cursor-pointer" onClick={handleOpenAddCareerModal}>
+                            <div className="justify-start items-center gap-3 flex cursor-pointer" onClick={() => handleOpenCareerModal()}>
                                 <AiOutlinePlus className="w-6 h-6 relative"/>
                             </div>
                         </div>
@@ -363,7 +349,7 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
                     <div className="self-stretch bg-white flex-col justify-start items-start gap-3 flex">
                         <div className="self-stretch justify-between items-center inline-flex">
                             <div className="text-[#2c3e50] text-base font-bold font-['DM Sans']">Education</div>
-                            <div className="justify-start items-center gap-3 flex cursor-pointer" onClick={handleOpenAddEducationModal}>
+                            <div className="justify-start items-center gap-3 flex cursor-pointer" onClick={() => handleOpenEducationModal()}>
                                 <AiOutlinePlus className="w-6 h-6 relative" />
                             </div>
                         </div>
@@ -378,7 +364,7 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
                                                 <div className="text-[#2c3e50] text-sm font-bold font-['DM Sans'] leading-normal">{education.school}</div>
                                                 <div className="flex-col justify-start items-start flex">
                                                     <div className="text-[#2c3e50] text-sm font-normal font-['DM Sans'] leading-normal">{education.degree}</div>
-                                                    <div className="text-[#2c3e50] text-xs font-normal font-['DM Sans'] leading-[21px]">{education.period}</div>
+                                                    <div className="text-[#2c3e50] text-xs font-normal font-['DM Sans'] leading-[21px]">{education.startDate} – {education.endDate}</div>
                                                 </div>
                                             </div>
                                             <PiPencilSimpleFill className="w-6 h-6 relative cursor-pointer" onClick={() => handleOpenEducationModal(education)}/>
@@ -421,13 +407,11 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
                 {/* End Cancle and Save Button */}
             </div>
             )}
-            {isCareerModalOpen && <EditCareerHistory isOpenEditCar={isCareerModalOpen} onClose={handleCloseCareerModal} career={currentCareer} onSave={handleSaveCareer} />}
-            {isAddCareerModalOpen && <AddCareerHistory isOpenAddCar={isAddCareerModalOpen} onClose={handleCloseAddCareerModal} onSave={handleAddCareer} />}
-            {isAddEducationModalOpen && <AddEducation isOpenAddEdu={isAddEducationModalOpen} onClose={handleCloseAddEducationModal} onSave={handleAddEducation}/>}
-            {isEducationModalOpen && <EditEducation isOpenEditEdu={isEducationModalOpen} onClose={handleCloseEducationModal} onSave={handleSaveEducation} education={currentEducation}/>}
+            {isCareerModalOpen && (<AddAndUpdateCareerHistory isOpenCar={isCareerModalOpen} onClose={handleCloseCareerModal} onSave={handleSaveCareer} currentCareer={currentCareer}/>)}
+            {isEducationModalOpen && <AddAndUpdateEducation isOpenEdu={isEducationModalOpen} onClose={handleCloseEducationModal} onSave={handleSaveEducation} currentEducation={currentEducation}/>}
             {isAddServiceModalOpen && <AddServices isOpenAddSer={isAddServiceModalOpen} onClose={handleCloseAddServiceModal} onSave={handleSaveServices} existingServices={services}/>}
         </div>
     );
-};
+};  
 
 export default EditAboutInfo;
