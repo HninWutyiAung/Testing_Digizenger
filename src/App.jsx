@@ -79,7 +79,7 @@ function App() {
   return (
    <Provider store={store}>
         <BrowserRouter>
-            <MainApp /> {/* Now useLocation works as BrowserRouter is in place */}
+            <MainApp/> {/* Now useLocation works as BrowserRouter is in place */}
             {/* <ApiFetchExample/> */}
         </BrowserRouter>
    </Provider>

@@ -107,7 +107,7 @@ function ProfileEditBox() {
     })
 
     return (
-        <div className="profile-edit-box-overlay 2xl:mt-20">
+        <div className="profile-edit-box-overlay">
             <div className="profile-edit-box">
                 <div className="flex flex-col justify-center items-center gap-[20px]">
                     <div className="flex items-center p-[14px] self-stretch justify-between bg-[#ECF1F4] rounded-t-[10px] ">
@@ -163,7 +163,7 @@ function ProfileEditBox() {
             </div>
 
             {showCropper && (
-                <Modal isOpen={showCropper} onRequestClose={() => setShowCropper(false)} contentLabel="Crop Image" className="modal-content 2xl:top-[38.5%]" overlayClassName="modal-overlay"
+                <Modal isOpen={showCropper} onRequestClose={() => setShowCropper(false)} contentLabel="Crop Image" className="modal-content" overlayClassName="modal-overlay"
                 style={{
                     content: {
                         width: '38rem', 

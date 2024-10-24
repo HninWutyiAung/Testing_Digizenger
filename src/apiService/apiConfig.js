@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://digizenger.info/api/v1';
+export const BASE_URL = 'http://128.199.141.49:8080/api/v1';
 
 export const PROFILE_IMAGE_ENDPOINT = '/profile/p-image';
 export const USERNAME_ENDPOINT = '/profile/username';
