@@ -68,7 +68,7 @@ function SignInfo() {
     setRadioButton(selectedGender);
     setFormValue(prevForm => ({
         ...prevForm,
-        gender: selectedGender // Update gender in formValue
+        gender: selectedGender
     }));
 
     }
@@ -99,8 +99,6 @@ function SignInfo() {
 
     const formSubmit = async(e) => {
         e.preventDefault();
-
-        // validForm(firstName);
 
         if(email){ 
             dispatch(setEmailOrPhone({email: email, phone:null , firstName: firstName, lastName: lastName}))
@@ -268,7 +266,7 @@ function SignInfo() {
                                 value="MALE"
                                 checked={radioButton === "MALE"}
                                 onChange={radioHandle}
-                                className={`bg-[#ECF1F4]  h-[18px] w-[19px] rounded-[50px] appearance-none relative ${radioButton === "MALE" ? "radio_check border-2  border-[#00BCD4]" :" "}`}
+                                className={`bg-[#ECF1F4] cursor-pointer h-[18px] w-[19px] rounded-[50px] appearance-none relative ${radioButton === "MALE" ? "radio_check border-2  border-[#00BCD4]" :" "}`}
                                 />
                               <label className="ml-[10px] mr-[20px] place-self-center">Male</label>
                           </div>
@@ -279,7 +277,7 @@ function SignInfo() {
                                 value="FEMALE"
                                 checked={radioButton === "FEMALE"}
                                 onChange={radioHandle}
-                                className={`bg-[#ECF1F4]  h-[18px] w-[19px] rounded-[50px] relative appearance-none ${radioButton === "FEMALE" ? "border-2 border-[#00BCD4] radio_check" :" "}`}
+                                className={`bg-[#ECF1F4] cursor-pointer h-[18px] w-[19px] rounded-[50px] relative appearance-none ${radioButton === "FEMALE" ? "border-2 border-[#00BCD4] radio_check" :" "}`}
                               />
                               <label className="ml-[10px] mr-[20px] ">Female</label>
                           </div>
@@ -290,7 +288,7 @@ function SignInfo() {
                                 value="OTHER"
                                 checked={radioButton === "OTHER"}
                                 onChange={radioHandle}
-                                className={`bg-[#ECF1F4]  h-[18px] w-[19px] rounded-[50px] appearance-none relative ${radioButton === "OTHER" ? "border-2 border-[#00BCD4]  radio_check " :" "}`}
+                                className={`bg-[#ECF1F4]  cursor-pointer h-[18px] w-[19px] rounded-[50px] appearance-none relative ${radioButton === "OTHER" ? "border-2 border-[#00BCD4]  radio_check " :" "}`}
                               />
                               <label className="ml-[10px] mr-[20px]">Other</label>
                           </div>
