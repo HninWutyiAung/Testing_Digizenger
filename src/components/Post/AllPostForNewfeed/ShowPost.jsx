@@ -10,17 +10,19 @@ import default_image from '/images/default_profile.jpg';
 import { useState  } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { EffectFlip } from 'swiper/modules';
+import { Link ,useNavigate} from 'react-router-dom';
 import { useSetLikeOrUnlikeMutation } from '../../../apiService/Post';
 import { ProfileDto, userDto } from '../../../page/ProfilePage/profileService';
 import { customLocale } from './ShowPostService';
 import { useLocation } from 'react-router-dom';
 
 
-function ShowPost({activeChat, post , setPosts}) {
+function ShowPost({ activeChat, post , setPosts}) {
     const [clickHeart, setClickHeart] =useState(post.liked);
     const [showMore, setShowMore] = useState(false);
     const [count, setCount] = useState(0);
     const [setLikeOrUnlike] = useSetLikeOrUnlikeMutation();
+    const navigate = useNavigate();
 
     const postText = post.description;
     const wordLength =post.description.split(" ");
@@ -33,10 +35,16 @@ function ShowPost({activeChat, post , setPosts}) {
         ? ProfileDto?.profileImageUrl || default_image 
         : post?.profileDto?.profileImageUrl || default_image;
     
-    // const profileImage = post?.profileDto?.profileImageUrl || ProfileDto?.profileImageUrl || default_image;
     const firstName = post?.userDto?.firstName || userDto?.firstName;
     const lastName = post?.userDto?.lastName || userDto?.lastName;
     const followers = post?.userDto?.followers || userDto?.followersCount;
+    const otherUserName = post?.profileDto?.username;
+
+
+    const handleNavigate = () => {
+        navigate(`/profile/${otherUserName}`);
+        console.log(otherUserName);
+      };
     
     const timeAgo = formatDistanceToNow(new Date(post.createdDate), { addSuffix: true ,locale: customLocale,});
 
@@ -92,7 +100,7 @@ function ShowPost({activeChat, post , setPosts}) {
                     <div className="flex flex-col items-start gap-[12px] p-[10px] self-stretch">
                         <div className="flex justify-center items-center gap-[12px] self-stretch">
                             <div className='w-[48px] h-[48px]'>
-                                <img src={profileImage} className='rounded-[50px] w-[48px] h-[48px]'/>
+                                <img src={profileImage} className='rounded-[50px] w-[48px] h-[48px]' onClick={handleNavigate}/>
                             </div>
                             <div className="flex flex-col items-start justify-center gap-[8px]">
                                 <div className="flex justify-between items-center self-stretch">
@@ -125,7 +133,9 @@ function ShowPost({activeChat, post , setPosts}) {
                                           {showMore ? postText : postText.split(' ').slice(0, 20).join(' ') + '...'} 
                                           {wordLength.length>= 10 && (<button onClick={toggleShowMore} className='mr-[20px] text-black font-semibold ml-[5px]'>{showMore ? " show less" : "show more"}</button>)}
                                           {post.imageUrl ? (
-                                                <img src={post.imageUrl} className='h-[200px] w-[300px] 2xl:w-[400px] rounded-md mt-[10px]'  />
+                                                // <Link to={`/profile/${otherUserName}`}>
+                                                    <img src={post.imageUrl} className='h-[200px] w-[300px] 2xl:w-[400px] rounded-md mt-[10px]'/>
+                                                // </Link>
                                             ) : (
                                                 " " 
                                            )}
