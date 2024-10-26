@@ -28,7 +28,7 @@ function ChatBoxNav({setActiveChat}) {
         };
     }, []);
     return(
-            <section className="flex  items-center gap-[18px] 2xl:gap-[40px] px-[12px] bg-white border-b border-[#ECF1F4] z-10 w-[30.4%] 2xl:w-[43.63%]  fixed chat-box-nav-responsive">
+            <section className="flex  items-center gap-[18px] 2xl:gap-[40px] px-[12px] bg-white border-b border-[#ECF1F4] z-10 w-[30.4%] 2xl:w-[44%]  fixed chat-box-nav-responsive">
                 <form className="flex flex-col relative w-[350px] 2xl:w-[450px] responsive-chatbox-search">
                     <input ref={inputRef} type="text" placeholder="Digisearch" className="rounded-[16px] outline-secondary outline-[0.1px] px-[30px] py-[5px] bg-[#ECF1F4]" onClick={handleInput}></input>
                     {!inputStyle ? (<div className="flex items-center gap-[10px] absolute top-[5px] left-[4px]">

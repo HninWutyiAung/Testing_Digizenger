@@ -130,7 +130,7 @@ function ChatBoxLayout () {
                     </main>
                 ))}
             </section>
-            <div className="bg-accent w-full 2xl:w-[100%] flex items-center h-[70px] gap-[10px] 2xl:gap-[40px] px-[10px]">
+            <div className="bg-accent w-full 2xl:w-[100%] flex items-center h-[70px] gap-[10px] 2xl:gap-[30px] px-[10px]">
                 <div className="flex items-center gap-[16px]">
                     <img src={pluse} className="w-[28px] h-[28px]" alt="Plus icon" />
                     <i onClick={handleIconClick}>
@@ -147,7 +147,7 @@ function ChatBoxLayout () {
                             onChange={(e) => setInputValue(e.target.value)}
                             onClick={inputHandle}
                             placeholder="Message"
-                            className="w-[390px] 2xl:w-[450px] h-[40px] rounded-[27px] px-[10px] outline-none responsive-chatbox-messagebox"
+                            className="w-[390px] 2xl:w-[480px] h-[40px] rounded-[27px] px-[10px] outline-none responsive-chatbox-messagebox"
                         />
                         {/* {!inputStyle && <span className="absolute left-4 text-black">Message</span>} */}
                         {inputStyle ? (

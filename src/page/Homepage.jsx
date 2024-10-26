@@ -36,7 +36,7 @@ function Homepage (){
                         <Route index element={<NewFeed activeChat={activeChat} />} />
                         <Route path="/newfeed" element={<NewFeed activeChat={activeChat} />} />
                         <Route path="/profile" element={<Profile activeChat={activeChat}/>} />
-                        <Route path="profile/:otherUserName" element={<OtherProfile/>} />
+                        <Route path="/home/profile/:otherUserName" element={<OtherProfile/>} />
                 </Routes>
             </div>
             {showChatList ? (

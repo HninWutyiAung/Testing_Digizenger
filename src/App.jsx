@@ -18,11 +18,13 @@ import { useAppSelector, useAppDispatch } from './hook/Hook';
 
 function MainApp() {
   const location = useLocation();
-  const hideNav = ["/home", "/home/newfeed" , "/home/profile" ];
+  const hideNav = ["/home", "/home/newfeed" , "/home/profile" , "/home/profile/:otherUserName"];
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(selectIsLogged);
   const navigate = useNavigate();
   const [firstTimeLogin , setFirstTimeLogin] = useState(true);
+
+  const shouldHideNav = hideNav.includes(location.pathname) || /^\/home\/profile\/[^/]+$/.test(location.pathname);
 
   const userToken = JSON.parse(localStorage.getItem("user") || "{}")
 
@@ -61,7 +63,7 @@ function MainApp() {
   console.log(isLoggedIn)
   return (
     <div className={`${pageSpecificMargin[location.pathname] || 'mt-[0]'}`}>
-      {!hideNav.includes(location.pathname) && <Nav />}
+      {!shouldHideNav  && <Nav />}
       <Routes>
         <Route path='home/*' element={isLoggedIn ? <Homepage /> : <Navigate to="/"/>} >
         </Route>

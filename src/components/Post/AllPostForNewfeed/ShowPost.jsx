@@ -42,7 +42,7 @@ function ShowPost({ activeChat, post , setPosts}) {
 
 
     const handleNavigate = () => {
-        navigate(`/profile/${otherUserName}`);
+        navigate(`/home/profile/${otherUserName}`);
         console.log(otherUserName);
       };
     
