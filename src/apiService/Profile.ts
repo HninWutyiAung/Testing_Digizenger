@@ -54,7 +54,7 @@ export const profileApiSlice = createApi({
       })
     }),
     getOtherProfile: builder.query({
-      query: ({username}) =>({
+      query: (username) =>({
         url: `${GET_PROFILE_ENDPOINT}${username}`,
         method:'GET',
       })

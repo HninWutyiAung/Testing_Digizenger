@@ -4,6 +4,7 @@ import Digizen from "/images/digizen.png";
 import Profile from "/images/profile.png";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { RiHomeFill } from "react-icons/ri";
 function MenuNav({activeChat}){
     const [activeButton, setActiveButton] = useState ("newfeed");
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ function MenuNav({activeChat}){
         <section className="p-[15px] w-[24.2%] 2xl:w-[33.3%] z-20 bg-white fixed top-[48.5px] menu-small-screen ">
             <ul className="flex flex-row w-full flex-wrap justify-start gap-[4px]">
                 <li className={`flex flex-row  gap-1 py-[8px] px-[18px] rounded-[20px] justify-center items-center responsive-nav-button hover:bg-[#ECF1F4] ${activeButton === "newfeed" ? "bg-[#00BCD4] !important" : " "}`} onClick={()=>{buttonHandle("newfeed")}}>
-                    <img className="w-[15px] h-[15px]" src={HomeLogo} />
+                    <RiHomeFill className="text-[#2C3E50]"/>
                     <span className="text-[12px] font-medium text-[#2C3E50]">Home</span>
                 </li>
 

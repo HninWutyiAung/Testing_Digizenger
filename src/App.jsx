@@ -71,6 +71,7 @@ function MainApp() {
         <Route path='/signup' element={<SignInfo />} />
         <Route path='/signup/verify' element={<VerifyEmail />} />
         <Route path='/signup/verify/requestIdentity' element={<RequestIdentity />} />
+        
       </Routes>
     </div>
   );

@@ -133,9 +133,7 @@ function ShowPost({ activeChat, post , setPosts}) {
                                           {showMore ? postText : postText.split(' ').slice(0, 20).join(' ') + '...'} 
                                           {wordLength.length>= 10 && (<button onClick={toggleShowMore} className='mr-[20px] text-black font-semibold ml-[5px]'>{showMore ? " show less" : "show more"}</button>)}
                                           {post.imageUrl ? (
-                                                // <Link to={`/profile/${otherUserName}`}>
                                                     <img src={post.imageUrl} className='h-[200px] w-[300px] 2xl:w-[400px] rounded-md mt-[10px]'/>
-                                                // </Link>
                                             ) : (
                                                 " " 
                                            )}

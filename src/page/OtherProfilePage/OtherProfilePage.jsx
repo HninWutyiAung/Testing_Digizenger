@@ -1,12 +1,16 @@
-import { useParams } from 'react-router-dom';
-
+import MenuNav from '../../components/NewFeed Nav/MenuNav2';
+import NewFeedNav from '../../components/NewFeed Nav/NewFeedNav';
+import OtherProfileComponent from './OtherProfile';
 const OtherProfile = () => {
-  const { otherUserName } = useParams();
-  console.log(otherUserName); // This should log the username in the console
+
   return (
-    <div>
-      <h1>Other Profile of {otherUserName}</h1>
-    </div>
+    <section className='bg-accent'>
+      <NewFeedNav />
+      <MenuNav />
+      <div className='flex flex-col p-[20px] pt-[140px] gap-[12px] w-full bg-[#ECF1F4] h-[945px] overflow-y-auto scrollable newfeed-responsive'>
+            <OtherProfileComponent/>
+      </div>
+    </section>
   );
 };
 
