@@ -146,9 +146,10 @@ function ChatBoxLayout () {
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             onClick={inputHandle}
+                            placeholder="Message"
                             className="w-[390px] 2xl:w-[450px] h-[40px] rounded-[27px] px-[10px] outline-none responsive-chatbox-messagebox"
                         />
-                        {!inputStyle && <span className="absolute left-4 text-black">Message</span>}
+                        {/* {!inputStyle && <span className="absolute left-4 text-black">Message</span>} */}
                         {inputStyle ? (
                             <i><FaCircleArrowUp className="absolute top-3 right-3 w-[25px] h-[25px] text-[#0097A7]" onClick={sendMessage}/></i>
                         ) : (
