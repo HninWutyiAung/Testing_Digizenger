@@ -96,7 +96,7 @@ function ChatBoxLayout () {
 
     return (
         <main className="relative">
-            <img src={cover} className="chat-bg"></img>
+            <img src={cover} className="chat-bg 2xl:w-[680px]"></img>
             <ChatBoxUserStatusNav message={message}/>
             <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive">
                 {message.messages.map((text,index) => (
@@ -130,7 +130,7 @@ function ChatBoxLayout () {
                     </main>
                 ))}
             </section>
-            <div className="bg-accent w-full 2xl:w-[98%] flex items-center h-[70px] gap-[10px] 2xl:gap-[40px] px-[10px]">
+            <div className="bg-accent w-full 2xl:w-[100%] flex items-center h-[70px] gap-[10px] 2xl:gap-[40px] px-[10px]">
                 <div className="flex items-center gap-[16px]">
                     <img src={pluse} className="w-[28px] h-[28px]" alt="Plus icon" />
                     <i onClick={handleIconClick}>

@@ -39,7 +39,7 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
                      <ChatListNav2 activeChat={activeChat} profileBox={profileBox}/>
                 }
                 <ChatListBottomNav setBottomValue={setBottomValue} bottomNavValue={bottomNavValue}/>
-                <div className="h-[945px] overflow-y-auto scrollable pt-[110px] chat-list-responsive">
+                <div className={`h-[945px] overflow-y-auto scrollable pt-[110px] chat-list-responsive ${bottomNavValue === "message" ? "pt-[110px]" : "pt-[50px]"}`}>
                     {bottomNavValue ==="message" &&
                         <div onClick={columnHandle}>
                             {chatList.map((chat) => (                            

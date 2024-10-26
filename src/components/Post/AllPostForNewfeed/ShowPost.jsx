@@ -104,7 +104,7 @@ function ShowPost({ activeChat, post , setPosts}) {
                             </div>
                             <div className="flex flex-col items-start justify-center gap-[8px]">
                                 <div className="flex justify-between items-center self-stretch">
-                                    <div className="flex items-center gap-[8px] w-[320px] responsive-post-name-box">
+                                    <div className="flex items-center gap-[8px] w-[320px] 2xl:w-[360px] responsive-post-name-box">
                                         <div className="flex gap-[2px] items-center">
                                             <span className="font-bold leading-7 text-[#2C3E50] text-[15px]">{`${firstName} ${lastName}`}</span>
                                             <img src={badges} className='w-[20px] h-[20px]'></img>

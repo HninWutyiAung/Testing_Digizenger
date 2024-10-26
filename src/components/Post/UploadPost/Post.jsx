@@ -145,7 +145,7 @@ function Post({activeChat, setpostLoading}) {
                         
                         <div className="flex items-start justify-between">
 
-                            <div className="flex gap-[8px] w-[320px] responsive-post">
+                            <div className="flex gap-[8px] w-[320px] 2xl:w-[370px] responsive-post">
 
                                 <div className="w-[38px] h-[38px]">
                                     <img src={uploadPImageUrl} className="w-[38px] h-[38px] rounded-full" alt="John" />
