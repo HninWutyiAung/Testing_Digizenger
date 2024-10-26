@@ -81,7 +81,6 @@ body{
       font-size: 12px !important;
       padding-left: 8px !important;
       padding-right: 8px !important;
-      background-color: pink !important;
     }
     .nav_containger{
       grid-template-columns: 1fr 1fr;
@@ -103,7 +102,6 @@ body{
       font-size: 12px !important;
       padding-left: 8px !important;
       padding-right: 8px !important;
-      background-color: violet !important;
     }
   }
 @media (max-width: 1071px) {
@@ -119,7 +117,6 @@ body{
     font-size: 12px !important;
     padding-left: 8px !important;
     padding-right: 8px !important;
-    background-color: red !important;
   }
 }
 
@@ -136,7 +133,6 @@ body{
     font-size: 12px !important;
     padding-left: 8px !important;
     padding-right: 8px !important;
-    background-color: yellow !important;
   }
 
 
@@ -155,7 +151,6 @@ body{
     font-size: 12px !important;
     padding-left: 8px !important;
     padding-right: 8px !important;
-    background-color: orange !important;
   }
   
 }
@@ -172,7 +167,6 @@ body{
     font-size: 12px !important;
     padding-left: 8px !important;
     padding-right: 8px !important;
-    background-color: green !important;
   }
   .edsn_logo{
     margin-left:5rem !important;
@@ -194,7 +188,6 @@ body{
     font-size: 12px !important;
     padding-left: 8px !important;
     padding-right: 8px !important;
-    background-color: green !important;
   }
   .edsn_logo{
     margin-left:5rem !important;
@@ -885,10 +878,8 @@ body{
 }
 
 .PhoneInputInput{
-
   box-shadow: none !important;
   outline: none !important;
-
 }
 
 
