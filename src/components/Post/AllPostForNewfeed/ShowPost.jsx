@@ -7,14 +7,16 @@ import flick from '/images/flick.png';
 import graph from '/images/graph.png';
 import heart1 from '/images/heart1.png';
 import default_image from '/images/default_profile.jpg';
-import { useState  } from 'react';
+import { useEffect, useState  } from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import { EffectFlip } from 'swiper/modules';
 import { Link ,useNavigate} from 'react-router-dom';
 import { useSetLikeOrUnlikeMutation } from '../../../apiService/Post';
 import { ProfileDto, userDto } from '../../../page/ProfilePage/profileService';
 import { customLocale } from './ShowPostService';
 import { useLocation } from 'react-router-dom';
+import { websocketConnectForLikeNoti, disconnectWebSocket } from '../../Websocket/websocketForLikeNoti';
+import { selectUserId } from '../../../feature/authSlice';
+import { useAppSelector } from '../../../hook/Hook';
 
 
 function ShowPost({ activeChat, post , setPosts}) {
@@ -23,11 +25,12 @@ function ShowPost({ activeChat, post , setPosts}) {
     const [count, setCount] = useState(0);
     const [setLikeOrUnlike] = useSetLikeOrUnlikeMutation();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const postText = post.description;
     const wordLength =post.description.split(" ");
-
-    const location = useLocation();
+    const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
+    const userId = loginInfo.userId;
 
     const isProfileRoute = location.pathname.includes("/profile");
 
@@ -39,6 +42,21 @@ function ShowPost({ activeChat, post , setPosts}) {
     const lastName = post?.userDto?.lastName || userDto?.lastName;
     const followers = post?.userDto?.followers || userDto?.followersCount;
     const otherUserName = post?.profileDto?.username;
+
+    useEffect(() => {
+        console.log("user id:",userId);
+
+        try {
+          websocketConnectForLikeNoti(userId);
+         // setConnectionStatus('Connected');
+        } catch (error) {
+            console.error(error);
+        }
+    
+        return () => {
+          disconnectWebSocket();
+        };
+      }, [userId]);
 
 
     const handleNavigate = () => {
@@ -64,6 +82,7 @@ function ShowPost({ activeChat, post , setPosts}) {
         setPosts((prevPosts) =>
             prevPosts.map((p) => (p.id === post.id ? updatedPost : p))
         );
+
         try {
           console.log(post.id);
           const response = await setLikeOrUnlike(post.id).unwrap();

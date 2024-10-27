@@ -12,6 +12,8 @@ import { useAppDispatch, useAppSelector } from "../../hook/Hook";
 import LoadingSpinner from "../LoadingSpinner";
 import { handleSubmit , RECAPTCHA_SITE_KEY} from "./authService";
 import { setLoginInfo ,setLoginImage} from "../../feature/authSlice";
+import { websocketConnectForLikeNoti ,disconnectWebSocket } from "../Websocket/websocketForLikeNoti";
+import { selectUserId } from "../../feature/authSlice";
 
 
 function Login() {
@@ -64,32 +66,6 @@ function Login() {
     }
   },[])
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-    
-  //   if (activeForm === 'form1' && (!email || !password)) {
-  //     console.error("Email and Password are required for Form 1");
-  //     return;
-  //   }
-    
-  //   if (activeForm === 'form2' && (!phone || !password)) {
-  //     console.error("Phone and Password are required for Form 2");
-  //     return;
-  //   }
-  
-  //   const credentials = {
-  //     emailOrPhone: activeForm === 'form1' ? email : phone,
-  //     password,
-  //   };
-  
-  //   try {
-  //     const response = await loginUser(credentials).unwrap();
-  //     console.log("Login Successful", response);
-  //   } catch (err) {
-  //     console.error("Login Failed", err);
-  //   }
-  // };
-
   const handleLogin = async (e) => {
     await handleSubmit(e, activeForm, email, phone, password, loginUser, dispatch, navigate);
   };
@@ -98,7 +74,7 @@ function Login() {
     if(isSuccess){
       dispatch(setLoginUserToken({token:data.token}));
       navigate("/home")
-      dispatch(setLoginInfo({LoginFirstName: data.profileDto.userForProfileDto?.firstName , LoginLastName: data.profileDto.userForProfileDto?.lastName}))
+      dispatch(setLoginInfo({LoginFirstName: data.profileDto.userForProfileDto?.firstName , LoginLastName: data.profileDto.userForProfileDto?.lastName , userId: data.profileDto.userForProfileDto?.id}));
       dispatch(setLoginImage({profileUploadImageUrl: data.profileDto.profileImageUrl}));
     }
   })

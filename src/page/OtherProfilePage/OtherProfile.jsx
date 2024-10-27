@@ -19,6 +19,7 @@ const OtherProfileComponent = () => {
             {otherProfileDetail && (
               <div>
                 <h1>{otherProfileDetail.otherProfileDto.username}</h1>
+                <div>Not Availiable</div>
               </div>
             )}
       </div>

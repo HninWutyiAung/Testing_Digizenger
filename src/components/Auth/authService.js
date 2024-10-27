@@ -26,6 +26,6 @@ export const handleSubmit = async (e, activeForm, email, phone, password, loginU
 
   export const RECAPTCHA_SITE_KEY = "6Lch5GsqAAAAAB3z2ZYsk7k-bcUzw4_HrBJ7GWL7"; 
 
-  // locla - 6LdJnUEqAAAAAOBrwZRBiDZw_yKwqNSsKW7EU7Pt
+  // local - 6LdJnUEqAAAAAOBrwZRBiDZw_yKwqNSsKW7EU7Pt
 
   // server -6Lch5GsqAAAAAB3z2ZYsk7k-bcUzw4_HrBJ7GWL7
