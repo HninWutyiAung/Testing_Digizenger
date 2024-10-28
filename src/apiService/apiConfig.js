@@ -14,4 +14,4 @@ export const UPLOAD_POST_ENDPOINT = '/posts/upload';
 export const GET_POSTS_ENDPOINT = '/posts/getPosts';
 export const LIKE_POST_ENDPOINT = '/posts/isLike/';
 
-export const GET_ALL_NOTIFICATION = '/notification/get-all-notification'
+export const GET_ALL_NOTIFICATION = '/notification';
