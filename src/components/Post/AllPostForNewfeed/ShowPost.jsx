@@ -14,8 +14,6 @@ import { useSetLikeOrUnlikeMutation } from '../../../apiService/Post';
 import { ProfileDto, userDto } from '../../../page/ProfilePage/profileService';
 import { customLocale } from './ShowPostService';
 import { useLocation } from 'react-router-dom';
-import { websocketConnectForLikeNoti, disconnectWebSocket } from '../../Websocket/websocketForLikeNoti';
-import { selectUserId } from '../../../feature/authSlice';
 import { useAppSelector } from '../../../hook/Hook';
 
 
@@ -29,8 +27,6 @@ function ShowPost({ activeChat, post , setPosts}) {
 
     const postText = post.description;
     const wordLength =post.description.split(" ");
-    const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
-    const userId = loginInfo.userId;
 
     const isProfileRoute = location.pathname.includes("/profile");
 
@@ -42,21 +38,6 @@ function ShowPost({ activeChat, post , setPosts}) {
     const lastName = post?.userDto?.lastName || userDto?.lastName;
     const followers = post?.userDto?.followers || userDto?.followersCount;
     const otherUserName = post?.profileDto?.username;
-
-    useEffect(() => {
-        console.log("user id:",userId);
-
-        try {
-          websocketConnectForLikeNoti(userId);
-         // setConnectionStatus('Connected');
-        } catch (error) {
-            console.error(error);
-        }
-    
-        return () => {
-          disconnectWebSocket();
-        };
-      }, [userId]);
 
 
     const handleNavigate = () => {

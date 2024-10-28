@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../hook/Hook.ts';
 import ChatListNav2 from "../components/ChatList/ChatListNav2.jsx";
 import ChatListBottomNav from "../components/ChatList/ChatListBottomNav.jsx";
 import GuardModeToggle from "../components/Profile_Information/GuardModeToggle.jsx";
-import LikeNoti from "../components/Notification/LikeNoti/LikeNoti.jsx";
+import Noti from "../components/Notification/LikeNoti/LikeNoti.jsx";
 
 function ChatList({ activeChat, columnHandle, profileBox }) {
     const dispatch = useAppDispatch();
@@ -55,7 +55,7 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
 
                     {bottomNavValue==="noti"&& 
                         <div className="">
-                            <LikeNoti/>
+                            <Noti/>
                         </div>
                     
                     }

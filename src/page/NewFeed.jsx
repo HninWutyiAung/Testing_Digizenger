@@ -12,6 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { selectCurrentPost ,resetCurrentUpload} from '../feature/postSlice';
 import PostLoading from '../components/Post/PostLoadingUI/PostLoading';
+import { useWebSocket } from '../components/Websocket/websocketForLikeNoti.jsx';
 
 function NewFeed({ activeChat }) {
     const [page, setPage] = useState(0);
@@ -21,8 +22,11 @@ function NewFeed({ activeChat }) {
     const currentUpload = useAppSelector(selectCurrentPost); 
     const observerRef = useRef();
     const [hasMore, setHasMore] = useState(true);
+    const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
+    const userId = loginInfo.userId;
     const toastRef = useRef(null);
     const dispatch = useAppDispatch();
+    const {websocketConnectForLikeNoti} = useWebSocket();
 
     const { data, isSuccess, isLoading } = useGetPostQuery(
         { page, limit },
@@ -98,6 +102,16 @@ function NewFeed({ activeChat }) {
     useEffect(()=>{
         console.log(currentUpload)
     },[currentUpload])
+
+    useEffect(() => {
+            console.log("user id:",userId);
+    
+              websocketConnectForLikeNoti(userId);
+              console.log("it work noti")
+          }, [websocketConnectForLikeNoti,userId]);
+
+
+    
 
     return (
         <section>

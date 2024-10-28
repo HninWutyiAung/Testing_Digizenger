@@ -12,8 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../hook/Hook";
 import LoadingSpinner from "../LoadingSpinner";
 import { handleSubmit , RECAPTCHA_SITE_KEY} from "./authService";
 import { setLoginInfo ,setLoginImage} from "../../feature/authSlice";
-import { websocketConnectForLikeNoti ,disconnectWebSocket } from "../Websocket/websocketForLikeNoti";
-import { selectUserId } from "../../feature/authSlice";
+
 
 
 function Login() {

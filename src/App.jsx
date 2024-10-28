@@ -15,6 +15,7 @@ import ApiFetchExample  from './ApiFetch';
 import { setLoginUserToken , selectIsLogged} from './feature/loginToken';
 import { setRegisterInfo } from './feature/authSlice';
 import { useAppSelector, useAppDispatch } from './hook/Hook';
+import { WebSocketProvider } from './components/Websocket/websocketForLikeNoti';
 
 function MainApp() {
   const location = useLocation();
@@ -80,12 +81,14 @@ function MainApp() {
 
 function App() {
   return (
-   <Provider store={store}>
-        <BrowserRouter>
-            <MainApp/> {/* Now useLocation works as BrowserRouter is in place */}
-            {/* <ApiFetchExample/> */}
-        </BrowserRouter>
-   </Provider>
+    <Provider store={store}>
+    <WebSocketProvider> {/* Wrap MainApp with WebSocketProvider */}
+      <BrowserRouter>
+        <MainApp /> {/* Now useLocation works as BrowserRouter is in place */}
+        {/* <ApiFetchExample/> */}
+      </BrowserRouter>
+    </WebSocketProvider>
+  </Provider>
     
   );
 }
