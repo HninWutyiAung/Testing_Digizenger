@@ -24,24 +24,24 @@
     .logo-nav-big-screen{
         width: 45.5% !important;
     }
-    .logo-nav-small-screen{
+    /* .logo-nav-small-screen{
         width: 30.3% !important;
-    }
+    } */
     .menu-big-screen{
         width: 45.4%!important;
     }
-    .menu-small-screen{
+    /* .menu-small-screen{
         width: 30.2% !important;
-    }
-    .chat-box-nav-responsive{
+    } */
+    /* .chat-box-nav-responsive{
         width: 38.45% !important;
-    }
+    } */
     div .responsive-main-profile{
         height: 730px;
     }
-    .chat-box-nav2-responsive{
+    /* .chat-box-nav2-responsive{
         width: 100%!important;
-    }
+    } */
     .chat-bg{
         height: 660px;
     }
@@ -74,10 +74,10 @@
         width: 49.9% !important;
     }
     .chat-box-nav-responsive{
-        width: 40.7% !important;
+        width: 41% !important;
     }
     .chat-box-nav2-responsive{
-        width: 100%!important;
+        width: 40.7%!important;
     }
     div .responsive-main-profile{
         height: 600px;
@@ -144,12 +144,13 @@
 
 .home-cover {
     position: fixed;
-    top: 3rem;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     opacity: 0.3;
+    z-index: 100;
     
 }
 
@@ -218,7 +219,7 @@
         height: 18px;
     }
     .responsive-time{
-        font-size: 15px;
+        font-size: 14px;
     }
     .chat-bg{
         height: 600px;

@@ -14,6 +14,7 @@ import { handleSubmit , RECAPTCHA_SITE_KEY} from "./authService";
 import { setLoginInfo ,setLoginImage} from "../../feature/authSlice";
 
 
+
 function Login() {
   const [activeForm, setActiveForm] = useState("form1");
   const [activeLinkStyles, setActiveLinkStyles] = useState({ width: "", left: ""  });
@@ -50,6 +51,11 @@ function Login() {
     setValue(phoneNumber);
   };
 
+  const routeChange = () => {
+    let path = `/signup`;
+    navigate(path);
+  }
+
   useEffect (()=>{
     if(defaultActive.current){
       setActiveLinkStyles({
@@ -59,32 +65,6 @@ function Login() {
     }
   },[])
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-    
-  //   if (activeForm === 'form1' && (!email || !password)) {
-  //     console.error("Email and Password are required for Form 1");
-  //     return;
-  //   }
-    
-  //   if (activeForm === 'form2' && (!phone || !password)) {
-  //     console.error("Phone and Password are required for Form 2");
-  //     return;
-  //   }
-  
-  //   const credentials = {
-  //     emailOrPhone: activeForm === 'form1' ? email : phone,
-  //     password,
-  //   };
-  
-  //   try {
-  //     const response = await loginUser(credentials).unwrap();
-  //     console.log("Login Successful", response);
-  //   } catch (err) {
-  //     console.error("Login Failed", err);
-  //   }
-  // };
-
   const handleLogin = async (e) => {
     await handleSubmit(e, activeForm, email, phone, password, loginUser, dispatch, navigate);
   };
@@ -93,7 +73,7 @@ function Login() {
     if(isSuccess){
       dispatch(setLoginUserToken({token:data.token}));
       navigate("/home")
-      dispatch(setLoginInfo({LoginFirstName: data.profileDto.userForProfileDto?.firstName , LoginLastName: data.profileDto.userForProfileDto?.lastName}))
+      dispatch(setLoginInfo({LoginFirstName: data.profileDto.userForProfileDto?.firstName , LoginLastName: data.profileDto.userForProfileDto?.lastName , userId: data.profileDto.userForProfileDto?.id}));
       dispatch(setLoginImage({profileUploadImageUrl: data.profileDto.profileImageUrl}));
     }
   })
@@ -173,7 +153,7 @@ function Login() {
                 <div className="w-[350px] bg-slate-100 h-[2px] login_input_box justify-self-center mt-[-5px]"></div>
                 <div className="justify-self-center mt-[15px]">
                     <span className="text-slate-400">Not On Digizenger Yet?</span>
-                    <button className="block font-semibold text-black py-[10px]  login_input_box hover:bg-darkAccent w-[350px] justify-self-center bg-accent rounded-lg mt-[10px]">Create An Account</button>
+                    <button onClick={routeChange} className="block font-semibold text-black py-[10px]  login_input_box hover:bg-darkAccent w-[350px] justify-self-center bg-accent rounded-lg mt-[10px]">Create An Account</button>
                 </div>
             </form>
             )}
@@ -190,7 +170,9 @@ function Login() {
                     type="phone" 
                     name="phone" 
                     placeholder="Enter your phone number" 
-                    className="h-[45px] w-[350px] login_input_box pl-[20px] rounded-[10px] border z-20 outline-none justify-self-center border-secondary " 
+                    autocomplete="off"
+                    // inputStyle={{outline:"none",boxShadow:"none"}} 
+                    className="phone-input h-[45px] w-[350px] login_input_box pl-[20px] rounded-[10px] border z-20 outline-none justify-self-center border-secondary " 
                 />
                 <input type={open ? "text" : "password"} name="password" placeholder="Enter your password" className="h-[45px] w-[350px] pl-[20px] rounded-[10px] bg-accent login_input_box outline-none justify-self-center" />
                 {open ? 
@@ -223,7 +205,7 @@ function Login() {
                 <div className="w-[350px] login_input_box bg-slate-100 h-[2px] justify-self-center mt-[-5px]"></div>
                 <div className="justify-self-center mt-[15px]">
                     <span className="text-slate-400 login_account_button login_input_box">Not On Digizenger Yet?</span>
-                    <button className="block font-semibold login_input_box text-black py-[10px]  w-[350px] justify-self-center bg-accent hover:bg-darkAccent rounded-lg mt-[10px]">Create An Account</button>
+                    <button onClick={routeChange} className="block font-semibold login_input_box text-black py-[10px]  w-[350px] justify-self-center bg-accent hover:bg-darkAccent rounded-lg mt-[10px]">Create An Account</button>
                 </div>
             </form>
             )}

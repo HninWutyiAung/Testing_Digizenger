@@ -52,8 +52,14 @@ export const profileApiSlice = createApi({
         method : 'POST',
         body: formData,
       })
+    }),
+    getOtherProfile: builder.query({
+      query: (username) =>({
+        url: `${GET_PROFILE_ENDPOINT}${username}`,
+        method:'GET',
+      })
     })
   }),
 });
 
-export const { useUploadProfileImageMutation, useGetProfileQuery , useUploadCoverImageMutation , useGetMyPostsQuery} = profileApiSlice;
+export const { useUploadProfileImageMutation, useGetProfileQuery , useUploadCoverImageMutation , useGetMyPostsQuery ,useGetOtherProfileQuery} = profileApiSlice;

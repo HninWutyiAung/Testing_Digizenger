@@ -110,7 +110,7 @@ function ProfileEditBox() {
         <div className="profile-edit-box-overlay">
             <div className="profile-edit-box">
                 <div className="flex flex-col justify-center items-center gap-[20px]">
-                    <div className="flex items-center p-[14px] self-stretch justify-between bg-[#ECF1F4] rounded-t-[10px]">
+                    <div className="flex items-center p-[14px] self-stretch justify-between bg-[#ECF1F4] rounded-t-[10px] ">
                         <div className="text-[#2C3E50] font-bold text-[20px]">Profile Photo</div>
                         <i className="text-[#2C3E50] text-[20px]" onClick={closeProfilebox}>
                             <IoCloseOutline />

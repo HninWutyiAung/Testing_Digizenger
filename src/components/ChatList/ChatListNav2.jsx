@@ -14,7 +14,7 @@ function ChatListNav2({ activeChat, profileBox}) {
                 {["all", "read", "unread", "archived", "group", "family"].map((item) => (
                     <li 
                         key={item} 
-                        className={`flex flex-row hover:bg-red-100  min-w-[20px] px-[8px] py-[4px] rounded-[15px] justify-center items-center 
+                        className={`flex flex-row hover:bg-accent  min-w-[20px] px-[8px] py-[4px] rounded-[15px] justify-center items-center 
                             ${activeButton === item ? "bg-[#2C3E50] text-white" : "text-[#7E7E8D] gap-[2px]" }`}
                         onClick={() => buttonHandle(item)}
                     >

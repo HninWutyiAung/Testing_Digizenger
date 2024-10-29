@@ -9,3 +9,6 @@ export const customLocale = {
     return result.replace('about ', ''); 
   },
 };
+
+
+{/* <Link to={`/profile/${otherUserName}`}>View Other User's Profile</Link> */}

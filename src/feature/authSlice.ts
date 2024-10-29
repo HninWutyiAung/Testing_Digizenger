@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import { RootState } from './store';
 
+
 interface registerState {
     email : string | null;
     phone : string | null;
@@ -9,6 +10,7 @@ interface registerState {
     LoginFirstName: string | null;
     LoginLastName: string | null;
     profileUploadImageUrl: string | null;
+    userId: string | null;
 
 }
 
@@ -20,6 +22,7 @@ const initialState : registerState = {
     LoginFirstName: null,
     LoginLastName: null,
     profileUploadImageUrl: null,
+    userId: null,
 }
 
 const registerInfoSlice = createSlice({
@@ -37,10 +40,11 @@ const registerInfoSlice = createSlice({
             state.lastName = action.payload.lastName;
 
         },
-        setLoginInfo: (state, action: PayloadAction<{ LoginFirstName: string | null, LoginLastName: string | null}>) =>{
-            localStorage.setItem("LoginInfo", JSON.stringify({ LoginFirstName: action.payload.LoginFirstName , LoginLastName: action.payload.LoginLastName}));
+        setLoginInfo: (state, action: PayloadAction<{ LoginFirstName: string | null, LoginLastName: string | null , userId: string | null}>) =>{
+            localStorage.setItem("LoginInfo", JSON.stringify({ LoginFirstName: action.payload.LoginFirstName , LoginLastName: action.payload.LoginLastName , userId: action.payload.userId}));
             state.LoginFirstName = action.payload.LoginFirstName;
             state.LoginLastName = action.payload.LoginLastName;
+            state.userId = action.payload.userId;
         },
         setLoginImage : (state, action: PayloadAction<{profileUploadImageUrl: string | null; }>) =>{
             localStorage.setItem("ImageUrl", JSON.stringify({ profileUploadImageUrl : action.payload.profileUploadImageUrl}));
@@ -58,4 +62,5 @@ export const selectLastName = (state: RootState) => state.registerInfo.lastName;
 export const selectLoginFirstName = (state: RootState) => state.registerInfo.LoginFirstName;  
 export const selectLoginLastName = (state: RootState) => state.registerInfo.LoginLastName;
 export const selectLoginProfileImage = (state : RootState) => state.registerInfo.profileUploadImageUrl;
+export const selectUserId = (state: RootState) => state.registerInfo.userId;
 

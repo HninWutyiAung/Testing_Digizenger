@@ -10,6 +10,7 @@ import ProfileEditBox from "../components/Profile/ProfileEditBox";
 import CoverEditBox from "../components/Profile/CoverEditBox";
 import { selectActiveChatRoom} from "../feature/chatSlice";
 import ProfileInformation from "../components/Profile_Information/ProfileInformation";
+import OtherProfile from "./OtherProfilePage/OtherProfilePage.jsx";
 function Homepage (){
 
     const [activeChat, setActiveChat] = useState(true);
@@ -35,6 +36,7 @@ function Homepage (){
                         <Route index element={<NewFeed activeChat={activeChat} />} />
                         <Route path="/newfeed" element={<NewFeed activeChat={activeChat} />} />
                         <Route path="/profile" element={<Profile activeChat={activeChat}/>} />
+                        <Route path="/profile/:otherUserName" element={<OtherProfile/>} />
                 </Routes>
             </div>
             {showChatList ? (

@@ -96,7 +96,7 @@ function ChatBoxLayout () {
 
     return (
         <main className="relative">
-            <img src={cover} className="chat-bg"></img>
+            <img src={cover} className="chat-bg 2xl:w-[680px]"></img>
             <ChatBoxUserStatusNav message={message}/>
             <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive">
                 {message.messages.map((text,index) => (
@@ -130,7 +130,7 @@ function ChatBoxLayout () {
                     </main>
                 ))}
             </section>
-            <div className="bg-[#ECF1F4] w-full flex items-center h-[70px] gap-[10px] px-[10px]">
+            <div className="bg-accent w-full 2xl:w-[100%] flex items-center h-[70px] gap-[10px] 2xl:gap-[30px] px-[10px]">
                 <div className="flex items-center gap-[16px]">
                     <img src={pluse} className="w-[28px] h-[28px]" alt="Plus icon" />
                     <i onClick={handleIconClick}>
@@ -146,9 +146,10 @@ function ChatBoxLayout () {
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             onClick={inputHandle}
-                            className="w-[390px] h-[40px] rounded-[27px] px-[10px] outline-none responsive-chatbox-messagebox"
+                            placeholder="Message"
+                            className="w-[390px] 2xl:w-[480px] h-[40px] rounded-[27px] px-[10px] outline-none responsive-chatbox-messagebox"
                         />
-                        {!inputStyle && <span className="absolute left-4 text-black">Message</span>}
+                        {/* {!inputStyle && <span className="absolute left-4 text-black">Message</span>} */}
                         {inputStyle ? (
                             <i><FaCircleArrowUp className="absolute top-3 right-3 w-[25px] h-[25px] text-[#0097A7]" onClick={sendMessage}/></i>
                         ) : (

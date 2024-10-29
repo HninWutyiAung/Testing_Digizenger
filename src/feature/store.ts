@@ -9,6 +9,7 @@ import loginUserTokenReducer from './loginToken.ts';
 import { profileApiSlice} from "../apiService/Profile.ts";
 import profileDataReducer from './profileSlice.ts';
 import { likeNotiApiSlice } from "../apiService/Noti.ts";
+import notificationsReducer from './notiSlice.ts';
 
 export const store = configureStore({
     reducer:{
@@ -17,6 +18,7 @@ export const store = configureStore({
         uploadPost : uploadPostReducer,
         registerInfo: registerInfoReducer,
         profileData : profileDataReducer,
+        notifications : notificationsReducer,
         [authApi.reducerPath] : authApi.reducer,
         [postUploadSlice.reducerPath]: postUploadSlice.reducer,
         [profileApiSlice.reducerPath] : profileApiSlice.reducer,

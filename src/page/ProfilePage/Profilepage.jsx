@@ -11,6 +11,7 @@ import { IMageForMyProfile} from './profileService';
 import Featured from "../../components/Profile_Information/Featured";
 import About from "../../components/Profile_Information/About";
 
+
 function Profile({ activeChat }) {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
@@ -48,7 +49,7 @@ function Profile({ activeChat }) {
                 <Featured/>
                 <About/>
                 {myPostLoading && <div className=" "><PostLoadingSpinner/></div>}
-                {myPostError && <div>Error loading profile data</div>}
+                {myPostError && <div>No Post</div>}
                 {myPostSuccess && (
                     <>   
                         <div>
