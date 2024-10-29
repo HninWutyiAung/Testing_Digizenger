@@ -659,9 +659,20 @@ function SignInfo() {
                 name="country"
                 value={country}
                 onChange={formHandleChange}
-                className={inputClass("country", "w-[315px]")}
+                className={`w-[315px] h-[40px] px-[10px] border-2 rounded-[5px] 
+      ${validationErrors.country ? "border-red-600" : "border-[#ECF1F4]"}
+      ${country ? "text-black" : "text-slate-400"} 
+      ${
+        inputBackground === "country"
+          ? "focus:border-[#00BCD4] bg-white"
+          : "bg-[#ECF1F4]"
+      }
+      focus:border-[#00BCD4] focus:outline-none focus:ring-[#00BCD4]`}
+                onFocus={() => inputHandle("country")}
+                onBlur={() => setInputBackground("")}
               >
-                <option value="option1">Thailand</option>
+                <option value="">Select your country</option>
+                <option value="thailand">Thailand</option>
                 <option value="thai">Thai</option>
                 <option value="singapore">Singapore</option>
                 <option value="chinese">Chinese</option>
@@ -674,6 +685,7 @@ function SignInfo() {
                 )}
               </div>
             </div>
+
             <div className="grid">
               <label className="block place-self-start text-slate-500 mb-[10px]">
                 City{" "}
@@ -729,11 +741,13 @@ function SignInfo() {
                   <FaRegEyeSlash />
                 </button>
               )}
-              {validationErrors.password && (
-                <p className="text-red-600 text-xs text-left">
-                  {validationErrors.password}
-                </p>
-              )}
+              <div className="h-[1rem]">
+                {validationErrors.password && (
+                  <p className="text-red-600 text-xs text-left">
+                    {validationErrors.password}
+                  </p>
+                )}
+              </div>
             </div>
             <div className="grid relative">
               <label className="block place-self-start text-slate-500 mb-[10px]">
@@ -768,11 +782,13 @@ function SignInfo() {
                   <FaRegEyeSlash />
                 </button>
               )}
-              {validationErrors.confirmPass && (
-                <p className="text-red-600 text-xs text-left">
-                  {validationErrors.confirmPass}
-                </p>
-              )}
+              <div className="h-[1rem]">
+                {validationErrors.confirmPass && (
+                  <p className="text-red-600 text-xs text-left">
+                    {validationErrors.confirmPass}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </form>
