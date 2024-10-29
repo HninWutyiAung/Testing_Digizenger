@@ -12,7 +12,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { Link ,useNavigate} from 'react-router-dom';
 import { useSetLikeOrUnlikeMutation } from '../../../apiService/Post';
 import { ProfileDto, userDto } from '../../../page/ProfilePage/profileService';
-import { customLocale } from './ShowPostService';
+import { customLocale} from './ShowPostService';
 import { useLocation } from 'react-router-dom';
 import { useAppSelector } from '../../../hook/Hook';
 
@@ -37,15 +37,18 @@ function ShowPost({ activeChat, post , setPosts}) {
     const firstName = post?.userDto?.firstName || userDto?.firstName;
     const lastName = post?.userDto?.lastName || userDto?.lastName;
     const followers = post?.userDto?.followers || userDto?.followersCount;
-    const otherUserName = post?.profileDto?.username;
+    const otherUserName = post?.otherProfileDto?.username;
 
 
     const handleNavigate = () => {
         navigate(`/home/profile/${otherUserName}`);
         console.log(otherUserName);
       };
-    
-    const timeAgo = formatDistanceToNow(new Date(post.createdDate), { addSuffix: true ,locale: customLocale,});
+
+    const createdDate = post.createdDate; 
+    const utcDate = new Date(createdDate.endsWith('Z') ? createdDate : createdDate + 'Z'); 
+    const timeAgo = formatDistanceToNow(utcDate, { addSuffix: true ,locale: customLocale});
+
 
     const heartHandle = async () => {
 

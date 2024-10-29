@@ -3,7 +3,7 @@ import threeDot from '/images/dotthree.jpg';
 import { formatDistanceToNow } from 'date-fns';
 import { customLocale } from '../../Post/AllPostForNewfeed/ShowPostService';
 
-function LikeNotiLayout ({noti}){
+function FollowNotiLayout ({noti}){
     const createdDate = noti.createDate; 
     const utcDate = new Date(createdDate);
     const timeAgo = formatDistanceToNow(utcDate, { addSuffix: true ,locale: customLocale});
@@ -26,8 +26,11 @@ function LikeNotiLayout ({noti}){
                         </div>
                     </div>
                     <div className='flex justify-between self-stretch items-start'>
-                        <div>
-                            <span className='text-textGrey text-[12px] font-normal leading-6'>{text.split(" ").slice(0,5).join(' ')+"..."}</span>
+                        <div className='bg-primary w-[110px] h-[25px]  rounded-[100px]  hover:bg-secondary px-[14px] '>
+                            <div className='hover:scale-[1.12]  w-[80px] h-[24px] rounded-[100px] '>
+                                <button className=' text-[12px] font-bold text-background leading-5 '>Follow back</button>
+                            </div>
+                            
                         </div>
                         <div className='h-[32px] w-[32px]'>
                             <img src={threeDot} className='text-black'/>
@@ -42,4 +45,4 @@ function LikeNotiLayout ({noti}){
     )
 }
 
-export default LikeNotiLayout;  
+export default FollowNotiLayout;  
