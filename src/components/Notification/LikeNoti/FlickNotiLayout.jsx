@@ -1,13 +1,7 @@
 import emma from '/images/emma.jpg';
 import threeDot from '/images/dotthree.jpg';
-import { formatDistanceToNow } from 'date-fns';
-import { customLocale } from '../../Post/AllPostForNewfeed/ShowPostService';
 
-function LikeNotiLayout ({noti}){
-    const createdDate = noti.createDate; 
-    const utcDate = new Date(createdDate);
-    const timeAgo = formatDistanceToNow(utcDate, { addSuffix: true ,locale: customLocale});
-
+function FlickNotiLayout ({noti}){
 
     const text = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt alias dolorem corporis non labore vitae modi?";
     return(
@@ -19,10 +13,10 @@ function LikeNotiLayout ({noti}){
                 <div className='flex flex-col self-stretch w-full'>
                     <div className='flex justify-between self-stretch items-end '>
                         <div className='text-[14px] text-darkBlue leading-6 '>
-                            <span className='font-bold'>{noti.message}</span>
+                            <span className='font-bold'>This is flick noti</span>
                         </div>
                         <div className='items-center'>
-                            <span className='text-[10px] leading-6 font-normal text-textGrey2'>{timeAgo}</span>
+                            <span className='text-[10px] leading-6 font-normal text-textGrey2'>2h</span>
                         </div>
                     </div>
                     <div className='flex justify-between self-stretch items-start'>
@@ -42,4 +36,4 @@ function LikeNotiLayout ({noti}){
     )
 }
 
-export default LikeNotiLayout;  
+export default FlickNotiLayout;  
