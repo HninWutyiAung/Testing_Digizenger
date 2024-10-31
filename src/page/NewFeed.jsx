@@ -27,14 +27,20 @@ function NewFeed({ activeChat }) {
     const toastRef = useRef(null);
     const dispatch = useAppDispatch();
     const {websocketConnectForLikeNoti} = useWebSocket();
+    const [nextPageLoading, setNextPageLoading] =useState(false);
 
     const { data, isSuccess, isLoading } = useGetPostQuery(
         { page, limit },
         { skip: page === 0 && posts.length > 0 }
     );
 
+    useEffect(()=>{
+        console.log("please", isLoading)
+    })
+
     useEffect(() => {
         if (data && isSuccess) {
+            console.log(data);
             const newPosts = data.postDtoList.filter(post =>
                 !posts.some(prevPost => prevPost.id === post.id)
             );
@@ -43,17 +49,30 @@ function NewFeed({ activeChat }) {
                 setPosts(prevPosts => [...prevPosts, ...newPosts]);
 
                 if (newPosts.length < limit) {
-                    setHasMore(false);
-                }else if(newPosts.length === limit){
-                    setHasMore(true);
+                    // Fewer posts than the limit
+                    if (data.statusCode === 204) {
+                        setHasMore(false); // No more posts available
+                    } else {
+                        setHasMore(true); // Less than limit but not a 204, continue fetching
+                    }
+                } else if (newPosts.length === limit) {
+                    setHasMore(true); // If we received exactly the limit, we can fetch more
                 }
-            });
+    
+                // Additional check: If newPosts are empty and statusCode is not 204, set hasMore to false
+                if (newPosts.length === 0 && data.statusCode !== 204) {
+                    setHasMore(false); // No more posts to fetch
+                }
+             });
+
+            setNextPageLoading(false);
         }
-    }, [data, isSuccess]);
+    }, [data, isSuccess, setNextPageLoading]);
 
     useEffect(() => {
         const observer = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting && hasMore) {
+            if (entries[0].isIntersecting && hasMore ) {
+                // setNextPageLoading(true);
                 setPage(prevPage => prevPage + 1);
             }
         }, { threshold: 0.5 });

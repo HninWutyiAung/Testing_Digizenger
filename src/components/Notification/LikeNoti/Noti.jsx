@@ -13,12 +13,6 @@ function Noti () {
     const allNoti = useAppSelector(selectNotification);
     const {data,isLoading,isSuccess,isError} = useGetAllNotiQuery();
 
-    useEffect(() => {
-        if (isSuccess && data) {
-            HandleNoti(data);
-        }
-    }, [isSuccess, data]);
-
     if (isLoading) return <p>Loading profile...</p>;
     if (isError) return <p>Error loading profile: {data?.message || 'Unknown error'}</p>;
 

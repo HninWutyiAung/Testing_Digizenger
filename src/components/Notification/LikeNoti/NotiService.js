@@ -1,9 +1,12 @@
 import { store } from "../../../feature/store";
 import { setNotifications } from "../../../feature/notiSlice";
 
+export let unreadNotiCount;
+
 export function HandleNoti(data) {
     if (data.notificationDtoList) {
 
+        unreadNotiCount= data.unreadNotificationCount;
         const notifications = data.notificationDtoList.map((noti) => ({
             id: noti.id,
             message: noti.message,
