@@ -4,13 +4,12 @@ import ProfileMainInfo from "./ProfileMainInfo";
 
 const ProfileInformation = () =>{
     return(
-        <div className="">
+        <div className="w-[349px] h-[945px] responsive-main-profile flex flex-col">
             <GuardModeToggle/>
             <ProfileLink/>
-            <div className="h-[945px] overflow-y-auto scrollable pt-[118px] responsive-main-profile">
-                 <ProfileMainInfo/>
+            <div className="overflow-y-auto scrollable flex-grow">
+                <ProfileMainInfo />
             </div>
-            
         </div>
     )
 }

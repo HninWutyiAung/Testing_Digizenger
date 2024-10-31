@@ -8,8 +8,8 @@ const GuardModeToggle = () => {
         };
 
     return(
-        <div className="fixed bg-white z-20">
-            <div className="w-[349px] p-4 justify-end items-center gap-[100px] inline-flex
+        <div className="bg-white z-20">
+            <div className="w-full p-4 justify-end items-center gap-[100px] inline-flex
                              sm:p-3 sm:gap-[70px] 
                              md:p-3 md:gap-[80px] 
                              lg:p-4 lg:gap-[90px] 

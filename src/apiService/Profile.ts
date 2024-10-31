@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BASE_URL, PROFILE_IMAGE_ENDPOINT, USERNAME_ENDPOINT, GET_PROFILE_ENDPOINT , COVER_IMAGE_ENDPOINT} from './apiConfig'; // Import from apiConfig.js
+import { BASE_URL, PROFILE_IMAGE_ENDPOINT, USERNAME_ENDPOINT, GET_PROFILE_ENDPOINT , COVER_IMAGE_ENDPOINT, GET_ALL_IMAGES_ENDPOINT} from './apiConfig'; // Import from apiConfig.js
 
 export const profileApiSlice = createApi({
   reducerPath: 'profileApi',
@@ -58,8 +58,15 @@ export const profileApiSlice = createApi({
         url: `${GET_PROFILE_ENDPOINT}${username}`,
         method:'GET',
       })
-    })
+    }),
+
+    getAllImages: builder.query({
+        query: ({ page, limit }) => ({
+            url: `${GET_ALL_IMAGES_ENDPOINT}?_page=${page}&_limit=${limit}`,
+            method: 'GET',
+        }),
+    }),
   }),
 });
 
-export const { useUploadProfileImageMutation, useGetProfileQuery , useUploadCoverImageMutation , useGetMyPostsQuery ,useGetOtherProfileQuery} = profileApiSlice;
+export const { useUploadProfileImageMutation, useGetProfileQuery , useUploadCoverImageMutation , useGetMyPostsQuery ,useGetOtherProfileQuery, useGetAllImagesQuery} = profileApiSlice;

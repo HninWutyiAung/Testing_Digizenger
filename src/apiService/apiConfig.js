@@ -15,3 +15,5 @@ export const GET_POSTS_ENDPOINT = '/posts/getPosts';
 export const LIKE_POST_ENDPOINT = '/posts/isLike/';
 
 export const GET_ALL_NOTIFICATION = '/notification';
+
+export const GET_ALL_IMAGES_ENDPOINT = '/profile/images';
