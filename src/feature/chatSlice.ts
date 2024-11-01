@@ -10,6 +10,7 @@ import { RootState } from './store.ts'; // Adjust the import path according to y
 // }
 
 interface Message {
+    id?: number,
     message: string; 
     user: { "id": number }; 
     recipientId: number; 

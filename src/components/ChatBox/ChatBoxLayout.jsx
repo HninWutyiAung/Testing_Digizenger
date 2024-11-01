@@ -57,7 +57,7 @@ function ChatBoxLayout () {
             const textMessage = {
                 message: inputValue.trim(),
                 user: {"id" :userId},
-                recipientId: 9,
+                recipientId: 7,
                 type: "TEXT",
             };
 
