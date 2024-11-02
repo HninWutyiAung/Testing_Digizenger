@@ -11,6 +11,9 @@ import emoji from '/images/emoji.png';
 import { useState, useRef, useEffect } from "react";
 import { FaCircleArrowUp } from "react-icons/fa6";
 import ChatBoxUserStatusNav from "./ChatBoxUserStatusNav";
+import { selectUserId } from "../../feature/authSlice";
+import { useWebSocket } from "../Websocket/websocketForLikeNoti";
+
 
 function ChatBoxLayout () {
     const activeChatRoom = useAppSelector(selectActiveChatRoom);
@@ -22,8 +25,12 @@ function ChatBoxLayout () {
     const imgRef = useRef(null);
     const chatRef = useRef(null);
     const lastMessage = useRef(null);
-    const message = chatList.find((msg) => msg.id === activeChatRoom);
+    const message = chatList.find((msg) => msg.id === 9);
     const generateUniqueId = () => '_' + Math.random().toString(36).substr(2, 9); 
+    const selectedUserId = 6;
+    const {sendMessageToWebsocket} = useWebSocket();
+    const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
+    const userId = loginInfo.userId;
 
     console.log(activeChatRoom);
     console.log(chatList);
@@ -31,20 +38,31 @@ function ChatBoxLayout () {
         if(lastMessage.current){
             lastMessage.current.scrollIntoView({behavior: "smooth"})
         }
-    },[message.messages])
+    },[message?.messages])
 
-
+    // useEffect(()=>{
+    //     console.log(currentUpload);
+    // },[currentUpload])
 
     const sendMessage = (e) => {
         e.preventDefault(); 
         if (inputValue.trim()) {
+            // const textMessage = {
+            //     id: generateUniqueId(),
+            //     content: inputValue.trim(),
+            //     sender: "user",
+            //     timestamp: new Date().toLocaleTimeString(),
+            // };
+
             const textMessage = {
-                id: generateUniqueId(),
-                content: inputValue.trim(),
-                sender: "user",
-                timestamp: new Date().toLocaleTimeString(),
+                message: inputValue.trim(),
+                user: {"id" :userId},
+                recipientId: activeChatRoom,
+                type: "TEXT",
             };
-            dispatch(addMessageToChat({ chatId: activeChatRoom, message: textMessage }));
+
+            dispatch(addMessageToChat({ recipientId: activeChatRoom, message: textMessage }));
+            sendMessageToWebsocket(textMessage);
             setInputValue("");
         }
     };
@@ -57,12 +75,20 @@ function ChatBoxLayout () {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = () => {
+                // const imageMessage = {
+                //     id: generateUniqueId(),
+                //     message: reader.result,
+                //     sender: "user",
+                //     timestamp: new Date().toLocaleTimeString(),
+                // };
+
                 const imageMessage = {
-                    id: generateUniqueId(),
-                    content: reader.result,
-                    sender: "user",
-                    timestamp: new Date().toLocaleTimeString(),
+                    message: reader.result,
+                    user: {"id" :1},
+                    recipientId: selectedUserId,
+                    type: "TEXT",
                 };
+
                 dispatch(addMessageToChat({ chatId: activeChatRoom, message: imageMessage }));
                 setImageFile(null); 
             };
@@ -99,10 +125,10 @@ function ChatBoxLayout () {
             <img src={cover} className="chat-bg 2xl:w-[680px]"></img>
             <ChatBoxUserStatusNav message={message}/>
             <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive">
-                {message.messages.map((text,index) => (
-                    <main key={text.id} className={`flex flex-col w-full ${text.sender === "server" ? "sender" : "user"}`}>
+                {message?.messages.map((text,index) => (
+                    <main key={text.id} className={`flex flex-col w-full ${text.recipientId === userId ? "sender" : "user"}`}>
                         <div className="chat-msg-container">
-                            {text.sender === "server" && (
+                            {text.recipientId !== selectedUserId && (
                                 <div className="w-[40px] h-[40px]">
                                     <img src={andrea} alt="User Avatar" />
                                 </div>
@@ -110,16 +136,16 @@ function ChatBoxLayout () {
 
                             <div className="flex flex-col px-[16px] py-[4px] bg-[#ECF1F4] rounded-[12px] relative">
                                 <div className="text-[#2C3E50] text-[16px] font-normal">
-                                    {text.content.startsWith('data:image') ? (
-                                        <img src={text.content} className="w-[200px] h-[200px]" alt="Uploaded content" />
+                                    {text.message.startsWith('data:image') ? (
+                                        <img src={text.message} className="w-[200px] h-[200px]" alt="Uploaded content" />
                                     ) : (
-                                        <span>{text.content}</span>
+                                        <span>{text.message}</span>
                                     )}
                                 </div>
-                                <div className={`text-right text-[12px] text-[#2C3E50] ${text.sender === "user" ? "mr-[5px]" : ""}`}>
-                                    <span>{text.timestamp}</span>
+                                <div className={`text-right text-[12px] text-[#2C3E50] ${text.recipientId === userId  ? "mr-[-5px]" : "mr-[5px]"}`}>
+                                    <span>12:00 PM</span>
                                 </div>
-                                <div className={`absolute top-4 ${text.sender === "user" ? "right-[-15px]" : "left-[-11px]"}`} style={{ top: text.content.startsWith('data:image') ? "12rem" : "" }}>
+                                <div className={`absolute top-4 ${text.recipientId === selectedUserId ? "right-[-15px]" : "left-[-11px]"}`} style={{ top: text.message.startsWith('data:image') ? "12rem" : "" }}>
                                     <i className="text-[#ECF1F4]"><VscTriangleUp size={50} /></i>
                                 </div>
                             </div>

@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation , Navigate, useNavigate } from "react-router-dom";
 import Nav from './components/Nav/Nav';
 import Login from './components/Auth/Login';
-// import SignUp from './components/SignUp';
 import SignInfo from './components/Auth/SignInfo';
 import RequestIdentity from './page/RequestIdentity';
 import VerifyEmail from './components/Auth/VerifyEmail';
@@ -13,9 +12,12 @@ import { store } from './feature/store';
 import { Provider } from 'react-redux';
 import ApiFetchExample  from './ApiFetch';
 import { setLoginUserToken , selectIsLogged} from './feature/loginToken';
-import { setRegisterInfo } from './feature/authSlice';
 import { useAppSelector, useAppDispatch } from './hook/Hook';
 import { WebSocketProvider } from './components/Websocket/websocketForLikeNoti';
+import { useGetAllNotiQuery } from './apiService/Noti';
+import { HandleNoti } from './components/Notification/LikeNoti/NotiService';
+import { selectNotification } from './feature/notiSlice';
+
 
 function MainApp() {
   const location = useLocation();
@@ -23,11 +25,22 @@ function MainApp() {
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(selectIsLogged);
   const navigate = useNavigate();
-  const [firstTimeLogin , setFirstTimeLogin] = useState(true);
+  const {data:noti,isSuccess} = useGetAllNotiQuery();
+  const allNoti = useAppSelector(selectNotification);
+
+  console.log(allNoti);
+
 
   const shouldHideNav = hideNav.includes(location.pathname) || /^\/home\/profile\/[^/]+$/.test(location.pathname);
 
   const userToken = JSON.parse(localStorage.getItem("user") || "{}")
+
+  useEffect(() => {
+    if (isSuccess && noti) {
+        HandleNoti(noti);
+    }
+}, [isSuccess, noti]);
+
 
   useEffect(() => { 
     dispatch(setLoginUserToken(userToken));
@@ -82,9 +95,9 @@ function MainApp() {
 function App() {
   return (
     <Provider store={store}>
-    <WebSocketProvider> {/* Wrap MainApp with WebSocketProvider */}
+    <WebSocketProvider> 
       <BrowserRouter>
-        <MainApp /> {/* Now useLocation works as BrowserRouter is in place */}
+        <MainApp /> 
         {/* <ApiFetchExample/> */}
       </BrowserRouter>
     </WebSocketProvider>

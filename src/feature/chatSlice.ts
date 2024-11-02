@@ -2,16 +2,25 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store.ts'; // Adjust the import path according to your project structure
 
 // Define types for the chat message and chat
+// interface Message {
+//     id: string;
+//     content: string;
+//     sender: string;
+//     timestamp: string; // or Date, depending on your preference
+// }
+
 interface Message {
-    id: string;
-    content: string;
-    sender: string;
-    timestamp: string; // or Date, depending on your preference
+    id?: number,
+    message: string; 
+    user: { "id": number }; 
+    recipientId: number; 
+    type: string; 
+    timestamp?: string; 
 }
 
 interface Chat {
-    id: string;
-    title: string;
+    id: number;
+    // title: string;
     messages: Message[];
 }
 
@@ -34,17 +43,20 @@ const chatSlice = createSlice({
             state.chatList = action.payload;
         },
         setActiveChat: (state, action: PayloadAction<string | null>) => {
-            if (state.activeChatRoom !== action.payload) {  // Only update if the chat ID is different
+            if (state.activeChatRoom !== action.payload) {  
                 state.activeChatRoom = action.payload;
             }
         },
-        addMessageToChat: (state, action: PayloadAction<{ chatId: string; message: Message }>) => {
-            const { chatId, message } = action.payload;
-            const chat = state.chatList.find(chat => chat.id === chatId);
+        addMessageToChat: (state, action: PayloadAction<{ recipientId: number; message: Message }>) => {
+            const { recipientId, message } = action.payload;
+            const chat = state.chatList.find(chat => chat.id === recipientId);
             if (chat) {
                 chat.messages.push(message);
+            } else {
+                state.chatList.push({ id: recipientId, messages: [message] });
             }
         },
+    
     },
 });
 

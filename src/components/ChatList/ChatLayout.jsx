@@ -6,6 +6,7 @@ import read from '/images/read.png';
 function ChatLayout({activeChat, chat , activeChatRoomHandle}) {
 
     const lastMessage = chat.messages.length-1;
+    console.log(chat.id);
 
     return (
         <section onClick={() => activeChatRoomHandle(chat.id)}>
@@ -27,7 +28,7 @@ function ChatLayout({activeChat, chat , activeChatRoomHandle}) {
                             </div>
                             <div className='flex items-start justify-between w-[220px]'>
                                 <div className='text-[14px] font-normal leading-6 text-[#7E7E8D]'>
-                                    <span>{chat.messages[lastMessage].content}</span>
+                                    <span>{chat.messages[lastMessage].message}</span>
                                 </div>
                                 <div className='w-[24px] h-[24px]'>
                                     <img src={read}></img>
