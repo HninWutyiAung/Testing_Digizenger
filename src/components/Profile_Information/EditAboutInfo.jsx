@@ -9,7 +9,7 @@ import AddAndUpdateCareerHistory from './AddAndUpdateCareerHistory';
 import AddAndUpdateEducation from './AddAndUpdateEducation';
 import AddServices from './AddServices';
 
-const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
+const EditAboutInfo = ({ isOpen, onClose, onSave, careerHistory: initialCareerHistory, educationHistory: initialEducationHistory, servicesProvided: initialServicesProvided }) => {
     if (!isOpen) return null;
 
     // Start Profile Category
@@ -60,33 +60,7 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
     //End Introduction   
 
     //Start Career
-    const [careerHistory, setCareerHistory] = useState([
-        {
-            id: 1,
-            designation: 'Senior UI/UX Designer',
-            company: 'Creatix Studios',
-            startDate: '2021',
-            endDate: 'Present',
-            logoUrl: 'https://via.placeholder.com/60x60',
-        },
-        {
-            id: 2,
-            designation: 'Former UI/UX Designer',
-            company: 'Innovate Design Co.',
-            startDate: '2017',
-            endDate: '2021',
-            logoUrl: 'https://via.placeholder.com/60x60',
-        },
-        {
-            id: 3,
-            designation: 'Former Junior UI/UX Designer',
-            company: 'Bright Ideas Agency',
-            startDate: '2014',
-            endDate: '2017',
-            logoUrl: 'https://via.placeholder.com/60x60',
-        },
-    ]);
-
+    const [careerHistory, setCareerHistory] = useState(initialCareerHistory);
     const [isCareerModalOpen, setIsCareerModalOpen] = useState(false);
     const [currentCareer, setCurrentCareer] = useState(null);
     const [isAboutInfoVisible, setIsAboutInfoVisible] = useState(true);
@@ -118,30 +92,9 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
         }
         handleCloseCareerModal();
     };
-    //End Career
-
-    // Start Education History 
-    const [educationHistory, setEducationHistory] = useState([
-        {
-            id: 1,
-            school: 'Aurelia Institute of Technology', 
-            degree: 'Bachelor of Computer Science',    
-            study: 'Computer Science',                 
-            startDate: '2021',                         
-            endDate: '2022',                           
-            logoUrl: 'https://via.placeholder.com/60x60', 
-        },
-        {
-            id: 2,
-            school: 'University of Solara',            
-            degree: 'Diploma in Art in Digital Communication', 
-            study: 'Digital Communication',            
-            startDate: '2015',                         
-            endDate: '2019',                           
-            logoUrl: 'https://via.placeholder.com/60x60', 
-        },
-    ]);    
+    //End Career  
     
+    const [educationHistory, setEducationHistory] = useState(initialEducationHistory);
     const [isEducationModalOpen, setIsEducationModalOpen] = useState(false);
     const [currentEducation, setCurrentEducation] = useState(null);
 
@@ -173,18 +126,7 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
     };
     
     // End Education History
-
-    //Start Service Provided
-    const [services, setServices] = useState([
-        'UX & UI',
-        'Web Development',
-        'User Interface Design',
-        'Animation',
-        'Illustrations',
-        'Motion Graphics',
-        'Web Design Development',
-    ]);
-
+    const [services, setServices] = useState(initialServicesProvided);
     const [isAddServiceModalOpen, setIsAddServiceModalOpen] = useState(false);
 
     const handleOpenAddServiceModal = () => {
@@ -206,6 +148,12 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
         setServices(services.filter(item => item !== service));
     };
     //End Service Provided
+
+    const renderPlaceholderLogo = (name) => (
+        <div className="w-[60px] h-[60px] rounded-[5px] border border-[#ecf1f4] bg-[#00BCD4] flex justify-center items-center text-white font-bold">
+            {name ? name[0] : ""}
+        </div>
+    );
 
     return (
         <div className="fixed inset-0 bg-[#00000080] bg-opacity-50 z-[999] flex flex-col justify-center items-center">
@@ -315,11 +263,15 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
                                 <div key={career.id} className={`self-stretch justify-start items-center gap-1 inline-flex ${index === careerHistory.length - 1 ? 'mb-0' : 'mb-2'}`}>
                                     <PiList className="w-5 h-5 relative"/>
                                     <div className="grow shrink basis-0 h-[69px] justify-start items-start gap-2 flex">
-                                        <img
-                                            className="w-[60px] h-[60px] rounded-[5px] border border-[#ecf1f4]"
-                                            src={career.logoUrl}
-                                            alt={`${career.company} logo`}
-                                        />
+                                        {career.companyDto.logoImageUrl ? (
+                                            <img
+                                                className="w-[60px] h-[60px] rounded-[5px] border border-[#ecf1f4]"
+                                                src={career.companyDto.logoImageUrl}
+                                                alt={`${career.companyDto.companyName} logo`}
+                                            />
+                                        ) : (
+                                            renderPlaceholderLogo(career.companyDto.companyName)
+                                        )}
                                         <div className="grow shrink basis-0 h-[69px] justify-between items-start flex">
                                             <div className="flex-col justify-start items-start inline-flex">
                                                 <div className="text-[#2c3e50] text-sm font-bold font-['DM Sans']">
@@ -327,10 +279,10 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
                                                 </div>
                                                 <div className="flex-col justify-start items-start flex">
                                                     <div className="text-[#2c3e50] text-sm font-normal font-['DM Sans']">
-                                                        {career.company}
+                                                        {career.companyDto.companyName}
                                                     </div>
                                                     <div className="text-[#2c3e50] text-xs font-normal font-['DM Sans']">
-                                                        {career.startDate} – {career.endDate}
+                                                        {career.joinDate.slice(0, 4)} – {career.present === "YES" ? "Present" : career.endDate.slice(0, 4)}
                                                     </div>
                                                 </div>
                                             </div>
@@ -356,13 +308,22 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
                                 <div key={education.id} className={`self-stretch justify-start items-center gap-1 inline-flex ${index !== educationHistory.length - 1 ? 'mb-2' : ''}`}>
                                     <PiList className="w-5 h-5 relative" />
                                     <div className="grow shrink basis-0 h-[69px] justify-start items-start gap-2 flex">
-                                        <img className="w-[60px] h-[60px] rounded-[5px] border border-[#ecf1f4]" src={education.logoUrl} alt={`${education.school} logo`} />
+                                        {/* <img className="w-[60px] h-[60px] rounded-[5px] border border-[#ecf1f4]" src={education.logoUrl} alt={`${education.school} logo`} /> */}
+                                        {education.schoolDto.logoImageUrl ? (
+                                            <img
+                                                className="w-[60px] h-[60px] rounded-[5px] border border-[#ecf1f4]"
+                                                src={education.schoolDto.logoImageUrl}
+                                                alt={`${education.schoolDto.schoolName} logo`}
+                                            />
+                                        ) : (
+                                            renderPlaceholderLogo(education.schoolDto.schoolName)
+                                        )}
                                         <div className="grow shrink basis-0 h-[69px] justify-between items-start flex">
                                             <div className="flex-col justify-start items-start inline-flex">
-                                                <div className="text-[#2c3e50] text-sm font-bold font-['DM Sans'] leading-normal">{education.school}</div>
+                                                <div className="text-[#2c3e50] text-sm font-bold font-['DM Sans'] leading-normal">{education.schoolDto.schoolName}</div>
                                                 <div className="flex-col justify-start items-start flex">
-                                                    <div className="text-[#2c3e50] text-sm font-normal font-['DM Sans'] leading-normal">{education.degree}</div>
-                                                    <div className="text-[#2c3e50] text-xs font-normal font-['DM Sans'] leading-[21px]">{education.startDate} – {education.endDate}</div>
+                                                    <div className="text-[#2c3e50] text-sm font-normal font-['DM Sans'] leading-normal">{education.degreeName}</div>
+                                                    <div className="text-[#2c3e50] text-xs font-normal font-['DM Sans'] leading-[21px]">{education.joinDate.slice(0, 4)} – {education.present === "YES" ? "Present" : education.endDate?.slice(0, 4)}</div>
                                                 </div>
                                             </div>
                                             <PiPencilSimpleFill className="w-6 h-6 relative cursor-pointer" onClick={() => handleOpenEducationModal(education)}/>
@@ -384,8 +345,8 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
                         </div>
                         <div className="self-stretch justify-start items-start gap-2 inline-flex flex-wrap">
                             {services.map((service, index) => (
-                                <div key={index} className="px-4 py-2 bg-[#ecf1f4] rounded-[46.13px] justify-start items-center gap-1 flex whitespace-nowrap">
-                                    <div className="text-[#2c3e50] text-sm font-normal font-['DM Sans'] leading-normal">{service}</div>
+                                <div key={service.id} className="px-4 py-2 bg-[#ecf1f4] rounded-[46.13px] justify-start items-center gap-1 flex whitespace-nowrap">
+                                    <div className="text-[#2c3e50] text-sm font-normal font-['DM Sans'] leading-normal">{service.service}</div>
                                     <IoCloseCircle className="w-4 h-4 relative cursor-pointer" onClick={() => handleRemoveService(service)} />
                                 </div>
                             ))}
@@ -405,7 +366,7 @@ const EditAboutInfo = ({ isOpen, onClose, onSave}) => {
                 {/* End Cancle and Save Button */}
             </div>
             )}
-            {isCareerModalOpen && (<AddAndUpdateCareerHistory isOpenCar={isCareerModalOpen} onClose={handleCloseCareerModal} onSave={handleSaveCareer} currentCareer={currentCareer}/>)}
+            {isCareerModalOpen && (<AddAndUpdateCareerHistory isOpenCar={isCareerModalOpen} onClose={handleCloseCareerModal}  currentCareer={currentCareer}/>)}
             {isEducationModalOpen && <AddAndUpdateEducation isOpenEdu={isEducationModalOpen} onClose={handleCloseEducationModal} onSave={handleSaveEducation} currentEducation={currentEducation}/>}
             {isAddServiceModalOpen && <AddServices isOpenAddSer={isAddServiceModalOpen} onClose={handleCloseAddServiceModal} onSave={handleSaveServices} existingServices={services}/>}
         </div>

@@ -66,7 +66,25 @@ export const profileApiSlice = createApi({
             method: 'GET',
         }),
     }),
+
+    addCareerHistory: builder.mutation({
+      query: (formData) => ({
+        url: '/profile/career-history', 
+        method: 'POST',
+        body: formData,
+      }),
+    }),
+
+    updateCareerHistory: builder.mutation({
+      query: ({ id, ...formData }) => ({
+        url: `/profile/career-history/${id}`, 
+        method: 'PUT',
+        body: formData,
+      }),
+    }),
+    
+
   }),
 });
 
-export const { useUploadProfileImageMutation, useGetProfileQuery , useUploadCoverImageMutation , useGetMyPostsQuery ,useGetOtherProfileQuery, useGetAllImagesQuery} = profileApiSlice;
+export const { useUploadProfileImageMutation, useGetProfileQuery , useUploadCoverImageMutation , useGetMyPostsQuery ,useGetOtherProfileQuery, useGetAllImagesQuery, useAddCareerHistoryMutation, useUpdateCareerHistoryMutation} = profileApiSlice;

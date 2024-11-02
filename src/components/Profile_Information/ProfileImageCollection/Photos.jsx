@@ -48,8 +48,8 @@ const Photos = () => {
   );
 
   const renderNoPhotosMessage = () => (
-    <div className="flex justify-center items-center w-full">
-      <p className="text-[#7E7E8D] text-[16px]">No photos available</p>
+    <div className="grid grid-cols-3 gap-2 w-full">
+      <p className="text-[#7E7E8D] text-[16px] col-span-3 text-left">No photos</p>
     </div>
   );
 
@@ -88,9 +88,11 @@ const Photos = () => {
 
   return (
     <div className="flex flex-col justify-start items-start gap-3">
-      <div className="self-stretch max-w-[343px] p-3 bg-white rounded-lg border border-[#c9dcde] flex flex-col justify-start items-start gap-2.5">
-        {renderHeader()}
-        {totalImage === 0 ? renderNoPhotosMessage() : renderPhotoGrid()}
+      <div className="self-stretch w-[343px] max-w-[343px] p-3 bg-white rounded-lg border border-[#c9dcde] flex flex-col justify-start items-start gap-2.5">
+        <div className="self-stretch flex flex-col justify-start items-start gap-5">
+          {renderHeader()}
+          {totalImage === 0 ? renderNoPhotosMessage() : renderPhotoGrid()}
+        </div>  
       </div>
     </div>
   );
