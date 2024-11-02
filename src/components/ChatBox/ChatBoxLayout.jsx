@@ -25,7 +25,7 @@ function ChatBoxLayout () {
     const imgRef = useRef(null);
     const chatRef = useRef(null);
     const lastMessage = useRef(null);
-    const message = chatList.find((msg) => msg.id === activeChatRoom);
+    const message = chatList.find((msg) => msg.id === 9);
     const generateUniqueId = () => '_' + Math.random().toString(36).substr(2, 9); 
     const selectedUserId = 6;
     const {sendMessageToWebsocket} = useWebSocket();
@@ -38,7 +38,7 @@ function ChatBoxLayout () {
         if(lastMessage.current){
             lastMessage.current.scrollIntoView({behavior: "smooth"})
         }
-    },[message.messages])
+    },[message?.messages])
 
     // useEffect(()=>{
     //     console.log(currentUpload);
@@ -57,11 +57,11 @@ function ChatBoxLayout () {
             const textMessage = {
                 message: inputValue.trim(),
                 user: {"id" :userId},
-                recipientId: 7,
+                recipientId: activeChatRoom,
                 type: "TEXT",
             };
 
-            dispatch(addMessageToChat({ chatId: activeChatRoom, message: textMessage }));
+            dispatch(addMessageToChat({ recipientId: activeChatRoom, message: textMessage }));
             sendMessageToWebsocket(textMessage);
             setInputValue("");
         }
@@ -125,7 +125,7 @@ function ChatBoxLayout () {
             <img src={cover} className="chat-bg 2xl:w-[680px]"></img>
             <ChatBoxUserStatusNav message={message}/>
             <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive">
-                {message.messages.map((text,index) => (
+                {message?.messages.map((text,index) => (
                     <main key={text.id} className={`flex flex-col w-full ${text.recipientId === userId ? "sender" : "user"}`}>
                         <div className="chat-msg-container">
                             {text.recipientId !== selectedUserId && (
@@ -142,7 +142,7 @@ function ChatBoxLayout () {
                                         <span>{text.message}</span>
                                     )}
                                 </div>
-                                <div className={`text-right text-[12px] text-[#2C3E50] ${text.recipientId !== selectedUserId  ? "mr-[5px]" : ""}`}>
+                                <div className={`text-right text-[12px] text-[#2C3E50] ${text.recipientId === userId  ? "mr-[-5px]" : "mr-[5px]"}`}>
                                     <span>12:00 PM</span>
                                 </div>
                                 <div className={`absolute top-4 ${text.recipientId === selectedUserId ? "right-[-15px]" : "left-[-11px]"}`} style={{ top: text.message.startsWith('data:image') ? "12rem" : "" }}>

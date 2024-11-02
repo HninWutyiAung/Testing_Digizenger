@@ -19,8 +19,8 @@ interface Message {
 }
 
 interface Chat {
-    id: string;
-    title: string;
+    id: number;
+    // title: string;
     messages: Message[];
 }
 
@@ -47,13 +47,16 @@ const chatSlice = createSlice({
                 state.activeChatRoom = action.payload;
             }
         },
-        addMessageToChat: (state, action: PayloadAction<{ chatId: string; message: Message }>) => {
-            const { chatId, message } = action.payload;
-            const chat = state.chatList.find(chat => chat.id === chatId);
+        addMessageToChat: (state, action: PayloadAction<{ recipientId: number; message: Message }>) => {
+            const { recipientId, message } = action.payload;
+            const chat = state.chatList.find(chat => chat.id === recipientId);
             if (chat) {
                 chat.messages.push(message);
+            } else {
+                state.chatList.push({ id: recipientId, messages: [message] });
             }
         },
+    
     },
 });
 

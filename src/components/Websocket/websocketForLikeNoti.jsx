@@ -2,6 +2,7 @@ import React, { useState, createContext, useContext, useEffect, useRef } from 'r
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { addNotification, selectNotification } from '../../feature/notiSlice';
+import { addMessageToChat } from '../../feature/chatSlice';
 import { useAppDispatch, useAppSelector } from '../../hook/Hook';
 import { toast } from 'react-toastify';
 
@@ -58,13 +59,16 @@ export const WebSocketProvider = ({ children }) => {
                 try {
                     const chatData = JSON.parse(chatMessage.body);
                     console.log("Received chat message:", chatData);
-                    dispatch(addNotification({
-                        id: chatData.id,
-                        message: chatData.content,
-                        createDate: chatData.createDate,
-                        type: "chat",
-                        userId: chatData.senderId,
-                        read: chatData.read,
+                    const message ={
+                        id:chatData.id,
+                        message:chatData.message,
+                        recipientId:chatData.recipientId,
+                        type:chatData.type,
+                    }
+                    dispatch(addMessageToChat({
+                        recipientId: chatData.recipientId,
+                        message: message
+                        
                     }));
 
                     if (!shownMessagesRef.current.has(chatData.id)) {
