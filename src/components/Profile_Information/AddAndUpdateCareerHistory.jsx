@@ -1,34 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { useAddCareerHistoryMutation, useUpdateCareerHistoryMutation } from '../../apiService/Profile';
+import React, { useState, useEffect } from "react";
+import {
+  useAddCareerHistoryMutation,
+  useUpdateCareerHistoryMutation,
+} from "../../apiService/Profile";
 
 const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
-  console.log('current career: ', currentCareer);
   if (!isOpenCar) return null;
 
-  const [designation, setDesignation] = useState('');
-  const [company, setCompany] = useState('');
-  const [joinDate, setJoinDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [designation, setDesignation] = useState("");
+  const [company, setCompany] = useState("");
+  const [joinDate, setJoinDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [currentlyWorking, setCurrentlyWorking] = useState(true);
   const [errors, setErrors] = useState({});
+  const [isSaving, setIsSaving] = useState(false);
 
   const [addCareerHistory] = useAddCareerHistoryMutation();
   const [updateCareerHistory] = useUpdateCareerHistoryMutation();
 
   useEffect(() => {
-    console.log('Incoming currentCareer:', currentCareer);
     if (currentCareer) {
-        setDesignation(currentCareer.designation || '');
-        setCompany(currentCareer.companyDto?.companyName || ''); // Ensuring companyName is set correctly
-        setJoinDate(currentCareer.joinDate || '');
-        setEndDate(currentCareer.present === 'YES' ? '' : currentCareer.endDate || '');
-        setCurrentlyWorking(currentCareer.present === 'YES');
+      setDesignation(currentCareer.designation || "");
+      setCompany(currentCareer.companyDto?.companyName || "");
+      setJoinDate(currentCareer.joinDate || "");
+      setEndDate(
+        currentCareer.present === "YES" ? "" : currentCareer.endDate || ""
+      );
+      setCurrentlyWorking(currentCareer.present === "YES");
     } else {
-        setDesignation('');
-        setCompany('');
-        setJoinDate('');
-        setEndDate('');
-        setCurrentlyWorking(true);
+      setDesignation("");
+      setCompany("");
+      setJoinDate("");
+      setEndDate("");
+      setCurrentlyWorking(true);
     }
   }, [currentCareer]);
 
@@ -46,34 +50,43 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
     e.preventDefault();
 
     if (validateForm()) {
-        const careerData = {
-            designation,
-            joinDate,
-            endDate: currentlyWorking ? null : endDate,
-            present: currentlyWorking ? 'YES' : 'NO',
-            companyDto: {
-                id: currentCareer ? currentCareer.companyDto?.id : null,
-                companyName: company || '', // Ensuring the input value is used for companyName
-                logoImageUrl: currentCareer?.companyDto?.logoImageUrl || null // Placeholder or adjust as needed
-            }
-        };
+      setIsSaving(true);
+      const formData = new FormData();
 
-        console.log('Career Data being sent:', careerData); // Debugging log for request data
+      formData.append("designation", designation);
+      formData.append("joinDate", joinDate);
+      formData.append("endDate", currentlyWorking ? "" : endDate);
+      formData.append("present", currentlyWorking ? "YES" : "NO");
 
-        try {
-            let response;
-            if (currentCareer) {
-                response = await updateCareerHistory({ id: currentCareer.id, ...careerData }).unwrap();
-                console.log('Update Response:', response); // Log API response
-            } else {
-                response = await addCareerHistory(careerData).unwrap();
-                console.log('Add Response:', response); // Log API response
-            }
+      const companyName =
+        company || currentCareer?.companyDto?.companyName || "";
+      formData.append("companyName", companyName); 
 
-            onClose(); // Close modal on success
-        } catch (error) {
-            console.error('Error during add/update:', error); // Log detailed error
+      formData.append(
+        "logoImageUrl",
+        currentCareer?.companyDto?.logoImageUrl || ""
+      );
+
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+      }
+
+      try {
+        let response;
+        if (currentCareer) {
+          const { id } = currentCareer;
+          response = await updateCareerHistory({ id, formData }).unwrap();
+        } else {
+          response = await addCareerHistory(formData).unwrap();
         }
+
+        console.log("Response:", response);
+        onClose();
+      } catch (error) {
+        console.error("Error during add/update:", error);
+      } finally {
+        setIsSaving(false); 
+      }
     }
   };
 
@@ -84,11 +97,14 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
     >
       <div className="w-full p-3 bg-[#ecf1f4] border-b border-solid border-[#ecf1f4] justify-start items-center gap-2.5 inline-flex">
         <div className="text-center text-[#2c3e50] text-lg font-bold">
-          {currentCareer ? 'Edit Career History' : 'Add Career History'}
+          {currentCareer ? "Edit Career History" : "Add Career History"}
         </div>
       </div>
 
-      <div className="w-full p-3 flex-col justify-start items-start inline-flex overflow-y-scroll" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+      <div
+        className="w-full p-3 flex-col justify-start items-start inline-flex overflow-y-scroll"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
         <style>
           {`
             .w-[790px]::-webkit-scrollbar {
@@ -99,8 +115,14 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
         <div className="self-stretch h-[414.03px] flex-col justify-start items-start gap-3 flex">
           {/* Designation */}
           <div className="w-full flex flex-col justify-start items-start gap-3">
-            <label className="text-[#2c3e50] text-base font-bold font-['DM Sans']">Designation *</label>
-            <div className={`w-full px-4 py-2.5 bg-white rounded-lg border ${errors.designation ? 'border-red-500' : 'border-[#c9dcde]'} flex justify-start items-center gap-2.5`}>
+            <label className="text-[#2c3e50] text-base font-bold font-['DM Sans']">
+              Designation *
+            </label>
+            <div
+              className={`w-full px-4 py-2.5 bg-white rounded-lg border ${
+                errors.designation ? "border-red-500" : "border-[#c9dcde]"
+              } flex justify-start items-center gap-2.5`}
+            >
               <input
                 className="w-full h-full bg-transparent text-[#2c3e50] text-sm font-normal font-['DM Sans'] outline-none placeholder-opacity-40"
                 type="text"
@@ -118,8 +140,14 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
 
           {/* Company */}
           <div className="w-full flex flex-col justify-start items-start gap-3">
-            <label className="text-[#2c3e50] text-base font-bold font-['DM Sans']">Company *</label>
-            <div className={`w-full px-4 py-2.5 bg-white rounded-lg border ${errors.company ? 'border-red-500' : 'border-[#c9dcde]'} flex justify-start items-center gap-2.5`}>
+            <label className="text-[#2c3e50] text-base font-bold font-['DM Sans']">
+              Company *
+            </label>
+            <div
+              className={`w-full px-4 py-2.5 bg-white rounded-lg border ${
+                errors.company ? "border-red-500" : "border-[#c9dcde]"
+              } flex justify-start items-center gap-2.5`}
+            >
               <input
                 className="w-full h-full bg-transparent text-[#2c3e50] text-sm font-normal font-['DM Sans'] outline-none placeholder-opacity-40"
                 type="text"
@@ -137,8 +165,14 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
 
           {/* Join Date */}
           <div className="w-full flex flex-col justify-start items-start gap-3">
-            <label className="text-[#2c3e50] text-base font-bold font-['DM Sans']">Join Date *</label>
-            <div className={`w-full px-4 py-2.5 bg-white rounded-lg border ${errors.joinDate ? 'border-red-500' : 'border-[#c9dcde]'} flex justify-start items-center gap-2.5`}>
+            <label className="text-[#2c3e50] text-base font-bold font-['DM Sans']">
+              Join Date *
+            </label>
+            <div
+              className={`w-full px-4 py-2.5 bg-white rounded-lg border ${
+                errors.joinDate ? "border-red-500" : "border-[#c9dcde]"
+              } flex justify-start items-center gap-2.5`}
+            >
               <input
                 className="w-full h-full bg-transparent text-[#2c3e50] text-sm font-normal font-['DM Sans'] outline-none placeholder-opacity-40"
                 type="date"
@@ -154,11 +188,23 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
           </div>
 
           {/* End Date */}
-          <div className={`self-stretch flex flex-col justify-start items-start gap-3 ${currentlyWorking ? 'opacity-50' : ''}`}>
-            <label className={`text-base font-bold font-['DM Sans'] ${currentlyWorking ? 'text-gray-400' : 'text-[#2c3e50]'}`}>
+          <div
+            className={`self-stretch flex flex-col justify-start items-start gap-3 ${
+              currentlyWorking ? "opacity-50" : ""
+            }`}
+          >
+            <label
+              className={`text-base font-bold font-['DM Sans'] ${
+                currentlyWorking ? "text-gray-400" : "text-[#2c3e50]"
+              }`}
+            >
               End Date *
             </label>
-            <div className={`w-full px-4 py-2.5 bg-white rounded-lg border ${errors.endDate ? 'border-red-500' : 'border-[#c9dcde]'} flex justify-start items-center gap-2.5`}>
+            <div
+              className={`w-full px-4 py-2.5 bg-white rounded-lg border ${
+                errors.endDate ? "border-red-500" : "border-[#c9dcde]"
+              } flex justify-start items-center gap-2.5`}
+            >
               <input
                 className="w-full h-full bg-transparent text-[#2c3e50] text-sm font-normal font-['DM Sans'] outline-none placeholder-opacity-40"
                 type="date"
@@ -183,28 +229,30 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
               onChange={() => {
                 setCurrentlyWorking(!currentlyWorking);
                 if (!currentlyWorking) {
-                  setEndDate(''); // Clear end date if currently working
+                  setEndDate(""); // Clear end date if currently working
                 }
               }}
             />
-            <label className="text-[#2c3e50] text-sm font-bold font-['DM Sans']">I am currently working in this role</label>
+            <label className="text-[#2c3e50] text-base font-normal font-['DM Sans'] leading-normal">
+              I am currently working in this role
+            </label>
           </div>
         </div>
       </div>
 
-      <div className="w-full px-3 py-4 bg-[#ecf1f4] border-t border-solid border-[#c9dcde] justify-end items-center gap-3 inline-flex">
+      <div className="w-full py-2 px-4 bg-white border-t border-[#ecf1f4] flex justify-end items-center gap-4">
         <button
-          className="px-3 py-1.5 bg-[#0a85c7] rounded-md justify-center items-center gap-2 flex"
+          className="w-24 px-6 py-2 bg-[#ecf1f4] rounded-lg flex justify-center items-center cursor-pointer text-[#2c3e50] text-sm font-bold font-['DM Sans'] hover:bg-[#d0e3e6]"
           onClick={onClose}
           type="button"
         >
-          <div className="text-white text-sm font-bold font-['DM Sans']">Cancel</div>
+          Cancel
         </button>
         <button
-          className="px-3 py-1.5 bg-[#0a85c7] rounded-md justify-center items-center gap-2 flex"
+          className="w-24 px-6 py-2 bg-[#0097a7] rounded-lg flex justify-center items-center cursor-pointer text-white text-sm font-bold font-['DM Sans'] hover:bg-[#007f82]"
           type="submit"
         >
-          <div className="text-white text-sm font-bold font-['DM Sans']">Save</div>
+          {isSaving ? "Saving..." : "Save"}
         </button>
       </div>
     </form>

@@ -1,15 +1,22 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BASE_URL, PROFILE_IMAGE_ENDPOINT, USERNAME_ENDPOINT, GET_PROFILE_ENDPOINT , COVER_IMAGE_ENDPOINT, GET_ALL_IMAGES_ENDPOINT} from './apiConfig'; // Import from apiConfig.js
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  BASE_URL,
+  PROFILE_IMAGE_ENDPOINT,
+  USERNAME_ENDPOINT,
+  GET_PROFILE_ENDPOINT,
+  COVER_IMAGE_ENDPOINT,
+  GET_ALL_IMAGES_ENDPOINT,
+} from "./apiConfig"; 
 
 export const profileApiSlice = createApi({
-  reducerPath: 'profileApi',
+  reducerPath: "profileApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL, 
+    baseUrl: BASE_URL,
     prepareHeaders: (headers) => {
-      const usertoken = localStorage.getItem('user');
+      const usertoken = localStorage.getItem("user");
       if (usertoken) {
         const token = JSON.parse(usertoken);
-        headers.set('Authorization', `Bearer ${token.token}`);
+        headers.set("Authorization", `Bearer ${token.token}`);
         console.log(token.token);
       }
       return headers;
@@ -19,7 +26,7 @@ export const profileApiSlice = createApi({
     uploadProfileImage: builder.mutation({
       query: (formData) => ({
         url: PROFILE_IMAGE_ENDPOINT,
-        method: 'POST',
+        method: "POST",
         body: formData,
       }),
     }),
@@ -27,64 +34,71 @@ export const profileApiSlice = createApi({
     uploadUsername: builder.mutation({
       query: (username) => ({
         url: USERNAME_ENDPOINT,
-        method: 'POST',
+        method: "POST",
         body: username,
       }),
     }),
 
     getProfile: builder.query({
       query: () => ({
-        url: GET_PROFILE_ENDPOINT, 
-        method: 'GET',
+        url: GET_PROFILE_ENDPOINT,
+        method: "GET",
       }),
     }),
 
     getMyPosts: builder.query({
-      query: ({page,limit}) => ({
-        url: `${GET_PROFILE_ENDPOINT}posts?_page=${page}&_limit=${limit}`, 
-        method: 'GET',
+      query: ({ page, limit }) => ({
+        url: `${GET_PROFILE_ENDPOINT}posts?_page=${page}&_limit=${limit}`,
+        method: "GET",
       }),
     }),
 
     uploadCoverImage: builder.mutation({
-      query: (formData) =>({
+      query: (formData) => ({
         url: COVER_IMAGE_ENDPOINT,
-        method : 'POST',
+        method: "POST",
         body: formData,
-      })
+      }),
     }),
     getOtherProfile: builder.query({
-      query: (username) =>({
+      query: (username) => ({
         url: `${GET_PROFILE_ENDPOINT}${username}`,
-        method:'GET',
-      })
+        method: "GET",
+      }),
     }),
 
     getAllImages: builder.query({
-        query: ({ page, limit }) => ({
-            url: `${GET_ALL_IMAGES_ENDPOINT}?_page=${page}&_limit=${limit}`,
-            method: 'GET',
-        }),
+      query: ({ page, limit }) => ({
+        url: `${GET_ALL_IMAGES_ENDPOINT}?_page=${page}&_limit=${limit}`,
+        method: "GET",
+      }),
     }),
 
     addCareerHistory: builder.mutation({
       query: (formData) => ({
-        url: '/profile/career-history', 
-        method: 'POST',
+        url: "/profile/career-history",
+        method: "POST",
         body: formData,
       }),
     }),
 
     updateCareerHistory: builder.mutation({
-      query: ({ id, ...formData }) => ({
-        url: `/profile/career-history/${id}`, 
-        method: 'PUT',
+      query: ({ id, formData }) => ({
+        url: `/profile/career-history/${id}`,
+        method: "PUT",
         body: formData,
       }),
     }),
-    
-
   }),
 });
 
-export const { useUploadProfileImageMutation, useGetProfileQuery , useUploadCoverImageMutation , useGetMyPostsQuery ,useGetOtherProfileQuery, useGetAllImagesQuery, useAddCareerHistoryMutation, useUpdateCareerHistoryMutation} = profileApiSlice;
+export const {
+  useUploadProfileImageMutation,
+  useGetProfileQuery,
+  useUploadCoverImageMutation,
+  useGetMyPostsQuery,
+  useGetOtherProfileQuery,
+  useGetAllImagesQuery,
+  useAddCareerHistoryMutation,
+  useUpdateCareerHistoryMutation,
+} = profileApiSlice;

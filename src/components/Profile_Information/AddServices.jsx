@@ -7,32 +7,26 @@ const AddServices = ({ isOpenAddSer, onClose, onSave, existingServices = [] }) =
     const [newService, setNewService] = useState('');
     const [services, setServices] = useState([]);
 
-    // Initialize services from existingServices on component mount and whenever it changes
     useEffect(() => {
         setServices(existingServices);
     }, [existingServices]);
 
-    // Function to add a new service
     const handleAddService = () => {
-        // Check if the new service is not empty and not already in the list
         if (newService.trim() !== '' && !services.includes(newService.trim())) {
             setServices([...services, newService.trim()]); 
             setNewService(''); 
         }
     };
 
-    // Function to remove a service
     const handleRemoveService = (serviceToRemove) => {
         setServices(services.filter(service => service !== serviceToRemove));
     };
 
-    // Function to save the services and close the modal
     const handleSave = () => {
         onSave(services); 
         onClose(); 
     };
 
-    // Handle keyboard input for adding services
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             e.preventDefault(); 
