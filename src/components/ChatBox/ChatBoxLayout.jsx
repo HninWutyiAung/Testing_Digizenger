@@ -25,12 +25,13 @@ function ChatBoxLayout () {
     const imgRef = useRef(null);
     const chatRef = useRef(null);
     const lastMessage = useRef(null);
-    const message = chatList.find((msg) => msg.id === 9);
+    const message = chatList.find((msg) => msg.id === activeChatRoom);
     const generateUniqueId = () => '_' + Math.random().toString(36).substr(2, 9); 
     const selectedUserId = 6;
     const {sendMessageToWebsocket} = useWebSocket();
     const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
     const userId = loginInfo.userId;
+    let senderId = null;
 
     console.log(activeChatRoom);
     console.log(chatList);
@@ -40,24 +41,21 @@ function ChatBoxLayout () {
         }
     },[message?.messages])
 
-    // useEffect(()=>{
-    //     console.log(currentUpload);
-    // },[currentUpload])
+    const lastChatMessage = message?.messages[message.messages.length -1];
+    console.log("lastMessage",lastChatMessage)
+    if(lastChatMessage){
+        senderId= lastChatMessage.senderId;
+        console.log("sender Id ",senderId);
+    }
 
     const sendMessage = (e) => {
         e.preventDefault(); 
+        const recipientId = activeChatRoom === userId ? senderId : activeChatRoom;
         if (inputValue.trim()) {
-            // const textMessage = {
-            //     id: generateUniqueId(),
-            //     content: inputValue.trim(),
-            //     sender: "user",
-            //     timestamp: new Date().toLocaleTimeString(),
-            // };
-
             const textMessage = {
                 message: inputValue.trim(),
                 user: {"id" :userId},
-                recipientId: activeChatRoom,
+                recipientId: recipientId,
                 type: "TEXT",
             };
 

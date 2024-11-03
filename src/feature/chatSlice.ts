@@ -14,6 +14,7 @@ interface Message {
     message: string; 
     user: { "id": number }; 
     recipientId: number; 
+    senderId ?: number;
     type: string; 
     timestamp?: string; 
 }

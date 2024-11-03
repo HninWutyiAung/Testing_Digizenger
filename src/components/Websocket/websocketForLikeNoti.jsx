@@ -2,7 +2,7 @@ import React, { useState, createContext, useContext, useEffect, useRef } from 'r
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { addNotification, selectNotification } from '../../feature/notiSlice';
-import { addMessageToChat } from '../../feature/chatSlice';
+import { addMessageToChat , selectActiveChatRoom} from '../../feature/chatSlice';
 import { useAppDispatch, useAppSelector } from '../../hook/Hook';
 import { toast } from 'react-toastify';
 
@@ -10,10 +10,17 @@ const WebSocketContext = createContext(null);
 
 export const WebSocketProvider = ({ children }) => {
     const dispatch = useAppDispatch();
+    const activeChatRoom = useAppSelector(selectActiveChatRoom);
     const notiData = useAppSelector(selectNotification);
     const [isConnected, setIsConnected] = useState(false);
     const stompClientRef = useRef(null);  // stompClient ကို useRef နဲ့ define
+    const activeChatRoomRef = useRef(null);
     const shownMessagesRef = useRef(new Set());
+    console.log(activeChatRoom);
+
+    useEffect(() => {
+        activeChatRoomRef.current = activeChatRoom;
+    }, [activeChatRoom]);
 
     const websocketConnectForLikeNoti = (userId) => {
         if (isConnected || stompClientRef.current) {
@@ -63,10 +70,12 @@ export const WebSocketProvider = ({ children }) => {
                         id:chatData.id,
                         message:chatData.message,
                         recipientId:chatData.recipientId,
+                        senderId:chatData.userDto.id,
                         type:chatData.type,
                     }
+                    const currentRoomId = activeChatRoomRef.current;
                     dispatch(addMessageToChat({
-                        recipientId: chatData.recipientId,
+                        recipientId: currentRoomId,
                         message: message
                         
                     }));
