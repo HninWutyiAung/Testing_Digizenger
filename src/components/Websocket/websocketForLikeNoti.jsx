@@ -13,7 +13,7 @@ export const WebSocketProvider = ({ children }) => {
     const activeChatRoom = useAppSelector(selectActiveChatRoom);
     const notiData = useAppSelector(selectNotification);
     const [isConnected, setIsConnected] = useState(false);
-    const stompClientRef = useRef(null);  // stompClient ကို useRef နဲ့ define
+    const stompClientRef = useRef(null); 
     const activeChatRoomRef = useRef(null);
     const shownMessagesRef = useRef(new Set());
     console.log(activeChatRoom);
@@ -66,9 +66,6 @@ export const WebSocketProvider = ({ children }) => {
                 try {
                     const chatData = JSON.parse(chatMessage.body);
                     console.log("Received chat message:", chatData);
-                    if (activeChatRoomRef.current !== chatData.recipientId) {
-                        dispatch(setActiveChat(chatData.recipientId));
-                    }
                     const message ={
                         id:chatData.id,
                         message:chatData.message,
@@ -76,11 +73,25 @@ export const WebSocketProvider = ({ children }) => {
                         senderId:chatData.userDto.id,
                         type:chatData.type,
                     }
-                    dispatch(addMessageToChat({
-                        recipientId: chatData.recipientId,
-                        message: message
-                        
-                    }));
+                    if (activeChatRoomRef.current === chatData.recipientId) {
+                        dispatch(addMessageToChat({
+                            recipientId: chatData.recipientId,
+                            message: message,
+                        }));
+                    } else {
+                        if (activeChatRoomRef.current === chatData.userDto.id) {
+                            dispatch(addMessageToChat({
+                                recipientId: chatData.userDto.id,
+                                message: message,
+                            }));
+                        } else {
+                            dispatch(setActiveChat(chatData.recipientId));
+                            dispatch(addMessageToChat({
+                                recipientId: chatData.recipientId,
+                                message: message,
+                            }));
+                        }
+                    }
 
                     if (!shownMessagesRef.current.has(chatData.id)) {
                         shownMessagesRef.current.add(chatData.id);

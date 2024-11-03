@@ -15,7 +15,7 @@ function ChatBoxUserStatusNav({message}){
                     <img src={andrea} className='w-[40px] h-[40px] rounded-[50%]'/>
                     <div className='flex flex-col items-start justify-center'>
                         <div className='flex items-center justify-center gap-[8px]'>
-                            <span className='text-[#2C3E50] font-semibold text-[20px]'>{`${firstName} ${lastName}`}</span>
+                            <span className='text-[#2C3E50] font-semibold text-[20px]'>Emma</span>
                             <img src={mark} />
                         </div>
                         <span className='text-[#7E7E8D] text-[14px]'>Online 12m ago</span>
