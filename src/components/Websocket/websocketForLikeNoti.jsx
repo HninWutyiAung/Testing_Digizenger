@@ -2,7 +2,7 @@ import React, { useState, createContext, useContext, useEffect, useRef } from 'r
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { addNotification, selectNotification } from '../../feature/notiSlice';
-import { addMessageToChat } from '../../feature/chatSlice';
+import { addMessageToChat , selectActiveChatRoom ,setActiveChat} from '../../feature/chatSlice';
 import { useAppDispatch, useAppSelector } from '../../hook/Hook';
 import { toast } from 'react-toastify';
 
@@ -10,10 +10,17 @@ const WebSocketContext = createContext(null);
 
 export const WebSocketProvider = ({ children }) => {
     const dispatch = useAppDispatch();
+    const activeChatRoom = useAppSelector(selectActiveChatRoom);
     const notiData = useAppSelector(selectNotification);
     const [isConnected, setIsConnected] = useState(false);
-    const stompClientRef = useRef(null);  // stompClient ကို useRef နဲ့ define
+    const stompClientRef = useRef(null); 
+    const activeChatRoomRef = useRef(null);
     const shownMessagesRef = useRef(new Set());
+    console.log(activeChatRoom);
+
+    useEffect(() => {
+        activeChatRoomRef.current = activeChatRoom;
+    }, [activeChatRoom]);
 
     const websocketConnectForLikeNoti = (userId) => {
         if (isConnected || stompClientRef.current) {
@@ -63,13 +70,28 @@ export const WebSocketProvider = ({ children }) => {
                         id:chatData.id,
                         message:chatData.message,
                         recipientId:chatData.recipientId,
+                        senderId:chatData.userDto.id,
                         type:chatData.type,
                     }
-                    dispatch(addMessageToChat({
-                        recipientId: chatData.recipientId,
-                        message: message
-                        
-                    }));
+                    if (activeChatRoomRef.current === chatData.recipientId) {
+                        dispatch(addMessageToChat({
+                            recipientId: chatData.recipientId,
+                            message: message,
+                        }));
+                    } else {
+                        if (activeChatRoomRef.current === chatData.userDto.id) {
+                            dispatch(addMessageToChat({
+                                recipientId: chatData.userDto.id,
+                                message: message,
+                            }));
+                        } else {
+                            dispatch(setActiveChat(chatData.recipientId));
+                            dispatch(addMessageToChat({
+                                recipientId: chatData.recipientId,
+                                message: message,
+                            }));
+                        }
+                    }
 
                     if (!shownMessagesRef.current.has(chatData.id)) {
                         shownMessagesRef.current.add(chatData.id);

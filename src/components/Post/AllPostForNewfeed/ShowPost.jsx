@@ -32,7 +32,9 @@ function ShowPost({ activeChat, post , setPosts}) {
 
     const profileImage = isProfileRoute 
         ? ProfileDto?.profileImageUrl || default_image 
-        : post?.profileDto?.profileImageUrl || default_image;
+        : post?.otherProfileDto?.profileImageUrl || default_image;
+
+    console.log(profileImage);
     
     const firstName = post?.userDto?.firstName || userDto?.firstName;
     const lastName = post?.userDto?.lastName || userDto?.lastName;

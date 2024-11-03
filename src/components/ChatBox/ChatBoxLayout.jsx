@@ -25,12 +25,13 @@ function ChatBoxLayout () {
     const imgRef = useRef(null);
     const chatRef = useRef(null);
     const lastMessage = useRef(null);
-    const message = chatList.find((msg) => msg.id === 9);
+    const message = chatList.find((msg) => msg.id === activeChatRoom);
     const generateUniqueId = () => '_' + Math.random().toString(36).substr(2, 9); 
     const selectedUserId = 6;
     const {sendMessageToWebsocket} = useWebSocket();
     const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
     const userId = loginInfo.userId;
+    let senderId = null;
 
     console.log(activeChatRoom);
     console.log(chatList);
@@ -40,29 +41,27 @@ function ChatBoxLayout () {
         }
     },[message?.messages])
 
-    // useEffect(()=>{
-    //     console.log(currentUpload);
-    // },[currentUpload])
+    const lastChatMessage = message?.messages[message.messages.length -1];
+    console.log("lastMessage",lastChatMessage)
+    if(lastChatMessage){
+        senderId= lastChatMessage.senderId;
+        console.log("sender Id ",senderId);
+    }
 
     const sendMessage = (e) => {
         e.preventDefault(); 
+        const recipientId = activeChatRoom === userId ? senderId : activeChatRoom;
         if (inputValue.trim()) {
-            // const textMessage = {
-            //     id: generateUniqueId(),
-            //     content: inputValue.trim(),
-            //     sender: "user",
-            //     timestamp: new Date().toLocaleTimeString(),
-            // };
-
             const textMessage = {
                 message: inputValue.trim(),
                 user: {"id" :userId},
-                recipientId: activeChatRoom,
+                recipientId: recipientId,
                 type: "TEXT",
             };
 
             dispatch(addMessageToChat({ recipientId: activeChatRoom, message: textMessage }));
             sendMessageToWebsocket(textMessage);
+            console.log("textMessage",textMessage);
             setInputValue("");
         }
     };
@@ -128,7 +127,7 @@ function ChatBoxLayout () {
                 {message?.messages.map((text,index) => (
                     <main key={text.id} className={`flex flex-col w-full ${text.recipientId === userId ? "sender" : "user"}`}>
                         <div className="chat-msg-container">
-                            {text.recipientId !== selectedUserId && (
+                            {text.recipientId === userId && (
                                 <div className="w-[40px] h-[40px]">
                                     <img src={andrea} alt="User Avatar" />
                                 </div>
@@ -145,8 +144,8 @@ function ChatBoxLayout () {
                                 <div className={`text-right text-[12px] text-[#2C3E50] ${text.recipientId === userId  ? "mr-[-5px]" : "mr-[5px]"}`}>
                                     <span>12:00 PM</span>
                                 </div>
-                                <div className={`absolute top-4 ${text.recipientId === selectedUserId ? "right-[-15px]" : "left-[-11px]"}`} style={{ top: text.message.startsWith('data:image') ? "12rem" : "" }}>
-                                    <i className="text-[#ECF1F4]"><VscTriangleUp size={50} /></i>
+                                <div className={`absolute top-[1.20rem] ${text.recipientId !== userId ? "right-[-15px]" : "left-[-11px]"}`} style={{ top: text.message.startsWith('data:image') ? "12rem" : "" }}>
+                                    <i className="text-[#ECF1F4]"><VscTriangleUp size={45} /></i>
                                 </div>
                             </div>
                         </div>

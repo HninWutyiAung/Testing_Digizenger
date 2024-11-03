@@ -19,7 +19,7 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
     console.log(setBottomValue);
 
     useEffect(() => {
-        // dispatch(setChatList(data));
+        dispatch(setChatList(data));
         if (data.length > 0) {
             const defaultChatId = data[0].id;  
             dispatch(setActiveChat(defaultChatId));

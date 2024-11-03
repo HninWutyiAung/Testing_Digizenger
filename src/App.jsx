@@ -13,10 +13,11 @@ import { Provider } from 'react-redux';
 import ApiFetchExample  from './ApiFetch';
 import { setLoginUserToken , selectIsLogged} from './feature/loginToken';
 import { useAppSelector, useAppDispatch } from './hook/Hook';
-import { WebSocketProvider } from './components/Websocket/websocketForLikeNoti';
+import { WebSocketProvider ,useWebSocket} from './components/Websocket/websocketForLikeNoti';
 import { useGetAllNotiQuery } from './apiService/Noti';
 import { HandleNoti } from './components/Notification/LikeNoti/NotiService';
 import { selectNotification } from './feature/notiSlice';
+
 
 
 function MainApp() {
@@ -27,6 +28,9 @@ function MainApp() {
   const navigate = useNavigate();
   const {data:noti,isSuccess} = useGetAllNotiQuery();
   const allNoti = useAppSelector(selectNotification);
+  const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
+  const userId = loginInfo.userId;
+  const {websocketConnectForLikeNoti} = useWebSocket();
 
   console.log(allNoti);
 
@@ -34,6 +38,14 @@ function MainApp() {
   const shouldHideNav = hideNav.includes(location.pathname) || /^\/home\/profile\/[^/]+$/.test(location.pathname);
 
   const userToken = JSON.parse(localStorage.getItem("user") || "{}")
+
+  useEffect(() => {
+    console.log("user id:",userId);
+    if (isLoggedIn && userId){
+      websocketConnectForLikeNoti(userId);
+    }
+      console.log("it work noti")
+  }, [websocketConnectForLikeNoti,userId]);
 
   useEffect(() => {
     if (isSuccess && noti) {
