@@ -121,16 +121,7 @@ function NewFeed({ activeChat }) {
     useEffect(()=>{
         console.log(currentUpload)
     },[currentUpload])
-
-    useEffect(() => {
-            console.log("user id:",userId);
-    
-              websocketConnectForLikeNoti(userId);
-              console.log("it work noti")
-          }, [websocketConnectForLikeNoti,userId]);
-
-
-    
+ 
 
     return (
         <section>

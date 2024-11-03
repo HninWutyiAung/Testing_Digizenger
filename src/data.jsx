@@ -121,7 +121,7 @@
 const selectedUserId = 3;
 const chatList = [
     {
-        id: '1',
+        id: '0',
         title: 'Emma Noble', // Group name
         messages: [{id: '1',
             message: "Have you eaten",

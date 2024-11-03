@@ -61,6 +61,7 @@ function ChatBoxLayout () {
 
             dispatch(addMessageToChat({ recipientId: activeChatRoom, message: textMessage }));
             sendMessageToWebsocket(textMessage);
+            console.log("textMessage",textMessage);
             setInputValue("");
         }
     };
@@ -126,7 +127,7 @@ function ChatBoxLayout () {
                 {message?.messages.map((text,index) => (
                     <main key={text.id} className={`flex flex-col w-full ${text.recipientId === userId ? "sender" : "user"}`}>
                         <div className="chat-msg-container">
-                            {text.recipientId !== selectedUserId && (
+                            {text.recipientId === userId && (
                                 <div className="w-[40px] h-[40px]">
                                     <img src={andrea} alt="User Avatar" />
                                 </div>
@@ -143,8 +144,8 @@ function ChatBoxLayout () {
                                 <div className={`text-right text-[12px] text-[#2C3E50] ${text.recipientId === userId  ? "mr-[-5px]" : "mr-[5px]"}`}>
                                     <span>12:00 PM</span>
                                 </div>
-                                <div className={`absolute top-4 ${text.recipientId === selectedUserId ? "right-[-15px]" : "left-[-11px]"}`} style={{ top: text.message.startsWith('data:image') ? "12rem" : "" }}>
-                                    <i className="text-[#ECF1F4]"><VscTriangleUp size={50} /></i>
+                                <div className={`absolute top-[1.20rem] ${text.recipientId !== userId ? "right-[-15px]" : "left-[-11px]"}`} style={{ top: text.message.startsWith('data:image') ? "12rem" : "" }}>
+                                    <i className="text-[#ECF1F4]"><VscTriangleUp size={45} /></i>
                                 </div>
                             </div>
                         </div>

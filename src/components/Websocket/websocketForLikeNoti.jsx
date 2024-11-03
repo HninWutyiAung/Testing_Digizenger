@@ -2,7 +2,7 @@ import React, { useState, createContext, useContext, useEffect, useRef } from 'r
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { addNotification, selectNotification } from '../../feature/notiSlice';
-import { addMessageToChat , selectActiveChatRoom} from '../../feature/chatSlice';
+import { addMessageToChat , selectActiveChatRoom ,setActiveChat} from '../../feature/chatSlice';
 import { useAppDispatch, useAppSelector } from '../../hook/Hook';
 import { toast } from 'react-toastify';
 
@@ -66,6 +66,9 @@ export const WebSocketProvider = ({ children }) => {
                 try {
                     const chatData = JSON.parse(chatMessage.body);
                     console.log("Received chat message:", chatData);
+                    if (activeChatRoomRef.current !== chatData.recipientId) {
+                        dispatch(setActiveChat(chatData.recipientId));
+                    }
                     const message ={
                         id:chatData.id,
                         message:chatData.message,
@@ -73,9 +76,8 @@ export const WebSocketProvider = ({ children }) => {
                         senderId:chatData.userDto.id,
                         type:chatData.type,
                     }
-                    const currentRoomId = activeChatRoomRef.current;
                     dispatch(addMessageToChat({
-                        recipientId: currentRoomId,
+                        recipientId: chatData.recipientId,
                         message: message
                         
                     }));
