@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   useAddCareerHistoryMutation,
   useUpdateCareerHistoryMutation,
+  useGetProfileQuery
 } from "../../apiService/Profile";
 
 const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
@@ -46,6 +47,8 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
     return Object.keys(formErrors).length === 0;
   };
 
+  const { refetch } = useGetProfileQuery();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -81,6 +84,7 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
         }
 
         console.log("Response:", response);
+        refetch();
         onClose();
       } catch (error) {
         console.error("Error during add/update:", error);
