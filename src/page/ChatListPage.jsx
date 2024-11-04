@@ -9,14 +9,27 @@ import ChatListBottomNav from "../components/ChatList/ChatListBottomNav.jsx";
 import GuardModeToggle from "../components/Profile_Information/GuardModeToggle.jsx";
 import Noti from "../components/Notification/LikeNoti/Noti.jsx";
 import { otherProfileDetail } from "./OtherProfilePage/OtherProfilePage.js";
+import { useGetChatListQuery } from "../apiService/Chat.ts";
 
 function ChatList({ activeChat, columnHandle, profileBox }) {
     const dispatch = useAppDispatch();
     const chatList = useAppSelector(selectChatList);
     const [bottomNavValue , setBottomValue] =useState("message");
     const otherUserId = otherProfileDetail?.otherProfileDto.otherUserForProfileDto.id;  
+    const {data:chatListData,isLoading,isSuccess} = useGetChatListQuery();
     console.log(bottomNavValue);
     console.log(setBottomValue);
+
+    useEffect(()=>{
+        if(isSuccess){
+            console.log(chatListData);
+            dispatch(setChatList(chatListData.userDtoList));
+            // if (data.length > 0) {
+            //     const defaultChatId = data[0].id;  
+            //     dispatch(setActiveChat(defaultChatId));
+            // }
+        }
+    },[isSuccess])
 
     useEffect(() => {
         dispatch(setChatList(data));

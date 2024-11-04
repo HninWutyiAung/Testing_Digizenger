@@ -1,22 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-// Define the Notification interface without postDto and profileDto
+
 interface Notification {
     id: string;
     message: string;
-    createDate: string; // e.g., "2024-10-28T02:54:37.024Z"
-    type: string; // e.g., 'LIKE', 'BIRTHDAY', etc.
+    createDate: string; 
+    type: string;
     userId: number;
     read: boolean;
 }
 
-// Define the initial state interface
+
 interface NotificationState {
     allNotis: Notification[];
 }
 
-// Initial state for notifications
+
 const initialState: NotificationState = {
     allNotis: []
 };

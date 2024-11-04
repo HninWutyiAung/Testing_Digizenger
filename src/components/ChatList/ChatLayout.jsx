@@ -6,6 +6,7 @@ import read from '/images/read.png';
 function ChatLayout({activeChat, chat , activeChatRoomHandle}) {
 
     const lastMessage = chat.messages.length-1;
+    const lastMessageFromChatRoom =chat.messages[lastMessage]?.message || chat.lastMessage
     console.log(chat.id);
 
     return (
@@ -19,7 +20,7 @@ function ChatLayout({activeChat, chat , activeChatRoomHandle}) {
                         <div className='flex flex-col justify-center items-start'>
                             <div className='flex items-center justify-between gap-[2px] w-[240px] '>
                                 <div className='flex items-center gap-[5px]'>
-                                    <span className='text-[14px] font-bold leading-7'>{chat.title}</span>
+                                    <span className='text-[14px] font-bold leading-7'>{chat.firstName}</span>
                                     <img src={badges} className='w-[20px] h-[20px]'></img>
                                 </div>
                                 <div>
@@ -28,7 +29,7 @@ function ChatLayout({activeChat, chat , activeChatRoomHandle}) {
                             </div>
                             <div className='flex items-start justify-between w-[220px]'>
                                 <div className='text-[14px] font-normal leading-6 text-[#7E7E8D]'>
-                                    <span>{chat.messages[lastMessage].message}</span>
+                                    <span>{lastMessageFromChatRoom}</span>
                                 </div>
                                 <div className='w-[24px] h-[24px]'>
                                     <img src={read}></img>
