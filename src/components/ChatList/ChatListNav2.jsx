@@ -9,7 +9,7 @@ function ChatListNav2({ activeChat, profileBox}) {
     };
     console.log(profileBox);
     return (
-        <section className={`flex items-center justify-between px-[10px] py-[20px]  absolute mt-[50.1px] w-[100%] border-b border-[#ECF1F4] ${profileBox ? "bg-white !important" : "bg-[#F8FCFD]"}`}>
+        <section className={`flex items-center justify-between px-[10px] py-[20px]  mt-[-7px] absolute  w-[100%] border-b border-[#ECF1F4] ${profileBox ? "bg-white !important" : "bg-[#F8FCFD]"}`}>
             <ul className="flex flex-row flex-wrap justify-start ">
                 {["all", "read", "unread", "archived", "group", "family"].map((item) => (
                     <li 
