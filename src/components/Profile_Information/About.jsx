@@ -6,7 +6,7 @@ import { useGetProfileQuery } from "../../apiService/Profile";
 
 const About = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { data, error, isLoading } = useGetProfileQuery();
+    const { data, error, isLoading, refetch } = useGetProfileQuery();
 
     const handleOpenModal = () => {
         setIsModalOpen(true);
@@ -151,7 +151,7 @@ const About = () => {
                     </div>
                 </div>
             </div>
-            <EditAboutInfo isOpen={isModalOpen} onClose={handleCloseModal} onSave={handleSaveModal} careerHistory={careerHistory} educationHistory={educationHistory} servicesProvided={servicesProvided}/>
+            <EditAboutInfo isOpen={isModalOpen} onClose={handleCloseModal} refetch={refetch} onSave={handleSaveModal} careerHistory={careerHistory} educationHistory={educationHistory} servicesProvided={servicesProvided}/>
         </div>
     );
 };

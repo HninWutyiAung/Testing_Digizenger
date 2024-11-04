@@ -1,6 +1,6 @@
 import React from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AiOutlinePlus } from "react-icons/ai";
 import { PiPencilSimpleFill } from "react-icons/pi";
 import { PiList } from "react-icons/pi";
@@ -9,7 +9,7 @@ import AddAndUpdateCareerHistory from './AddAndUpdateCareerHistory';
 import AddAndUpdateEducation from './AddAndUpdateEducation';
 import AddServices from './AddServices';
 
-const EditAboutInfo = ({ isOpen, onClose, onSave, careerHistory: initialCareerHistory, educationHistory: initialEducationHistory, servicesProvided: initialServicesProvided }) => {
+const EditAboutInfo = ({ isOpen, onClose, refetch, onSave, careerHistory: initialCareerHistory, educationHistory: initialEducationHistory, servicesProvided: initialServicesProvided }) => {
     if (!isOpen) return null;
 
     // Start Profile Category
@@ -65,6 +65,10 @@ const EditAboutInfo = ({ isOpen, onClose, onSave, careerHistory: initialCareerHi
     const [currentCareer, setCurrentCareer] = useState(null);
     const [isAboutInfoVisible, setIsAboutInfoVisible] = useState(true);
    
+    useEffect(() => {
+        setCareerHistory(initialCareerHistory);
+    }, [initialCareerHistory]);
+
        
     const handleOpenCareerModal = (career = null) => {
         setCurrentCareer(career);
@@ -76,21 +80,6 @@ const EditAboutInfo = ({ isOpen, onClose, onSave, careerHistory: initialCareerHi
         setIsCareerModalOpen(false);
         setIsAboutInfoVisible(true);
         setCurrentCareer(null);
-    };
-   
-    const handleSaveCareer = (newCareer) => {
-        if (currentCareer) {
-            
-            setCareerHistory((prev) =>
-                prev.map((career) =>
-                    career.id === newCareer.id ? newCareer : career
-                )
-            );
-        } else {
-            
-            setCareerHistory((prev) => [...prev, newCareer]);
-        }
-        handleCloseCareerModal();
     };
     //End Career  
     
@@ -366,7 +355,7 @@ const EditAboutInfo = ({ isOpen, onClose, onSave, careerHistory: initialCareerHi
                 {/* End Cancle and Save Button */}
             </div>
             )}
-            {isCareerModalOpen && (<AddAndUpdateCareerHistory isOpenCar={isCareerModalOpen} onClose={handleCloseCareerModal}  currentCareer={currentCareer}/>)}
+            {isCareerModalOpen && (<AddAndUpdateCareerHistory isOpenCar={isCareerModalOpen} onClose={handleCloseCareerModal} refetch={refetch}  currentCareer={currentCareer}/>)}
             {isEducationModalOpen && <AddAndUpdateEducation isOpenEdu={isEducationModalOpen} onClose={handleCloseEducationModal} onSave={handleSaveEducation} currentEducation={currentEducation}/>}
             {isAddServiceModalOpen && <AddServices isOpenAddSer={isAddServiceModalOpen} onClose={handleCloseAddServiceModal} onSave={handleSaveServices} existingServices={services}/>}
         </div>

@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import {
   useAddCareerHistoryMutation,
   useUpdateCareerHistoryMutation,
-  useGetProfileQuery
 } from "../../apiService/Profile";
 
-const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
+const AddAndUpdateCareerHistory = ({ isOpenCar, onClose,refetch, currentCareer }) => {
   if (!isOpenCar) return null;
 
   const [designation, setDesignation] = useState("");
@@ -46,8 +45,6 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0;
   };
-
-  const { refetch } = useGetProfileQuery();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
