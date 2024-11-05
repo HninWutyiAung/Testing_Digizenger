@@ -2,9 +2,14 @@ import React, { useState, useEffect } from "react";
 import {
   useAddCareerHistoryMutation,
   useUpdateCareerHistoryMutation,
-} from "../../apiService/Profile";
+} from "../../../apiService/Profile";
 
-const AddAndUpdateCareerHistory = ({ isOpenCar, onClose,refetch, currentCareer }) => {
+const AddAndUpdateCareerHistory = ({
+  isOpenCar,
+  onClose,
+  refetch,
+  currentCareer,
+}) => {
   if (!isOpenCar) return null;
 
   const [designation, setDesignation] = useState("");
@@ -38,10 +43,18 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose,refetch, currentCareer }
 
   const validateForm = () => {
     const formErrors = {};
+    const today = new Date().toISOString().split("T")[0];
     if (!designation) formErrors.designation = true;
     if (!company) formErrors.company = true;
     if (!joinDate) formErrors.joinDate = true;
     if (!currentlyWorking && !endDate) formErrors.endDate = true;
+    // Date validations
+    if (joinDate && joinDate > today) {
+      formErrors.joinDate = "Join date cannot be in the future.";
+    }
+    if (joinDate && endDate && endDate <= joinDate) {
+      formErrors.endDate = "End date must be after the join date.";
+    }
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0;
   };
@@ -60,7 +73,7 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose,refetch, currentCareer }
 
       const companyName =
         company || currentCareer?.companyDto?.companyName || "";
-      formData.append("companyName", companyName); 
+      formData.append("companyName", companyName);
 
       formData.append(
         "logoImageUrl",
@@ -86,7 +99,7 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose,refetch, currentCareer }
       } catch (error) {
         console.error("Error during add/update:", error);
       } finally {
-        setIsSaving(false); 
+        setIsSaving(false);
       }
     }
   };
@@ -186,6 +199,9 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose,refetch, currentCareer }
                 }}
               />
             </div>
+            {errors.joinDate && (
+              <span className="text-red-500 text-xs">{errors.joinDate}</span>
+            )}
           </div>
 
           {/* End Date */}
@@ -219,6 +235,9 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose,refetch, currentCareer }
                 disabled={currentlyWorking}
               />
             </div>
+            {errors.endDate && (
+              <span className="text-red-500 text-xs">{errors.endDate}</span>
+            )}
           </div>
 
           {/* Checkbox: Currently Working */}

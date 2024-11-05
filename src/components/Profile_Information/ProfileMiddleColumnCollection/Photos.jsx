@@ -49,7 +49,9 @@ const Photos = () => {
 
   const renderNoPhotosMessage = () => (
     <div className="grid grid-cols-3 gap-2 w-full">
-      <p className="text-[#7E7E8D] text-[16px] col-span-3 text-left">No photos</p>
+      <p className="text-[#7E7E8D] text-[16px] col-span-3 text-left">
+        No photos
+      </p>
     </div>
   );
 
@@ -92,7 +94,7 @@ const Photos = () => {
         <div className="self-stretch flex flex-col justify-start items-start gap-5">
           {renderHeader()}
           {totalImage === 0 ? renderNoPhotosMessage() : renderPhotoGrid()}
-        </div>  
+        </div>
       </div>
     </div>
   );
