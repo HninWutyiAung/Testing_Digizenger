@@ -10,6 +10,7 @@ import { profileApiSlice} from "../apiService/Profile.ts";
 import profileDataReducer from './profileSlice.ts';
 import { likeNotiApiSlice } from "../apiService/Noti.ts";
 import notificationsReducer from './notiSlice.ts';
+import { chatApiSlice } from "../apiService/Chat.ts";
 
 export const store = configureStore({
     reducer:{
@@ -23,13 +24,15 @@ export const store = configureStore({
         [postUploadSlice.reducerPath]: postUploadSlice.reducer,
         [profileApiSlice.reducerPath] : profileApiSlice.reducer,
         [likeNotiApiSlice.reducerPath] : likeNotiApiSlice.reducer,
+        [chatApiSlice.reducerPath] : chatApiSlice.reducer,
     },
     middleware : (getDefaultMiddleWare) =>
         getDefaultMiddleWare().concat(
             authApi.middleware, 
             postUploadSlice.middleware,
             profileApiSlice.middleware, 
-            likeNotiApiSlice.middleware),
+            likeNotiApiSlice.middleware,
+            chatApiSlice.middleware),
     
 })
 

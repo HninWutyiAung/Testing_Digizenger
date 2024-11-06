@@ -1,4 +1,5 @@
 export const BASE_URL = 'https://digizenger.online/api/v1';
+export const BASE_URL2 = 'https://digizenger.online';
 
 export const PROFILE_IMAGE_ENDPOINT = '/profile/p-image';
 export const USERNAME_ENDPOINT = '/profile/username';
@@ -17,3 +18,5 @@ export const LIKE_POST_ENDPOINT = '/posts/isLike/';
 export const GET_ALL_NOTIFICATION = '/notification';
 
 export const GET_ALL_IMAGES_ENDPOINT = '/profile/images';
+
+export const GET_CHAT_LIST = '/chat/chat-list';

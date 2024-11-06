@@ -9,14 +9,23 @@ import ChatListBottomNav from "../components/ChatList/ChatListBottomNav.jsx";
 import GuardModeToggle from "../components/Profile_Information/ProfileMiddleColumnCollection/GuardModeToggle.jsx";
 import Noti from "../components/Notification/LikeNoti/Noti.jsx";
 import { otherProfileDetail } from "./OtherProfilePage/OtherProfilePage.js";
+import { useGetChatListQuery } from "../apiService/Chat.ts";
 
 function ChatList({ activeChat, columnHandle, profileBox }) {
     const dispatch = useAppDispatch();
     const chatList = useAppSelector(selectChatList);
     const [bottomNavValue , setBottomValue] =useState("message");
     const otherUserId = otherProfileDetail?.otherProfileDto.otherUserForProfileDto.id;  
+    const {data:chatListData,isLoading,isSuccess} = useGetChatListQuery();
     console.log(bottomNavValue);
     console.log(setBottomValue);
+
+    useEffect(()=>{
+        if(isSuccess){
+            console.log(chatListData);
+            dispatch(setChatList(chatListData.userDtoList));
+        }
+    },[isSuccess])
 
     useEffect(() => {
         dispatch(setChatList(data));
@@ -41,7 +50,6 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
     return (
         <section className="relative">
             <div className="relative">
-                {/* <ChatListNav /> */}
                 <GuardModeToggle/>
                 {bottomNavValue ==="message" &&
                      <ChatListNav2 activeChat={activeChat} profileBox={profileBox}/>
@@ -67,7 +75,7 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
                         </div>
                     
                     }
-                    {/* <ChatListBottomNav activeChat={activeChat} setBottomValue={setBottomValue}/> */}
+
                 </div>
                 
                 

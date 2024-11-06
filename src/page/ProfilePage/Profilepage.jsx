@@ -24,9 +24,9 @@ function Profile({ activeChat }) {
     useEffect(() => {
         if (isSuccess && profile) {
             IMageForMyProfile(profile);
-            const { firstName, lastName } = profile.profileDto.userForProfileDto;
-            setUserName({ firstName, lastName }); 
-            dispatch(setRegisterInfo({ firstName, lastName }));
+            // const { firstName, lastName } = profile.profileDto.userForProfileDto;
+            // setUserName({ firstName, lastName }); 
+            // dispatch(setRegisterInfo({ firstName, lastName }));
         }
     }, [isSuccess, profile, dispatch]);
 
