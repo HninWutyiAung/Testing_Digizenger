@@ -21,9 +21,9 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
     console.log(setBottomValue);
 
     useEffect(()=>{
-        if(isSuccess){
-            console.log(chatListData);
-            dispatch(setChatList(chatListData.userDtoList));
+        if (isSuccess && chatListData) {
+            const combinedChatList = [...data, ...chatListData.userDtoList];
+            dispatch(setChatList(combinedChatList));
         }
     },[isSuccess])
 

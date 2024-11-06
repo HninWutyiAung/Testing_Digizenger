@@ -36,7 +36,7 @@ function ShowPost({ activeChat, post , setPosts}) {
     
     const firstName = post?.userDto?.firstName || ProfileDto?.firstName;
     const lastName = post?.userDto?.lastName || ProfileDto?.lastName;
-    const followers = post?.userDto?.followers || userDto?.followersCount;
+    const followers = post?.userDto?.followers || ProfileDto?.followersCount;
     const otherUserName = post?.userDto?.profileDto?.username;
 
 
