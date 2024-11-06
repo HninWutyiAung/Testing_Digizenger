@@ -86,7 +86,7 @@ const AddAndUpdateEducation = ({
         } else {
           await addEducationHistory(formData).unwrap();
         }
-        refetch();
+        await refetch();
         onClose();
       } catch (error) {
         console.error("Failed to save education history:", error);

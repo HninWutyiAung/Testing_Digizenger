@@ -6,6 +6,7 @@ const AddServices = ({ isOpenAddSer, onClose, refetch }) => {
 
   const [newService, setNewService] = useState("");
   const [error, setError] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
   const [addServiceProvided, { isLoading }] = useAddServiceProvidedMutation();
 
   const handleSave = async () => {
@@ -16,15 +17,19 @@ const AddServices = ({ isOpenAddSer, onClose, refetch }) => {
       setError("");
     }
 
+    setIsSaving(true);
+
     try {
       const formData = new FormData();
       formData.append("service", newService.trim());
 
       await addServiceProvided(formData).unwrap();
-      refetch();
+      await refetch();
       onClose();
     } catch (err) {
       console.error("Failed to add service:", err);
+    }finally {
+      setIsSaving(false); 
     }
   };
 
@@ -90,7 +95,7 @@ const AddServices = ({ isOpenAddSer, onClose, refetch }) => {
           onClick={handleSave}
           className="w-24 px-6 py-2 bg-[#0097a7] rounded-lg flex justify-center items-center cursor-pointer text-white text-sm font-bold font-['DM Sans'] hover:bg-[#007f82]"
         >
-          {isLoading ? "Saving..." : "Save"}
+          {isSaving ? "Saving..." : "Save"}
         </button>
       </div>
     </form>

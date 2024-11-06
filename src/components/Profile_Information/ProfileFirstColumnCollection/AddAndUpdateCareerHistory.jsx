@@ -80,10 +80,6 @@ const AddAndUpdateCareerHistory = ({
         currentCareer?.companyDto?.logoImageUrl || ""
       );
 
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-      }
-
       try {
         let response;
         if (currentCareer) {
@@ -93,8 +89,7 @@ const AddAndUpdateCareerHistory = ({
           response = await addCareerHistory(formData).unwrap();
         }
 
-        console.log("Response:", response);
-        refetch();
+        await refetch();
         onClose();
       } catch (error) {
         console.error("Error during add/update:", error);

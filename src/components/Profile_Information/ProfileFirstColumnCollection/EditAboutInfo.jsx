@@ -140,8 +140,8 @@ const EditAboutInfo = ({
     setLoadingStates((prev) => ({ ...prev, [service.id]: true }));
     try {
       await deleteService(service.id).unwrap();
+      await refetch();
       setServices(services.filter((item) => item.id !== service.id));
-      refetch();
     } catch (error) {
       console.error("Failed to delete the service: ", error);
     } finally {
@@ -418,7 +418,7 @@ const EditAboutInfo = ({
                       {service.service}
                     </div>
                     {loadingStates[service.id] ? (
-                      <span className="text-blue-500">Deleting...</span>
+                      <span className="text-red-500">Deleting...</span>
                     ) : (
                       <IoCloseCircle
                         className="w-4 h-4 relative cursor-pointer"
