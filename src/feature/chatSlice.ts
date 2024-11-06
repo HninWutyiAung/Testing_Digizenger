@@ -39,21 +39,21 @@ const chatSlice = createSlice({
         setChatList: (state, action: PayloadAction<Chat[]>) => {
             state.chatList =  (action.payload || []).map(user => ({
                 ...user,
-                messages: user.messages || [], // Ensure messages array exists
+                messages: user.messages || [], 
             }));
         },
         setActiveChat: (state, action: PayloadAction<string | null>) => {
             state.activeChatRoom = action.payload;
         },
-        addMessageToChat: (state, action: PayloadAction<{ recipientId: number; message: Message }>) => {
-            const { recipientId, message } = action.payload;
+        addMessageToChat: (state, action: PayloadAction<{ recipientId: number; firstName: string ; message: Message }>) => {
+            const { recipientId, firstName, message } = action.payload;
             const chat = state.chatList.find(chat => chat.id === recipientId);
 
             if (chat) {
                 chat.messages.push(message);
             } else {
                 // Add new chat if not already in the chat list
-                state.chatList.push({ id: recipientId, messages: [message] });
+                state.chatList.push({ id: recipientId, firstName: firstName , messages: [message] });
             }
         },
     },

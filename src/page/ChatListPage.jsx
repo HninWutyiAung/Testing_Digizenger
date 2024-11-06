@@ -24,10 +24,6 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
         if(isSuccess){
             console.log(chatListData);
             dispatch(setChatList(chatListData.userDtoList));
-            // if (data.length > 0) {
-            //     const defaultChatId = data[0].id;  
-            //     dispatch(setActiveChat(defaultChatId));
-            // }
         }
     },[isSuccess])
 
@@ -54,7 +50,6 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
     return (
         <section className="relative">
             <div className="relative">
-                {/* <ChatListNav /> */}
                 <GuardModeToggle/>
                 {bottomNavValue ==="message" &&
                      <ChatListNav2 activeChat={activeChat} profileBox={profileBox}/>
@@ -80,7 +75,7 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
                         </div>
                     
                     }
-                    {/* <ChatListBottomNav activeChat={activeChat} setBottomValue={setBottomValue}/> */}
+
                 </div>
                 
                 

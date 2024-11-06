@@ -76,18 +76,21 @@ export const WebSocketProvider = ({ children }) => {
                     if (activeChatRoomRef.current === chatData.recipientId) {
                         dispatch(addMessageToChat({
                             recipientId: chatData.recipientId,
+                            firstName: chatData.userDto.firstName,
                             message: message,
                         }));
                     } else {
                         if (activeChatRoomRef.current === chatData.userDto.id) {
                             dispatch(addMessageToChat({
                                 recipientId: chatData.userDto.id,
+                                firstName: chatData.userDto.firstName,
                                 message: message,
                             }));
                         } else {
                             dispatch(setActiveChat(chatData.recipientId));
                             dispatch(addMessageToChat({
                                 recipientId: chatData.recipientId,
+                                firstName: chatData.userDto.firstName,
                                 message: message,
                             }));
                         }

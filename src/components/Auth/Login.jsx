@@ -73,8 +73,8 @@ function Login() {
     if(isSuccess){
       dispatch(setLoginUserToken({token:data.token}));
       navigate("/home")
-      dispatch(setLoginInfo({LoginFirstName: data.profileDto.userForProfileDto?.firstName , LoginLastName: data.profileDto.userForProfileDto?.lastName , userId: data.profileDto.userForProfileDto?.id}));
-      dispatch(setLoginImage({profileUploadImageUrl: data.profileDto.profileImageUrl}));
+      dispatch(setLoginInfo({LoginFirstName: data.userDto?.firstName , LoginLastName: data.userDto?.lastName , userId: data.userDto?.id}));
+      dispatch(setLoginImage({profileUploadImageUrl: data.userDto.profileDto?.profileImageUrl}));
     }
   })
 

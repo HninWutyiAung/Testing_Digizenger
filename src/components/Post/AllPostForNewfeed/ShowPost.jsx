@@ -32,14 +32,12 @@ function ShowPost({ activeChat, post , setPosts}) {
 
     const profileImage = isProfileRoute 
         ? ProfileDto?.profileImageUrl || default_image 
-        : post?.otherProfileDto?.profileImageUrl || default_image;
-
-    console.log(profileImage);
+        : post?.userDto.profileDto?.profileImageUrl || default_image;
     
     const firstName = post?.userDto?.firstName || userDto?.firstName;
     const lastName = post?.userDto?.lastName || userDto?.lastName;
     const followers = post?.userDto?.followers || userDto?.followersCount;
-    const otherUserName = post?.otherProfileDto?.username;
+    const otherUserName = post?.userDto?.profileDto?.username;
 
 
     const handleNavigate = () => {

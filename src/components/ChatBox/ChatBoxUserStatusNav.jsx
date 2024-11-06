@@ -4,11 +4,18 @@ import { TbPhone } from "react-icons/tb";
 import { IoVideocamOutline } from "react-icons/io5";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { otherProfileDetail } from '../../page/OtherProfilePage/OtherProfilePage';
+import { selectChatList , selectActiveChatRoom} from '../../feature/chatSlice';
+import { useAppSelector } from '../../hook/Hook';
 
 function ChatBoxUserStatusNav({message}){
+    const chatList = useAppSelector(selectChatList);
+    const activeChatRoom = useAppSelector(selectActiveChatRoom);
     const firstName = otherProfileDetail?.otherProfileDto.otherUserForProfileDto.firstName;
     const lastName = otherProfileDetail?.otherProfileDto.otherUserForProfileDto.lastName;
-    const displayName = firstName && lastName ? `${firstName} ${lastName}` : "Emma";
+    const selectChatRoom = chatList.find((msg) => msg.id === activeChatRoom)
+    const displayName = firstName && lastName ? `${firstName} ${lastName}` :
+    selectChatRoom ? `${selectChatRoom?.firstName} ${selectChatRoom?.lastName}` : 
+    "Digizenger";
     return(
         <section className='fixed top-[3.2rem] px-[10px] py-[8px] bg-[#ECF1F4] w-[30.4%] 2xl:w-[43.63%] z-20 chat-box-nav2-responsive'>
             <div className="flex justify-between items-center bg-[#ECF1F4]">
