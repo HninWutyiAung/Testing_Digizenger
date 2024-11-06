@@ -6,7 +6,7 @@ import { useEffect , useState } from "react";
 import { useAppDispatch, useAppSelector } from '../hook/Hook.ts';
 import ChatListNav2 from "../components/ChatList/ChatListNav2.jsx";
 import ChatListBottomNav from "../components/ChatList/ChatListBottomNav.jsx";
-import GuardModeToggle from "../components/Profile_Information/GuardModeToggle.jsx";
+import GuardModeToggle from "../components/Profile_Information/ProfileMiddleColumnCollection/GuardModeToggle.jsx";
 import Noti from "../components/Notification/LikeNoti/Noti.jsx";
 import { otherProfileDetail } from "./OtherProfilePage/OtherProfilePage.js";
 import { useGetChatListQuery } from "../apiService/Chat.ts";

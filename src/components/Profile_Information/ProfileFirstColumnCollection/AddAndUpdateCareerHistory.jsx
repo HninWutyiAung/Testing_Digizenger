@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import {
   useAddCareerHistoryMutation,
   useUpdateCareerHistoryMutation,
-  useGetProfileQuery
-} from "../../apiService/Profile";
+} from "../../../apiService/Profile";
 
-const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
+const AddAndUpdateCareerHistory = ({
+  isOpenCar,
+  onClose,
+  refetch,
+  currentCareer,
+}) => {
   if (!isOpenCar) return null;
 
   const [designation, setDesignation] = useState("");
@@ -39,15 +43,21 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
 
   const validateForm = () => {
     const formErrors = {};
+    const today = new Date().toISOString().split("T")[0];
     if (!designation) formErrors.designation = true;
     if (!company) formErrors.company = true;
     if (!joinDate) formErrors.joinDate = true;
     if (!currentlyWorking && !endDate) formErrors.endDate = true;
+    // Date validations
+    if (joinDate && joinDate > today) {
+      formErrors.joinDate = "Join date cannot be in the future.";
+    }
+    if (joinDate && endDate && endDate <= joinDate) {
+      formErrors.endDate = "End date must be after the join date.";
+    }
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0;
   };
-
-  const { refetch } = useGetProfileQuery();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,16 +73,12 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
 
       const companyName =
         company || currentCareer?.companyDto?.companyName || "";
-      formData.append("companyName", companyName); 
+      formData.append("companyName", companyName);
 
       formData.append(
         "logoImageUrl",
         currentCareer?.companyDto?.logoImageUrl || ""
       );
-
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-      }
 
       try {
         let response;
@@ -83,13 +89,12 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
           response = await addCareerHistory(formData).unwrap();
         }
 
-        console.log("Response:", response);
-        refetch();
+        await refetch();
         onClose();
       } catch (error) {
         console.error("Error during add/update:", error);
       } finally {
-        setIsSaving(false); 
+        setIsSaving(false);
       }
     }
   };
@@ -189,6 +194,9 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
                 }}
               />
             </div>
+            {errors.joinDate && (
+              <span className="text-red-500 text-xs">{errors.joinDate}</span>
+            )}
           </div>
 
           {/* End Date */}
@@ -222,6 +230,9 @@ const AddAndUpdateCareerHistory = ({ isOpenCar, onClose, currentCareer }) => {
                 disabled={currentlyWorking}
               />
             </div>
+            {errors.endDate && (
+              <span className="text-red-500 text-xs">{errors.endDate}</span>
+            )}
           </div>
 
           {/* Checkbox: Currently Working */}

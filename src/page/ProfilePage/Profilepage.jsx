@@ -8,8 +8,8 @@ import PostLoadingSpinner from "../../components/LoadingSpinner";
 import { useAppDispatch } from "../../hook/Hook";
 import { setRegisterInfo } from "../../feature/authSlice";
 import { IMageForMyProfile} from './profileService';
-import Featured from "../../components/Profile_Information/Featured";
-import About from "../../components/Profile_Information/About";
+import Featured from "../../components/Profile_Information/ProfileFirstColumnCollection/Featured";
+import About from "../../components/Profile_Information/ProfileFirstColumnCollection/About";
 
 
 function Profile({ activeChat }) {

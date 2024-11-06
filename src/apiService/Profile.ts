@@ -89,6 +89,38 @@ export const profileApiSlice = createApi({
         body: formData,
       }),
     }),
+
+    addEducationHistory: builder.mutation({
+      query: (formData) => ({
+        url: "/profile/education-history",
+        method: "POST",
+        body: formData,
+      }),
+    }),
+
+    updateEducationHistory: builder.mutation({
+      query: ({ id, formData }) => ({
+        url: `/profile/education-history/${id}`,
+        method: "PUT",
+        body: formData,
+      }),
+    }),
+
+    addServiceProvided: builder.mutation({
+      query: (formData) => ({
+        url: "/profile/service-provided",
+        method: "POST",
+        body: formData,
+      }),
+    }),
+
+    deleteServiceProvided: builder.mutation({
+      query: (id) => ({
+        url: `/profile/service-provided/${id}`,
+        method: "DELETE",
+      }),
+    }),
+
   }),
 });
 
@@ -101,4 +133,8 @@ export const {
   useGetAllImagesQuery,
   useAddCareerHistoryMutation,
   useUpdateCareerHistoryMutation,
+  useAddEducationHistoryMutation,
+  useUpdateEducationHistoryMutation,
+  useAddServiceProvidedMutation,
+  useDeleteServiceProvidedMutation,
 } = profileApiSlice;
