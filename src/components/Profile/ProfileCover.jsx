@@ -27,7 +27,7 @@ function ProfileCover (){
     const coverHandleBox = () =>{
         dispatch(setCoverBox(true))
     }
-
+    console.log(ProfileDto?.profileDto.coverImageUrl)
     return(
         <section className=" flex flex-col pb-6 items-center self-stretch rounded-lg border border-solid border-[#C9DCDE] bg-white">
 
@@ -35,7 +35,7 @@ function ProfileCover (){
 
                         <div className="rounded-t-lg">
                             <input type="file"className='hidden'/>
-                            <img src={coverImageUrl || ProfileDto?.coverImageUrl || cover} className="h-[160px] w-[600px]"  alt="Cover" />
+                            <img src={coverImageUrl || ProfileDto?.profileDto?.coverImageUrl || cover} className="h-[160px] w-[600px]"  alt="Cover" />
                             <div className="w-7 h-7 right-[10px] top-[16px] absolute bg-[#ecf1f4] rounded-full shadow flex justify-center items-center" onClick={coverHandleBox}>
                                 <FaCamera className='text-[#2C3E50]' />
                             </div>

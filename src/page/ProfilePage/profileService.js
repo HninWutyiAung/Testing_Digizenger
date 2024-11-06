@@ -9,7 +9,7 @@ export const IMageForMyProfile = (profileData) => {
 
     if (profileData && profileData.userDto) {
         ProfileDto = profileData.userDto; 
-        console.log("this is my post" , ProfileDto);
+        console.log("profile" , ProfileDto);
     } else {
         console.error("Invalid profile data structure:", profileData);
     }
