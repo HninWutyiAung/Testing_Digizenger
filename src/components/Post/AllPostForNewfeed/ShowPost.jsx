@@ -34,8 +34,8 @@ function ShowPost({ activeChat, post , setPosts}) {
         ? ProfileDto?.profileImageUrl || default_image 
         : post?.userDto.profileDto?.profileImageUrl || default_image;
     
-    const firstName = post?.userDto?.firstName || userDto?.firstName;
-    const lastName = post?.userDto?.lastName || userDto?.lastName;
+    const firstName = post?.userDto?.firstName || ProfileDto?.firstName;
+    const lastName = post?.userDto?.lastName || ProfileDto?.lastName;
     const followers = post?.userDto?.followers || userDto?.followersCount;
     const otherUserName = post?.userDto?.profileDto?.username;
 
