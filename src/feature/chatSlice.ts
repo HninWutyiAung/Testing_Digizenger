@@ -8,6 +8,8 @@ interface Message {
     recipientId: number;
     senderId?: number;
     type: string;
+    replayMessageType?: string;
+    replyMessage?: string;
     timestamp?: string;
 }
 

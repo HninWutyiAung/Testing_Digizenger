@@ -1,5 +1,5 @@
 import NewFeed from "./NewFeed";
-import ChatList from "./ChatListPage";
+import ChatList from "./ChatListPage/ChatListPage.jsx";
 import { useState } from "react";
 import ChatBox from "./ChatBoxPage";
 import Profile from "./ProfilePage/Profilepage";

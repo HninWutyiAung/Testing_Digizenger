@@ -1,24 +1,28 @@
-import ChatListNav from "../components/ChatList/ChatListNav.jsx";
-import data from "../data";
-import ChatLayout from "../components/ChatList/ChatLayout";
-import { setChatList, setActiveChat, selectChatList, selectActiveChatRoom } from "../feature/chatSlice";
+import data from "../../data.jsx";
+import ChatLayout from "../../components/ChatList/ChatLayout.jsx";
+import { setChatList, setActiveChat, selectChatList, selectActiveChatRoom } from "../../feature/chatSlice";
 import { useEffect , useState } from "react";
-import { useAppDispatch, useAppSelector } from '../hook/Hook.ts';
-import ChatListNav2 from "../components/ChatList/ChatListNav2.jsx";
-import ChatListBottomNav from "../components/ChatList/ChatListBottomNav.jsx";
-import GuardModeToggle from "../components/Profile_Information/ProfileMiddleColumnCollection/GuardModeToggle.jsx";
-import Noti from "../components/Notification/LikeNoti/Noti.jsx";
-import { otherProfileDetail } from "./OtherProfilePage/OtherProfilePage.js";
-import { useGetChatListQuery } from "../apiService/Chat.ts";
+import { useAppDispatch, useAppSelector } from '../../hook/Hook.ts';
+import ChatListNav2 from "../../components/ChatList/ChatListNav2.jsx";
+import ChatListBottomNav from "../../components/ChatList/ChatListBottomNav.jsx";
+import GuardModeToggle from "../../components/Profile_Information/ProfileMiddleColumnCollection/GuardModeToggle.jsx";
+import Noti from "../../components/Notification/LikeNoti/Noti.jsx";
+import { otherProfileDetail } from "../OtherProfilePage/OtherProfilePage.js";
+import { useGetChatListQuery , useGetChatHistoryQuery} from "../../apiService/Chat.ts";
+import { selectPage, selectLimit } from "../../feature/chatPageAndLimit.ts";
 
 function ChatList({ activeChat, columnHandle, profileBox }) {
     const dispatch = useAppDispatch();
     const chatList = useAppSelector(selectChatList);
+    const page = useAppSelector(selectPage);
+    const limit = useAppSelector(selectLimit);
     const [bottomNavValue , setBottomValue] =useState("message");
+    const activeChatRoom = useAppSelector(selectActiveChatRoom);
     const otherUserId = otherProfileDetail?.otherProfileDto.otherUserForProfileDto.id;  
     const {data:chatListData,isLoading,isSuccess} = useGetChatListQuery();
-    console.log(bottomNavValue);
-    console.log(setBottomValue);
+    const {data:chatHistoryData ,isSuccess:chatHistorySuccess , isLoading: chatHistoryLoading } = useGetChatHistoryQuery({activeChatRoom , page, limit});
+    console.log(chatHistoryData);
+    console.log(activeChatRoom)
 
     useEffect(()=>{
         if (isSuccess && chatListData) {
@@ -44,7 +48,6 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
 
     const activeChatRoomHandle = (id) => {
         dispatch(setActiveChat(id));
-        console.log(id)
     };
 
     return (
