@@ -1,6 +1,6 @@
 import data from "../../data.jsx";
 import ChatLayout from "../../components/ChatList/ChatLayout.jsx";
-import { setChatList, setActiveChat, selectChatList, selectActiveChatRoom } from "../../feature/chatSlice";
+import { setChatList, setActiveChat, selectChatList, selectActiveChatRoom ,setChatMessages} from "../../feature/chatSlice";
 import { useEffect , useState } from "react";
 import { useAppDispatch, useAppSelector } from '../../hook/Hook.ts';
 import ChatListNav2 from "../../components/ChatList/ChatListNav2.jsx";
@@ -10,6 +10,7 @@ import Noti from "../../components/Notification/LikeNoti/Noti.jsx";
 import { otherProfileDetail } from "../OtherProfilePage/OtherProfilePage.js";
 import { useGetChatListQuery , useGetChatHistoryQuery} from "../../apiService/Chat.ts";
 import { selectPage, selectLimit } from "../../feature/chatPageAndLimit.ts";
+import { filterMessageHandle , filteredMessages } from "./ChatListService.js";
 
 function ChatList({ activeChat, columnHandle, profileBox }) {
     const dispatch = useAppDispatch();
@@ -23,6 +24,15 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
     const {data:chatHistoryData ,isSuccess:chatHistorySuccess , isLoading: chatHistoryLoading } = useGetChatHistoryQuery({activeChatRoom , page, limit});
     console.log(chatHistoryData);
     console.log(activeChatRoom)
+
+    useEffect(()=>{
+        if (chatHistorySuccess && chatHistoryData) {
+            filterMessageHandle(chatHistoryData);
+            dispatch(setChatMessages({id: activeChatRoom , messages:filteredMessages}));
+            console.log(filteredMessages);
+            console.log(chatList);
+        }
+    },[dispatch, chatHistorySuccess, chatHistoryData])
 
     useEffect(()=>{
         if (isSuccess && chatListData) {
