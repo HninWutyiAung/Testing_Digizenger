@@ -7,7 +7,7 @@ const GuardModeToggle = () => {
     setIsGuardModeOn(!isGuardModeOn);
   };
 
-  return (
+  return ( 
     <div className="bg-white z-20">
       <div
         className="w-full p-4 justify-end items-center gap-[100px] inline-flex

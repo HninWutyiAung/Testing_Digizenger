@@ -22,9 +22,9 @@ const About = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading profile data.</div>;
 
-  const careerHistory = data?.profileDto?.careerHistoryDtoList || [];
-  const educationHistory = data?.profileDto?.educationHistoryDtoList || [];
-  const servicesProvided = data?.profileDto?.serviceProvidedDtoList || [];
+  const careerHistory = data?.userDto?.profileDto?.careerHistoryDtoList || [];
+  const educationHistory = data?.userDto?.profileDto?.educationHistoryDtoList || [];
+  const servicesProvided = data?.userDto?.profileDto?.serviceProvidedDtoList || [];
 
   const renderPlaceholderLogo = (name) => (
     <div className="w-9 h-9 rounded-[4px] bg-[#00BCD4] flex justify-center items-center text-white font-bold">
