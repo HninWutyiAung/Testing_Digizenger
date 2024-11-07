@@ -28,15 +28,15 @@ function Profile({ activeChat }) {
             // setUserName({ firstName, lastName }); 
             // dispatch(setRegisterInfo({ firstName, lastName }));
         }
-    }, [isSuccess, profile, dispatch]);
+    }, [isSuccess, profile, IMageForMyProfile]);
 
     useEffect(()=>{
         if(myPostSuccess && myPost){
             setPosts(myPost.postDtoList);
+            console.log("my post",myPost);
         }
     }, [myPostLoading, myPost])
 
-    console.log(posts);
 
     return (
         <section>

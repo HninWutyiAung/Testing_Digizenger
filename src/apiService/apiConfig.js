@@ -20,3 +20,4 @@ export const GET_ALL_NOTIFICATION = '/notification';
 export const GET_ALL_IMAGES_ENDPOINT = '/profile/images';
 
 export const GET_CHAT_LIST = '/chat/chat-list';
+export const GET_CHAT_MESSAGES = '/chat/messages/';

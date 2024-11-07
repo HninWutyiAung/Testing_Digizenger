@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BASE_URL2,GET_CHAT_LIST } from "./apiConfig";
+import { BASE_URL2,GET_CHAT_LIST ,GET_CHAT_MESSAGES} from "./apiConfig";
 
 export const chatApiSlice = createApi({
     reducerPath: 'chatApi',
@@ -21,8 +21,15 @@ export const chatApiSlice = createApi({
             url: GET_CHAT_LIST,
             method : 'Get',
             })
+        }),
+        getChatHistory: builder.query({
+            query: ({activeChatRoom , page ,limit}) =>({
+                url: `${GET_CHAT_MESSAGES}${activeChatRoom}?_page=${page}&_limit=${limit}`,
+                method : 'Get',
+            })
         })
-    })
+    }),
+
 })
 
-export const {useGetChatListQuery} = chatApiSlice;
+export const {useGetChatListQuery , useGetChatHistoryQuery} = chatApiSlice;

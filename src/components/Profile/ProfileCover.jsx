@@ -27,7 +27,7 @@ function ProfileCover (){
     const coverHandleBox = () =>{
         dispatch(setCoverBox(true))
     }
-
+    console.log(ProfileDto?.profileDto.coverImageUrl)
     return(
         <section className=" flex flex-col pb-6 items-center self-stretch rounded-lg border border-solid border-[#C9DCDE] bg-white">
 
@@ -35,7 +35,7 @@ function ProfileCover (){
 
                         <div className="rounded-t-lg">
                             <input type="file"className='hidden'/>
-                            <img src={coverImageUrl || ProfileDto?.coverImageUrl || cover} className="h-[160px] w-[600px]"  alt="Cover" />
+                            <img src={coverImageUrl || ProfileDto?.profileDto?.coverImageUrl || cover} className="h-[160px] w-[600px]"  alt="Cover" />
                             <div className="w-7 h-7 right-[10px] top-[16px] absolute bg-[#ecf1f4] rounded-full shadow flex justify-center items-center" onClick={coverHandleBox}>
                                 <FaCamera className='text-[#2C3E50]' />
                             </div>
@@ -43,7 +43,7 @@ function ProfileCover (){
 
                         <div className="w-[150px] h-[150px] left-[15px] top-[60px] flex items-center justify-center absolute ">
                             <input type="file"  className='hidden' /> 
-                            <img className="w-[150px] h-[150px] absolute rounded-full border-4 border-solid border-white" src={profileImageUrl|| ProfileDto?.profileImageUrl || default_profile} alt="Profile" />
+                            <img className="w-[150px] h-[150px] absolute rounded-full border-4 border-solid border-white" src={profileImageUrl|| ProfileDto?.profileDto?.profileImageUrl || default_profile} alt="Profile" />
                             <div className="w-7 h-7 left-[110px] top-[115px] absolute bg-[#ecf1f4] rounded-full shadow flex justify-center items-center" onClick={profileHandleBox}>
                                 <FaCamera className='text-[#2C3E50]' />
                             </div>

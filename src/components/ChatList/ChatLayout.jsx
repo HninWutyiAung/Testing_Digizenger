@@ -5,8 +5,8 @@ import read from '/images/read.png';
 
 function ChatLayout({activeChat, chat , activeChatRoomHandle}) {
 
-    const lastMessage = chat.messages.length-1;
-    const lastMessageFromChatRoom =chat.messages[lastMessage]?.message || chat.lastMessage
+    const lastMessage = chat.messages?.length-1;
+    const lastMessageFromChatRoom =chat?.messages[lastMessage]?.message || chat.lastMessage
     console.log(chat.id);
 
     return (
