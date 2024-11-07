@@ -9,6 +9,7 @@ export const filterMessageHandle = (chatHistoryData) =>{
         type: msg.type,
         replayMessageType: msg.userDto?.replayMessageType,
         replyMessage: msg.userDto?.replyMessage,
+        createDate: msg.createDate,
         userDto: {
             id: msg.userDto.id,
             firstName: msg.userDto.firstName,

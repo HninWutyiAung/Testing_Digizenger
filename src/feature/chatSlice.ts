@@ -11,6 +11,7 @@ interface Message {
     replayMessageType?: string;
     replyMessage?: string;
     timestamp?: string;
+    createDate?: string;
     userDto?: {  id: number ;firstName: string; lastName: string; };
 }
 
@@ -64,7 +65,11 @@ const chatSlice = createSlice({
             const chat = state.chatList.find(chat => chat.id === id);
 
             if (chat) {
-                chat.messages = messages;
+                chat.messages = messages.sort((a, b) => {
+                    const dateA = a.createDate ? new Date(a.createDate.slice(0, -1) + 'Z').getTime() : 0;
+                    const dateB = b.createDate ? new Date(b.createDate.slice(0, -1) + 'Z').getTime() : 0;
+                    return dateA - dateB; 
+                });
             } else {
                 state.chatList.push({ id: id , messages : messages});
             }
