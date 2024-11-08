@@ -13,7 +13,7 @@ import { FaCircleArrowUp } from "react-icons/fa6";
 import ChatBoxUserStatusNav from "./ChatBoxUserStatusNav";
 import { selectUserId } from "../../feature/authSlice";
 import { useWebSocket } from "../Websocket/websocketForLikeNoti";
-import { compressBase64Image } from "./chatBoxService";
+import { compressBase64Image , isURL , isBase64 } from "./chatBoxService";
 
 
 function ChatBoxLayout () {
@@ -120,15 +120,6 @@ function ChatBoxLayout () {
 
     const handleIconClick = () => {
         imgRef.current.click(); 
-    };
-    const isURL = (str) => {
-        const urlRegex = /^(http|https):\/\/[^\s$.?#].[^\s]*$/;
-        return urlRegex.test(str);
-    }
-
-    const isBase64 = (str) => {
-        const base64Regex = /^(?:[A-Za-z0-9+\/]{4})*?(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/;
-        return base64Regex.test(str);
     };
 
     return (
