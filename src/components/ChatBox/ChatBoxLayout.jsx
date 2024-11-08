@@ -13,6 +13,7 @@ import { FaCircleArrowUp } from "react-icons/fa6";
 import ChatBoxUserStatusNav from "./ChatBoxUserStatusNav";
 import { selectUserId } from "../../feature/authSlice";
 import { useWebSocket } from "../Websocket/websocketForLikeNoti";
+import { compressBase64Image } from "./chatBoxService";
 
 
 function ChatBoxLayout () {
@@ -42,7 +43,7 @@ function ChatBoxLayout () {
     },[message?.messages])
 
     const lastChatMessage = message?.messages[message.messages.length -1];
-    console.log("lastMessage",lastChatMessage)
+
     if(lastChatMessage){
         senderId= lastChatMessage.senderId;
         console.log("sender Id ",senderId);
@@ -73,22 +74,24 @@ function ChatBoxLayout () {
         if (file) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            reader.onload = () => {
-                // const imageMessage = {
-                //     id: generateUniqueId(),
-                //     message: reader.result,
-                //     sender: "user",
-                //     timestamp: new Date().toLocaleTimeString(),
-                // };
+            reader.onload = async () => {
+                const base64 = reader.result;
+                const compressedImage = await compressBase64Image(base64, 0.6); // quality 60% set
 
+                const imageLink = compressedImage.replace(/^data:image\/\w+;base64,/, "");
+                const recipientId = activeChatRoom === userId ? senderId : activeChatRoom;
                 const imageMessage = {
-                    message: reader.result,
-                    user: {"id" :1},
-                    recipientId: selectedUserId,
-                    type: "TEXT",
+                    message: imageLink,
+                    user: {id :userId},
+                    recipientId: recipientId,
+                    type: "IMAGE",
                 };
 
-                dispatch(addMessageToChat({ chatId: activeChatRoom, message: imageMessage }));
+                dispatch(addMessageToChat({ recipientId: activeChatRoom, message: imageMessage }));
+                sendMessageToWebsocket(imageMessage);
+                console.log("test image", chatList);
+                console.log("base 64", reader.result);
+                console.log("without prefix", imageLink);
                 setImageFile(null); 
             };
             reader.onerror = (error) => {
@@ -118,6 +121,15 @@ function ChatBoxLayout () {
     const handleIconClick = () => {
         imgRef.current.click(); 
     };
+    const isURL = (str) => {
+        const urlRegex = /^(http|https):\/\/[^\s$.?#].[^\s]*$/;
+        return urlRegex.test(str);
+    }
+
+    const isBase64 = (str) => {
+        const base64Regex = /^(?:[A-Za-z0-9+\/]{4})*?(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/;
+        return base64Regex.test(str);
+    };
 
     return (
         <main className="relative">
@@ -135,8 +147,8 @@ function ChatBoxLayout () {
 
                             <div className="flex flex-col px-[16px] py-[4px] bg-[#ECF1F4] rounded-[12px] relative">
                                 <div className="text-[#2C3E50] text-[16px] font-normal">
-                                    {text.message.startsWith('data:image') ? (
-                                        <img src={text.message} className="w-[200px] h-[200px]" alt="Uploaded content" />
+                                    {text.type === "IMAGE"? (
+                                        <img src={isURL(text.message) ? text.message : `data:image/png;base64,${text.message}`} className="w-[200px] h-[200px]" alt="Uploaded content" />
                                     ) : (
                                         <span>{text.message}</span>
                                     )}
@@ -144,7 +156,7 @@ function ChatBoxLayout () {
                                 <div className={`text-right text-[12px] text-[#2C3E50] ${text.recipientId === userId  ? "mr-[-5px]" : "mr-[5px]"}`}>
                                     <span>12:00 PM</span>
                                 </div>
-                                <div className={`absolute top-[1.20rem] ${text.recipientId !== userId ? "right-[-15px]" : "left-[-11px]"}`} style={{ top: text.message.startsWith('data:image') ? "12rem" : "" }}>
+                                <div className={`absolute top-[1.20rem] ${text.recipientId !== userId ? "right-[-15px]" : "left-[-11px]"}`} style={{ top: isURL(text.message) || isBase64(text.message) ? "12rem" : "" }}>
                                     <i className="text-[#ECF1F4]"><VscTriangleUp size={45} /></i>
                                 </div>
                             </div>
