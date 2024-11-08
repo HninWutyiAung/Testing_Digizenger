@@ -13,7 +13,7 @@ import { FaCircleArrowUp } from "react-icons/fa6";
 import ChatBoxUserStatusNav from "./ChatBoxUserStatusNav";
 import { selectUserId } from "../../feature/authSlice";
 import { useWebSocket } from "../Websocket/websocketForLikeNoti";
-import { compressBase64Image , isURL , isBase64 } from "./chatBoxService";
+import { compressBase64Image , isURL , isBase64 , startRecordingWithWaveform , stopRecordingWithWaveform} from "./chatBoxService";
 
 
 function ChatBoxLayout () {
@@ -32,10 +32,15 @@ function ChatBoxLayout () {
     const {sendMessageToWebsocket} = useWebSocket();
     const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
     const userId = loginInfo.userId;
+    const [isRecording, setIsRecording] = useState(false);
+    const [audioUrl, setAudioUrl] = useState(null);
+    const [audioPreview, setAudioPreview] = useState(false)
+    const canvasRef = useRef(null);
     let senderId = null;
 
     console.log(activeChatRoom);
     console.log(chatList);
+
     useEffect(()=>{
         if(lastMessage.current){
             lastMessage.current.scrollIntoView({behavior: "smooth"})
@@ -48,6 +53,17 @@ function ChatBoxLayout () {
         senderId= lastChatMessage.senderId;
         console.log("sender Id ",senderId);
     }
+
+    const handleStartRecording = () => {
+        startRecordingWithWaveform(canvasRef, setAudioUrl);
+        setIsRecording(true);
+    };
+
+    const handleStopRecording = () => {
+        stopRecordingWithWaveform();
+        setIsRecording(false);
+        setAudioPreview(true);
+    };
 
     const sendMessage = (e) => {
         e.preventDefault(); 
@@ -165,23 +181,34 @@ function ChatBoxLayout () {
                         <GoImage size={25} className="w-[28px] h-[28px]" />
                     </i>
                     <input type="file" ref={imgRef} onChange={handleImageUpload} className="hidden" />
-                    <img src={waveform} className="w-[28px] h-[28px]" alt="Waveform icon" />
+                    <img src={waveform}  onClick={handleStartRecording} className="w-[28px] h-[28px]" alt="Waveform icon" />
                 </div>
                 <div ref={chatRef} className="flex items-center p-[4px]">
                     <form onSubmit={sendMessage} className="flex items-center p-[4px] relative">
-                        <input
+                        {isRecording ?
+                         (<canvas ref={canvasRef} width="400" height="40" className=" bg-red-100 "></canvas>) : 
+
+                         audioUrl ? (
+                                <div className="w-[400px]">
+                                    <audio controls src={audioUrl}></audio>
+                                </div>
+                         ) :
+
+                         (<input
                             type="text"
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             onClick={inputHandle}
                             placeholder="Message"
                             className="w-[390px] 2xl:w-[480px] h-[40px] rounded-[27px] px-[10px] outline-none responsive-chatbox-messagebox"
-                        />
-                        {/* {!inputStyle && <span className="absolute left-4 text-black">Message</span>} */}
+                        />)
+                        }
+
+                        
                         {inputStyle ? (
                             <i><FaCircleArrowUp className="absolute top-3 right-3 w-[25px] h-[25px] text-[#0097A7]" onClick={sendMessage}/></i>
                         ) : (
-                            <img src={emoji} className="absolute right-2 bg-[2C3E50]" alt="Emoji icon" />
+                            <img src={emoji} className="absolute right-2 bg-[2C3E50]" alt="Emoji icon" onClick={handleStopRecording}/>
                         )}
                     </form>
                 </div>
