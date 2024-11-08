@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../hook/Hook";
-import { selectActiveChatRoom, selectChatList , addMessageToChat } from "../../feature/chatSlice";
+import { selectActiveChatRoom, selectChatList , addMessageToChat, setChatMessages } from "../../feature/chatSlice";
 import cover from '../../../images/chat bg.png'
 import andrea from '/images/andrea.png';
 import { PiChatTeardropFill } from "react-icons/pi";
@@ -8,15 +8,21 @@ import pluse from '/images/pluse-bottom.png';
 import { GoImage } from "react-icons/go";
 import waveform from '/images/waveform.png';
 import emoji from '/images/emoji.png';
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect ,useCallback} from "react";
 import { FaCircleArrowUp } from "react-icons/fa6";
 import ChatBoxUserStatusNav from "./ChatBoxUserStatusNav";
 import { selectUserId } from "../../feature/authSlice";
 import { useWebSocket } from "../Websocket/websocketForLikeNoti";
+import { selectPage, selectLimit , incrementPage } from "../../feature/chatPageAndLimit";
+import { filterMessageHandle, filteredMessages } from "../../page/ChatListPage/ChatListService";
+import { useGetChatHistoryQuery } from "../../apiService/Chat";
+
 
 
 function ChatBoxLayout () {
     const activeChatRoom = useAppSelector(selectActiveChatRoom);
+    const page = useAppSelector(selectPage);
+    const limit = useAppSelector(selectLimit);
     const dispatch = useAppDispatch();
     const chatList = useAppSelector(selectChatList);
     const [inputStyle, setInputStyle] = useState(false);
@@ -24,6 +30,7 @@ function ChatBoxLayout () {
     const [inputValue, setInputValue] = useState("");
     const imgRef = useRef(null);
     const chatRef = useRef(null);
+    const messageContainerRef = useRef(null);
     const lastMessage = useRef(null);
     const message = chatList.find((msg) => msg.id === activeChatRoom);
     const generateUniqueId = () => '_' + Math.random().toString(36).substr(2, 9); 
@@ -32,9 +39,58 @@ function ChatBoxLayout () {
     const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
     const userId = loginInfo.userId;
     let senderId = null;
+    const { data: chatHistoryData, isLoading, isSuccess: chatHistorySuccess } = 
+        useGetChatHistoryQuery({ activeChatRoom, page, limit });
 
     console.log(activeChatRoom);
     console.log(chatList);
+    console.log(page);
+
+    const loadOlderMessages = useCallback(() => {// Dispatch action to increase page number in Redux
+        dispatch(incrementPage());
+
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (chatHistorySuccess && chatHistoryData) {
+            filterMessageHandle(chatHistoryData);
+            // Append new messages to the existing messages at the beginning
+            const existingMessages = message?.messages || [];
+
+        // Filter out any duplicates based on the message ID
+            const newMessages = filteredMessages.filter(
+                (newMsg) => !existingMessages.some((existingMsg) => existingMsg.id === newMsg.id)
+            );
+
+        // Dispatch action to update chat messages, adding new ones at the start
+            dispatch(setChatMessages({
+                id: activeChatRoom,
+                messages: [...newMessages, ...existingMessages]
+            }));
+
+            }
+    }, [chatHistorySuccess, chatHistoryData]);
+
+    
+    useEffect(() => {
+        const handleScroll = () => {
+            if (messageContainerRef.current.scrollTop === 0 && !isLoading) {
+                loadOlderMessages();
+            }
+        };
+
+        const messageContainer = messageContainerRef.current;
+        if (messageContainer) {
+            messageContainer.addEventListener("scroll", handleScroll);
+        }
+    
+        return () => {
+            if (messageContainer) {
+                messageContainer.removeEventListener("scroll", handleScroll);
+            }
+        };
+    }, [isLoading, loadOlderMessages]);
+
     useEffect(()=>{
         if(lastMessage.current){
             lastMessage.current.scrollIntoView({behavior: "smooth"})
@@ -123,7 +179,7 @@ function ChatBoxLayout () {
         <main className="relative">
             <img src={cover} className="chat-bg 2xl:w-[680px]"></img>
             <ChatBoxUserStatusNav message={message}/>
-            <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive">
+            <section ref={messageContainerRef} className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive">
                 {message?.messages.map((text,index) => (
                     <main key={text.id} className={`flex flex-col w-full ${text.recipientId === userId ? "sender" : "user"}`}>
                         <div className="chat-msg-container">

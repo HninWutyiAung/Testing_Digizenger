@@ -1,4 +1,3 @@
-// features/chat/chatSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from './store';
 

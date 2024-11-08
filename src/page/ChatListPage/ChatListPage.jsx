@@ -62,13 +62,13 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
 
     return (
         <section className="relative">
-            <div className="relative">
+            <div className="relative ">
                 <GuardModeToggle/>
                 {bottomNavValue ==="message" &&
                      <ChatListNav2 activeChat={activeChat} profileBox={profileBox}/>
                 }
                 <ChatListBottomNav setBottomValue={setBottomValue} bottomNavValue={bottomNavValue}/>
-                <div className={`h-[945px] overflow-y-auto scrollable chat-list-responsive ${bottomNavValue === "message" ? "pt-[60px]" : ""}`}>
+                <div className={` overflow-y-auto scrollable chat-list-responsive ${bottomNavValue === "message" ? "pt-[60px]" : ""}`}>
                     {bottomNavValue ==="message" &&
                         <div onClick={columnHandle}>
                             {chatList.map((chat) => (                            
@@ -88,7 +88,6 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
                         </div>
                     
                     }
-
                 </div>
                 
                 
