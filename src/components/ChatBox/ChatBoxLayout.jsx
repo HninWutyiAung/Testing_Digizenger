@@ -14,7 +14,7 @@ import ChatBoxUserStatusNav from "./ChatBoxUserStatusNav";
 import { selectUserId } from "../../feature/authSlice";
 import { useWebSocket } from "../Websocket/websocketForLikeNoti";
 import WaveSurfer from 'wavesurfer.js';
-import { compressBase64Image , isURL , isBase64 , startRecordingWithWaveform , stopRecordingWithWaveform , waveFormPreview} from "./chatBoxService";
+import { compressBase64Image , isURL , isBase64 , startRecordingWithWaveform , stopRecordingWithWaveform , waveFormPreview , compressAudioBase64} from "./chatBoxService";
 
 
 function ChatBoxLayout () {
@@ -36,6 +36,7 @@ function ChatBoxLayout () {
     const [isRecording, setIsRecording] = useState(false);
     const [audioUrl, setAudioUrl] = useState(null);
     const [audioBase64 , setAudioBase64] = useState(null);
+    const [audioLink , setAudioLink] = useState(null);
     const canvasRef = useRef(null);
     const waveSurferRef = useRef(null);
     const waveformContainerRef = useRef(null);
@@ -67,17 +68,31 @@ function ChatBoxLayout () {
         setInputStyle(true);
     };
 
-    const handleStopRecording = () => {
+    const handleStopRecording = async() => {
         stopRecordingWithWaveform();
         setIsRecording(false);
         setInputStyle(true);
+        if (audioBase64) {
+            try {
+                console.log("hello")
+                const compressedAudioBase64 = await compressAudioBase64(audioBase64, 0.3);
+                console.log("Compressed Audio:", compressedAudioBase64);
+                setAudioLink(compressedAudioBase64);
+                
+                console.log("ff", audioLink);
+            } catch (error) {
+                console.error("Error compressing audio:", error);
+            }
+        }
+
     };
 
-    const sendMessage = (e) => {
+    const sendMessage =  (e) => {
         e.preventDefault(); 
+
         const recipientId = activeChatRoom === userId ? senderId : activeChatRoom;
-        if (inputValue.trim() || audioUrl) {  // Check if there's either text or audio
-            const messageContent =   audioBase64 || inputValue.trim();  // Use audioUrl if present; otherwise, use text
+        if (inputValue.trim() || audioUrl) {  
+            const messageContent =  audioLink || inputValue.trim();  // Use audioUrl if present; otherwise, use text
             const messageType = audioUrl ? "AUDIO" : "TEXT"; 
             const textMessage = {
                 message: messageContent,

@@ -149,3 +149,122 @@ export const waveFormPreview = (audioUrl, waveSurferRef, waveformContainerRef) =
         }
     };
 }
+
+export async function compressAudioBase64(audioBase64, quality = 0.3) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Decode the Base64 audio data to binary format
+            const audioData = atob(audioBase64);
+            console.log("what", audioBase64);
+            const arrayBuffer = new ArrayBuffer(audioData.length);
+            const uintArray = new Uint8Array(arrayBuffer);
+            for (let i = 0; i < audioData.length; i++) {
+                uintArray[i] = audioData.charCodeAt(i);
+            }
+
+            // Create an AudioContext and decode the audio data
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+            // Create an OfflineAudioContext for downsampling/compression
+            const sampleRate = audioContext.sampleRate * quality;
+            const offlineContext = new OfflineAudioContext(
+                audioBuffer.numberOfChannels,
+                audioBuffer.length * quality,
+                sampleRate
+            );
+
+            // Create a buffer source and connect it to the offline context
+            const source = offlineContext.createBufferSource();
+            source.buffer = audioBuffer;
+            source.connect(offlineContext.destination);
+            source.start(0);
+
+            // Render the audio data with the offline context
+            const compressedBuffer = await offlineContext.startRendering();
+
+            // Convert the audio buffer to WAV format
+            const wavBlob = bufferToWav(compressedBuffer);
+            const reader = new FileReader();
+            
+            reader.onloadend = () => {
+                const compressedBase64 = reader.result.split(',')[1]; // Remove the data URL prefix
+                resolve(compressedBase64);
+            };
+
+            reader.readAsDataURL(wavBlob); // Convert the WAV blob to base64
+        } catch (error) {
+            reject(`Error compressing audio: ${error}`);
+        }
+    });
+}
+
+// Utility function to convert an AudioBuffer to WAV format
+function bufferToWav(audioBuffer) {
+    const numberOfChannels = audioBuffer.numberOfChannels;
+    const sampleRate = audioBuffer.sampleRate;
+    const format = 1; // PCM format
+    const bitDepth = 16; // 16-bit depth
+
+    const bufferLength = audioBuffer.length * numberOfChannels * (bitDepth / 8);
+    const wavBuffer = new ArrayBuffer(44 + bufferLength);
+    const view = new DataView(wavBuffer);
+
+    let offset = 0;
+
+    // RIFF chunk descriptor
+    writeString(view, offset, 'RIFF');
+    offset += 4;
+    view.setUint32(offset, 36 + bufferLength, true); // File size
+    offset += 4;
+    writeString(view, offset, 'WAVE');
+    offset += 4;
+
+    // FMT sub-chunk
+    writeString(view, offset, 'fmt ');
+    offset += 4;
+    view.setUint32(offset, 16, true); // Sub-chunk size
+    offset += 4;
+    view.setUint16(offset, format, true); // Audio format (PCM)
+    offset += 2;
+    view.setUint16(offset, numberOfChannels, true); // Number of channels
+    offset += 2;
+    view.setUint32(offset, sampleRate, true); // Sample rate
+    offset += 4;
+    view.setUint32(offset, sampleRate * numberOfChannels * (bitDepth / 8), true); // Byte rate
+    offset += 4;
+    view.setUint16(offset, numberOfChannels * (bitDepth / 8), true); // Block align
+    offset += 2;
+    view.setUint16(offset, bitDepth, true); // Bits per sample
+    offset += 2;
+
+    // Data sub-chunk
+    writeString(view, offset, 'data');
+    offset += 4;
+    view.setUint32(offset, bufferLength, true); // Data size
+    offset += 4;
+
+    // Write audio samples
+    const channelData = [];
+    for (let i = 0; i < numberOfChannels; i++) {
+        channelData[i] = audioBuffer.getChannelData(i);
+    }
+
+    let sampleIndex = 0;
+    while (sampleIndex < audioBuffer.length) {
+        for (let channel = 0; channel < numberOfChannels; channel++) {
+            const sample = Math.max(-1, Math.min(1, channelData[channel][sampleIndex]));
+            view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+            offset += 2;
+        }
+        sampleIndex++;
+    }
+
+    return new Blob([view], { type: 'audio/wav' });
+}
+
+function writeString(view, offset, string) {
+    for (let i = 0; i < string.length; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+    }
+}
