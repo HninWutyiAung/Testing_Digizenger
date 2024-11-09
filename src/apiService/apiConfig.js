@@ -32,3 +32,4 @@ export const ADD_SERVICE_PROVIDED_ENDPOINT = '/profile/service-provided';
 export const DELETE_SERVICE_PROVIDED_ENDPOINT = '/profile/service-provided';
 
 export const FOLLOW_USER_ENDPOINT = '/profile/followers/follow/';
+export const UNFOLLOW_USER_ENDPOINT = 'profile/followers/unfollow/';

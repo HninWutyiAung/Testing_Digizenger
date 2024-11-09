@@ -12,7 +12,8 @@ import {
   UPDATE_EDUCATION_HISTORY_ENDPOINT,
   ADD_SERVICE_PROVIDED_ENDPOINT,
   DELETE_SERVICE_PROVIDED_ENDPOINT,
-  FOLLOW_USER_ENDPOINT
+  FOLLOW_USER_ENDPOINT,
+  UNFOLLOW_USER_ENDPOINT
 } from "./apiConfig"; 
 
 export const profileApiSlice = createApi({
@@ -135,6 +136,13 @@ export const profileApiSlice = createApi({
       }),
     }),
 
+    unfollowUser: builder.mutation({
+      query: (userId) => ({
+        url: `${UNFOLLOW_USER_ENDPOINT}${userId}`,
+        method: "PUT",
+      }),
+    }),
+
   }),
 });
 
@@ -152,4 +160,5 @@ export const {
   useAddServiceProvidedMutation,
   useDeleteServiceProvidedMutation,
   useFollowUserMutation,
+  useUnfollowUserMutation
 } = profileApiSlice;

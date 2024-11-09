@@ -4,9 +4,12 @@ import { PiLinkSimpleBold } from "react-icons/pi";
 import { GrFlag } from "react-icons/gr";
 import { RiUserUnfollowLine } from "react-icons/ri";
 import { PiProhibitBold } from "react-icons/pi";
+import { useUnfollowUserMutation } from "../../apiService/Profile";
 
-const ProfileDropdownMenu = ({ isVisible, toggleBox, buttonRef }) => {
+const ProfileDropdownMenu = ({ isVisible, toggleBox, buttonRef, id, refetch, firstName, lastName, relationshipStatus }) => {
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [loading, setLoading] = useState(false);
+  const [unfollowUser] = useUnfollowUserMutation();
 
   useEffect(() => {
     if (buttonRef.current) {
@@ -43,6 +46,22 @@ const ProfileDropdownMenu = ({ isVisible, toggleBox, buttonRef }) => {
     }
   }, [buttonRef, isVisible]);
 
+  const handleUnfollow = async () => {
+    if (relationshipStatus === "FOLLOWING") {
+      setLoading(true); 
+
+      try {
+        await unfollowUser(id).unwrap(); 
+        await refetch(); 
+      } catch (error) {
+        console.error("Error unfollowing user:", error);
+      } finally {
+        setLoading(false); 
+        toggleBox(); 
+      }
+    }
+  };
+
   if (!isVisible) return null;
 
   return createPortal(
@@ -71,10 +90,10 @@ const ProfileDropdownMenu = ({ isVisible, toggleBox, buttonRef }) => {
 
       <div
         className="w-full rounded flex justify-start items-center gap-1.5 p-1 cursor-pointer hover:bg-[#d0e3e6] transform transition-transform hover:-translate-y-0.5"
-        onClick={toggleBox}
+        onClick={handleUnfollow} disabled={loading}
       >
         <RiUserUnfollowLine className="text-[#2c3e50] w-4 h-4" />
-        <span className="text-[#2c3e50] text-xs">Unfollow Emma Noble</span>
+        <span className="text-[#2c3e50] text-xs">{loading ? "Unfollowing..." : `Unfollow ${firstName} ${lastName}`}</span>
       </div>
 
       <div
@@ -82,7 +101,7 @@ const ProfileDropdownMenu = ({ isVisible, toggleBox, buttonRef }) => {
         onClick={toggleBox}
       >
         <PiProhibitBold className="text-[#f04343] w-4 h-4 relative" />
-        <span className="text-[#f04343] text-xs">Block Emma Noble</span>
+        <span className="text-[#f04343] text-xs">Block {firstName}{" "}{lastName}</span>
       </div>
     </div>,
     document.body

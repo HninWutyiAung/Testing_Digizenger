@@ -56,6 +56,7 @@ const OtherProfileComponent = () => {
     return <p>Error loading profile: {data?.message || "Unknown error"}</p>;
 
   const {
+    id,
     profileImageUrl,
     coverImageUrl = "https://via.placeholder.com/640x180",
     username,
@@ -194,6 +195,11 @@ const OtherProfileComponent = () => {
                     isVisible={isBoxVisible}
                     toggleBox={toggleBox}
                     buttonRef={buttonRef}
+                    id={id}
+                    refetch={refetch}
+                    firstName={firstName}
+                    lastName={lastName}
+                    relationshipStatus={relationshipStatus}
                   />
                 </div>
               </div>
