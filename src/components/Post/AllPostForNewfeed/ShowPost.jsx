@@ -10,7 +10,8 @@ import default_image from '/images/default_profile.jpg';
 import { useEffect, useState  } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { Link ,useNavigate} from 'react-router-dom';
-import { useSetLikeOrUnlikeMutation } from '../../../apiService/Post';
+import { useSetLikeOrUnlikeMutation} from '../../../apiService/Post';
+import { useGetProfileQuery } from '../../../apiService/Profile';
 import { ProfileDto, userDto } from '../../../page/ProfilePage/profileService';
 import { customLocale} from './ShowPostService';
 import { useLocation } from 'react-router-dom';
@@ -24,6 +25,9 @@ function ShowPost({ activeChat, post , setPosts}) {
     const [setLikeOrUnlike] = useSetLikeOrUnlikeMutation();
     const navigate = useNavigate();
     const location = useLocation();
+
+    const { data: profileData } = useGetProfileQuery();
+    const myProfileUsername = profileData?.userDto?.profileDto?.username || 'default_username';
 
     const postText = post.description;
     const wordLength =post.description.split(" ");
@@ -41,9 +45,14 @@ function ShowPost({ activeChat, post , setPosts}) {
 
 
     const handleNavigate = () => {
-        navigate(`/home/profile/${otherUserName}`);
+        if (otherUserName === myProfileUsername) {
+            navigate(`/home/profile`);
+        } else {
+            navigate(`/home/profile/${otherUserName}`);
+        }
         console.log(otherUserName);
-      };
+    };
+    
 
     const createdDate = post.createdDate; 
     const utcDate = new Date(createdDate.endsWith('Z') ? createdDate : createdDate + 'Z'); 
