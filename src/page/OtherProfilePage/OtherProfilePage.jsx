@@ -2,6 +2,8 @@ import MenuNav from '../../components/NewFeed Nav/MenuNav2';
 import NewFeedNav from '../../components/NewFeed Nav/NewFeedNav';
 import Featured from '../../components/Profile_Information/ProfileFirstColumnCollection/Featured';
 import OtherProfileComponent from './OtherProfile';
+import OtherProfileAbout from './OtherProfileAbout';
+import OtherProfileDetailPage from './OtherProfileDetailPage';
 import SearchProfile from './SearchProfile';
 
 const OtherProfile = () => {
@@ -14,6 +16,8 @@ const OtherProfile = () => {
             <SearchProfile/>
             <OtherProfileComponent/>
             <Featured/>
+            <OtherProfileAbout/>
+            <OtherProfileDetailPage/>
       </div>
     </section>
   );
