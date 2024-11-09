@@ -41,8 +41,8 @@ function ChatBoxLayout () {
     const waveformContainerRef = useRef(null);
     let senderId = null;
 
-    console.log(activeChatRoom);
-    console.log(chatList);
+    console.log("this is active chat room no:",activeChatRoom);
+    console.log("this is chat list",chatList);
 
     useEffect(()=>{
         waveFormPreview(audioUrl, waveSurferRef, waveformContainerRef);
@@ -76,17 +76,20 @@ function ChatBoxLayout () {
     const sendMessage = (e) => {
         e.preventDefault(); 
         const recipientId = activeChatRoom === userId ? senderId : activeChatRoom;
-        if (inputValue.trim()) {
+        if (inputValue.trim() || audioUrl) {  // Check if there's either text or audio
+            const messageContent =   audioBase64 || inputValue.trim();  // Use audioUrl if present; otherwise, use text
+            const messageType = audioUrl ? "AUDIO" : "TEXT"; 
             const textMessage = {
-                message: inputValue.trim(),
+                message: messageContent,
                 user: {"id" :userId},
                 recipientId: recipientId,
-                type: "TEXT",
+                type: messageType,
             };
 
             dispatch(addMessageToChat({ recipientId: activeChatRoom, message: textMessage }));
             sendMessageToWebsocket(textMessage);
             console.log("textMessage",textMessage);
+            console.log("base64audio" , audioBase64);
             setInputValue("");
         }
     };
@@ -164,7 +167,11 @@ function ChatBoxLayout () {
                                 <div className="text-[#2C3E50] text-[16px] font-normal">
                                     {text.type === "IMAGE"? (
                                         <img src={isURL(text.message) ? text.message : `data:image/png;base64,${text.message}`} className="w-[200px] h-[200px]" alt="Uploaded content" />
-                                    ) : (
+                                    ) : 
+                                    text.type === "AUDIO" ? (
+                                        <audio controls src={`data:audio/wav;base64,${text.message}`}></audio>
+                                    ):
+                                    (
                                         <span>{text.message}</span>
                                     )}
                                 </div>
@@ -191,7 +198,7 @@ function ChatBoxLayout () {
                     <input type="file" ref={imgRef} onChange={handleImageUpload} className="hidden" />
                     { !isRecording ? (<img src={waveform}  onClick={handleStartRecording} className="w-[28px] h-[28px]" alt="Waveform icon" />):
                     
-                    (<FaCircleStop size={25} className="w-[28px] h-[28px]" onClick={handleStopRecording} />)
+                    (<FaCircleStop size={50} className="w-[40px] h-[40px] text-darkBlue" onClick={handleStopRecording} />)
                     }
                 </div>
                 <div ref={chatRef} className="flex items-center p-[4px]">
@@ -200,7 +207,10 @@ function ChatBoxLayout () {
                          (<canvas ref={canvasRef} width="400" height="40" className="rounded-[27px]"></canvas>) : 
 
                          audioUrl ? (
-                                <div className="w-[400px] rounded-[27px] bg-secondary"> <div ref={waveformContainerRef} className="w-[200px]"></div></div>
+                                <div className="w-[400px] rounded-[27px] bg-secondary"> 
+                                    <div ref={waveformContainerRef} className="w-[200px]"></div>
+                                    {/* <audio controls src={audioUrl}></audio> */}
+                                </div>
                          ) :
 
                          (<input

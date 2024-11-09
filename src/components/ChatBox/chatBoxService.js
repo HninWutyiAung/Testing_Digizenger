@@ -139,6 +139,7 @@ export const waveFormPreview = (audioUrl, waveSurferRef, waveformContainerRef) =
             barWidth: 2,
             responsive: true,
             cursorWidth: 0, 
+            cursorColor: "transparent",
         });
         waveSurferRef.current.load(audioUrl);
     }
