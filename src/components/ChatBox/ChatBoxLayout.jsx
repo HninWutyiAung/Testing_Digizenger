@@ -9,11 +9,12 @@ import { GoImage } from "react-icons/go";
 import waveform from '/images/waveform.png';
 import emoji from '/images/emoji.png';
 import { useState, useRef, useEffect } from "react";
-import { FaCircleArrowUp } from "react-icons/fa6";
+import { FaCircleArrowUp , FaCircleStop } from "react-icons/fa6";
 import ChatBoxUserStatusNav from "./ChatBoxUserStatusNav";
 import { selectUserId } from "../../feature/authSlice";
 import { useWebSocket } from "../Websocket/websocketForLikeNoti";
-import { compressBase64Image , isURL , isBase64 , startRecordingWithWaveform , stopRecordingWithWaveform} from "./chatBoxService";
+import WaveSurfer from 'wavesurfer.js';
+import { compressBase64Image , isURL , isBase64 , startRecordingWithWaveform , stopRecordingWithWaveform , waveFormPreview} from "./chatBoxService";
 
 
 function ChatBoxLayout () {
@@ -34,12 +35,18 @@ function ChatBoxLayout () {
     const userId = loginInfo.userId;
     const [isRecording, setIsRecording] = useState(false);
     const [audioUrl, setAudioUrl] = useState(null);
-    const [audioPreview, setAudioPreview] = useState(false)
+    const [audioBase64 , setAudioBase64] = useState(null);
     const canvasRef = useRef(null);
+    const waveSurferRef = useRef(null);
+    const waveformContainerRef = useRef(null);
     let senderId = null;
 
     console.log(activeChatRoom);
     console.log(chatList);
+
+    useEffect(()=>{
+        waveFormPreview(audioUrl, waveSurferRef, waveformContainerRef);
+    }, [audioUrl, waveSurferRef]);
 
     useEffect(()=>{
         if(lastMessage.current){
@@ -55,14 +62,15 @@ function ChatBoxLayout () {
     }
 
     const handleStartRecording = () => {
-        startRecordingWithWaveform(canvasRef, setAudioUrl);
+        startRecordingWithWaveform(canvasRef, setAudioUrl,setAudioBase64 , audioBase64);
         setIsRecording(true);
+        setInputStyle(true);
     };
 
     const handleStopRecording = () => {
         stopRecordingWithWaveform();
         setIsRecording(false);
-        setAudioPreview(true);
+        setInputStyle(true);
     };
 
     const sendMessage = (e) => {
@@ -181,17 +189,18 @@ function ChatBoxLayout () {
                         <GoImage size={25} className="w-[28px] h-[28px]" />
                     </i>
                     <input type="file" ref={imgRef} onChange={handleImageUpload} className="hidden" />
-                    <img src={waveform}  onClick={handleStartRecording} className="w-[28px] h-[28px]" alt="Waveform icon" />
+                    { !isRecording ? (<img src={waveform}  onClick={handleStartRecording} className="w-[28px] h-[28px]" alt="Waveform icon" />):
+                    
+                    (<FaCircleStop size={25} className="w-[28px] h-[28px]" onClick={handleStopRecording} />)
+                    }
                 </div>
                 <div ref={chatRef} className="flex items-center p-[4px]">
-                    <form onSubmit={sendMessage} className="flex items-center p-[4px] relative">
+                    <form onSubmit={sendMessage} className="flex items-center p-[4px] relative ">
                         {isRecording ?
-                         (<canvas ref={canvasRef} width="400" height="40" className=" bg-red-100 "></canvas>) : 
+                         (<canvas ref={canvasRef} width="400" height="40" className="rounded-[27px]"></canvas>) : 
 
                          audioUrl ? (
-                                <div className="w-[400px]">
-                                    <audio controls src={audioUrl}></audio>
-                                </div>
+                                <div className="w-[400px] rounded-[27px] bg-secondary"> <div ref={waveformContainerRef} className="w-[200px]"></div></div>
                          ) :
 
                          (<input
@@ -206,7 +215,7 @@ function ChatBoxLayout () {
 
                         
                         {inputStyle ? (
-                            <i><FaCircleArrowUp className="absolute top-3 right-3 w-[25px] h-[25px] text-[#0097A7]" onClick={sendMessage}/></i>
+                            <i><FaCircleArrowUp className={`absolute top-3 right-3 w-[25px] h-[25px] text-[#0097A7] ${isRecording || audioUrl? "text-background" : "text-primary"}`} onClick={sendMessage}/></i>
                         ) : (
                             <img src={emoji} className="absolute right-2 bg-[2C3E50]" alt="Emoji icon" onClick={handleStopRecording}/>
                         )}

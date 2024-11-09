@@ -1,3 +1,4 @@
+import WaveSurfer from "wavesurfer.js";
 export function compressBase64Image(base64Image, quality = 0.6) {
     return new Promise((resolve) => {
         const img = new Image();
@@ -32,7 +33,7 @@ export const isBase64 = (str) => {
 let audioContext, analyser, stream, mediaRecorder;
 const audioChunks = [];
 
-export const startRecordingWithWaveform = (canvasRef, setAudioUrl) => {
+export const startRecordingWithWaveform = (canvasRef, setAudioUrl ,setAudioBase64, audioBase64) => {
     navigator.mediaDevices.getUserMedia({ audio: true }).then(userStream => {
         stream = userStream;
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -42,20 +43,26 @@ export const startRecordingWithWaveform = (canvasRef, setAudioUrl) => {
         source.connect(analyser);
         analyser.fftSize = 2048;
 
-        // Initialize MediaRecorder to record audio chunks
         mediaRecorder = new MediaRecorder(stream);
         mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
 
         mediaRecorder.onstop = () => {
             const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-            const audioUrl = URL.createObjectURL(audioBlob);
-            setAudioUrl(audioUrl);
-            audioChunks.length = 0; // Clear audio chunks after stop
+            const reader = new FileReader();
+            
+            reader.onloadend = () => {
+                const base64Audio = reader.result.split(',')[1];
+                setAudioBase64(base64Audio);
+                setAudioUrl(`data:audio/wav;base64,${base64Audio}`);
+            };
+            
+            reader.readAsDataURL(audioBlob); 
+            audioChunks.length = 0; 
         };
 
         mediaRecorder.start();
 
-        // Waveform visualization
+
         const bufferLength = analyser.frequencyBinCount;
         const dataArray = new Uint8Array(bufferLength);
         
@@ -63,20 +70,22 @@ export const startRecordingWithWaveform = (canvasRef, setAudioUrl) => {
         const canvasCtx = canvas.getContext("2d");
 
         const draw = () => {
-            if (!analyser) return; // Stop drawing if the analyser is not active
+            if (!analyser) return; 
             requestAnimationFrame(draw);
 
             analyser.getByteTimeDomainData(dataArray);
 
-            canvasCtx.fillStyle = "#FFFFFF";
+            canvasCtx.fillStyle = "#00BCD4";
             canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
 
             canvasCtx.lineWidth = 2;
-            canvasCtx.strokeStyle = "#0097A7";
+            canvasCtx.strokeStyle = "#ffffff";
 
             canvasCtx.beginPath();
 
-            let sliceWidth = canvas.width * 1.0 / bufferLength;
+            const desiredLineLength = 200; // Set the desired length of the line in pixels
+            let sliceWidth = (desiredLineLength / bufferLength) || (canvas.width * 1.0 / bufferLength);
+            
             let x = 0;
 
             for (let i = 0; i < bufferLength; i++) {
@@ -90,9 +99,10 @@ export const startRecordingWithWaveform = (canvasRef, setAudioUrl) => {
                 }
 
                 x += sliceWidth;
+                if (x >= desiredLineLength) break;
             }
 
-            canvasCtx.lineTo(canvas.width, canvas.height / 2);
+            canvasCtx.lineTo(desiredLineLength, canvas.height / 2); 
             canvasCtx.stroke();
         };
 
@@ -116,3 +126,25 @@ export const stopRecordingWithWaveform = () => {
     }
     analyser = null; // Nullify the analyser to stop the drawing loop
 };
+
+export const waveFormPreview = (audioUrl, waveSurferRef, waveformContainerRef) => {
+    if (audioUrl && waveSurferRef.current) {
+        waveSurferRef.current.destroy();
+    }
+    if (audioUrl) {
+        waveSurferRef.current = WaveSurfer.create({
+            container: waveformContainerRef.current,
+            waveColor: "#ffffff",
+            height: 40,
+            barWidth: 2,
+            responsive: true,
+            cursorWidth: 0, 
+        });
+        waveSurferRef.current.load(audioUrl);
+    }
+    return () => {
+        if (waveSurferRef.current) {
+            waveSurferRef.current.destroy();
+        }
+    };
+}

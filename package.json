@@ -34,7 +34,8 @@
     "react-toastify": "^10.0.5",
     "sockjs-client": "^1.6.1",
     "sweetalert2": "^11.10.7",
-    "swiper": "^11.0.5"
+    "swiper": "^11.0.5",
+    "wavesurfer.js": "^7.8.8"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
