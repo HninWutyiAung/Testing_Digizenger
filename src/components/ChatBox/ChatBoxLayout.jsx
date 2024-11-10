@@ -14,7 +14,14 @@ import ChatBoxUserStatusNav from "./ChatBoxUserStatusNav";
 import { selectUserId } from "../../feature/authSlice";
 import { useWebSocket } from "../Websocket/websocketForLikeNoti";
 import WaveSurfer from 'wavesurfer.js';
-import { compressBase64Image , isURL , isBase64 , startRecordingWithWaveform , stopRecordingWithWaveform , waveFormPreview , compressAudioBase64} from "./chatBoxService";
+import { BsFillXCircleFill } from "react-icons/bs";
+import { compressBase64Image ,
+     isURL , 
+     isBase64 , 
+     startRecordingWithWaveform ,
+     stopRecordingWithWaveform , 
+     waveFormPreview ,
+     compressAudioBase64} from "./chatBoxService";
 
 
 function ChatBoxLayout () {
@@ -37,6 +44,7 @@ function ChatBoxLayout () {
     const [audioUrl, setAudioUrl] = useState(null);
     const [audioBase64 , setAudioBase64] = useState(null);
     const [audioLink , setAudioLink] = useState(null);
+    const [deleteAudio, setDeleteAudio] = useState(false);
     const canvasRef = useRef(null);
     const waveSurferRef = useRef(null);
     const waveformContainerRef = useRef(null);
@@ -71,11 +79,12 @@ function ChatBoxLayout () {
     const handleStopRecording = async() => {
         stopRecordingWithWaveform();
         setIsRecording(false);
+        setDeleteAudio(true);
         setInputStyle(true);
         if (audioBase64) {
             try {
                 console.log("hello")
-                const compressedAudioBase64 = await compressAudioBase64(audioBase64, 0.3);
+                const compressedAudioBase64 = await compressAudioBase64(audioBase64, 0.2);
                 console.log("Compressed Audio:", compressedAudioBase64);
                 setAudioLink(compressedAudioBase64);
                 
@@ -87,14 +96,22 @@ function ChatBoxLayout () {
 
     };
 
+    const handleDeleteAudio = () => {
+        setAudioUrl(null);
+        setAudioBase64(null);
+        setDeleteAudio(false);
+        setInputStyle(false);
+    }
+
     const sendMessage =  (e) => {
         e.preventDefault(); 
 
         const recipientId = activeChatRoom === userId ? senderId : activeChatRoom;
         if (inputValue.trim() || audioUrl) {  
-            const messageContent =  audioLink || inputValue.trim();  // Use audioUrl if present; otherwise, use text
+            const messageContent =  audioBase64 || inputValue.trim();  // Use audioUrl if present; otherwise, use text
             const messageType = audioUrl ? "AUDIO" : "TEXT"; 
             const textMessage = {
+                id: generateUniqueId(),
                 message: messageContent,
                 user: {"id" :userId},
                 recipientId: recipientId,
@@ -123,6 +140,7 @@ function ChatBoxLayout () {
                 const imageLink = compressedImage.replace(/^data:image\/\w+;base64,/, "");
                 const recipientId = activeChatRoom === userId ? senderId : activeChatRoom;
                 const imageMessage = {
+                    id: generateUniqueId(),
                     message: imageLink,
                     user: {id :userId},
                     recipientId: recipientId,
@@ -211,9 +229,12 @@ function ChatBoxLayout () {
                         <GoImage size={25} className="w-[28px] h-[28px]" />
                     </i>
                     <input type="file" ref={imgRef} onChange={handleImageUpload} className="hidden" />
-                    { !isRecording ? (<img src={waveform}  onClick={handleStartRecording} className="w-[28px] h-[28px]" alt="Waveform icon" />):
+                    { !isRecording && !deleteAudio ? (<img src={waveform}  onClick={handleStartRecording} className="w-[28px] h-[28px]" alt="Waveform icon" />) :
                     
-                    (<FaCircleStop size={50} className="w-[40px] h-[40px] text-darkBlue" onClick={handleStopRecording} />)
+                    isRecording ? (<FaCircleStop size={50} className="w-[40px] h-[40px] text-darkBlue" onClick={handleStopRecording} />) :
+
+                    deleteAudio && (<BsFillXCircleFill size={50} className="w-[40px] h-[40px] text-[#ff0800]" onClick={handleDeleteAudio}/>) 
+                                
                     }
                 </div>
                 <div ref={chatRef} className="flex items-center p-[4px]">

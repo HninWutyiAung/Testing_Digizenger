@@ -150,7 +150,7 @@ export const waveFormPreview = (audioUrl, waveSurferRef, waveformContainerRef) =
     };
 }
 
-export async function compressAudioBase64(audioBase64, quality = 0.3) {
+export async function compressAudioBase64(audioBase64, quality = 0.2) {
     return new Promise(async (resolve, reject) => {
         try {
             // Decode the Base64 audio data to binary format

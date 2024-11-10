@@ -58,6 +58,7 @@ function Post({activeChat, setpostLoading}) {
     }
 
     const uploadImage = () => {
+        setIsButtonDisabled(false);
         if (uploadRef.current) {
             uploadRef.current.click(); 
         } else {
@@ -246,7 +247,12 @@ function Post({activeChat, setpostLoading}) {
                                     {image ?
                                         (<div className='relative'>
                                             <img src={URL.createObjectURL(image)} className='w-[500px] h-[300px]'/>
-                                            <div className='absolute top-2 right-2 p-1 bg-slate-50 bg-opacity-20 hover:bg-opacity-40 hover:float rounded-full'><i  className='text-accent'><IoCloseOutline /></i></div>
+                                            <div className='absolute top-2 right-2 p-1 bg-slate-50 bg-opacity-20 hover:bg-opacity-40 hover:float rounded-full' 
+                                                onClick={()=>{ 
+                                                    setImage(null);
+                                                    setImageFile(null);}}>
+                                                    <i  className='text-accent'><IoCloseOutline /></i>
+                                            </div>
                                             <div className='absolute flex gap-[2px] top-2 left-2 px-2 py-[3px] rounded-[50px] bg-slate-50 bg-opacity-20 hover:bg-opacity-40'>
                                                 <GrFormEdit className='text-accent'/>
                                                 <span onClick={ uploadImage} className='text-[12px] text-accent'>Edit</span>
