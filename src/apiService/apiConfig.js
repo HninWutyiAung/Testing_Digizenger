@@ -21,3 +21,15 @@ export const GET_ALL_IMAGES_ENDPOINT = '/profile/images';
 
 export const GET_CHAT_LIST = '/chat/chat-list';
 export const GET_CHAT_MESSAGES = '/chat/messages/';
+
+export const ADD_CAREER_HISTORY_ENDPOINT = '/profile/career-history';
+export const UPDATE_CAREER_HISTORY_ENDPOINT = '/profile/career-history';
+
+export const ADD_EDUCATION_HISTORY_ENDPOINT = '/profile/education-history';
+export const UPDATE_EDUCATION_HISTORY_ENDPOINT = '/profile/education-history';
+
+export const ADD_SERVICE_PROVIDED_ENDPOINT = '/profile/service-provided';
+export const DELETE_SERVICE_PROVIDED_ENDPOINT = '/profile/service-provided';
+
+export const FOLLOW_USER_ENDPOINT = '/profile/followers/follow/';
+export const UNFOLLOW_USER_ENDPOINT = 'profile/followers/unfollow/';

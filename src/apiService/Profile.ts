@@ -6,6 +6,14 @@ import {
   GET_PROFILE_ENDPOINT,
   COVER_IMAGE_ENDPOINT,
   GET_ALL_IMAGES_ENDPOINT,
+  ADD_CAREER_HISTORY_ENDPOINT,
+  UPDATE_CAREER_HISTORY_ENDPOINT,
+  ADD_EDUCATION_HISTORY_ENDPOINT,
+  UPDATE_EDUCATION_HISTORY_ENDPOINT,
+  ADD_SERVICE_PROVIDED_ENDPOINT,
+  DELETE_SERVICE_PROVIDED_ENDPOINT,
+  FOLLOW_USER_ENDPOINT,
+  UNFOLLOW_USER_ENDPOINT
 } from "./apiConfig"; 
 
 export const profileApiSlice = createApi({
@@ -76,7 +84,7 @@ export const profileApiSlice = createApi({
 
     addCareerHistory: builder.mutation({
       query: (formData) => ({
-        url: "/profile/career-history",
+        url: ADD_CAREER_HISTORY_ENDPOINT,
         method: "POST",
         body: formData,
       }),
@@ -84,7 +92,7 @@ export const profileApiSlice = createApi({
 
     updateCareerHistory: builder.mutation({
       query: ({ id, formData }) => ({
-        url: `/profile/career-history/${id}`,
+        url: `${UPDATE_CAREER_HISTORY_ENDPOINT}/${id}`,
         method: "PUT",
         body: formData,
       }),
@@ -92,7 +100,7 @@ export const profileApiSlice = createApi({
 
     addEducationHistory: builder.mutation({
       query: (formData) => ({
-        url: "/profile/education-history",
+        url: ADD_EDUCATION_HISTORY_ENDPOINT,
         method: "POST",
         body: formData,
       }),
@@ -100,7 +108,7 @@ export const profileApiSlice = createApi({
 
     updateEducationHistory: builder.mutation({
       query: ({ id, formData }) => ({
-        url: `/profile/education-history/${id}`,
+        url: `${UPDATE_EDUCATION_HISTORY_ENDPOINT}/${id}`,
         method: "PUT",
         body: formData,
       }),
@@ -108,7 +116,7 @@ export const profileApiSlice = createApi({
 
     addServiceProvided: builder.mutation({
       query: (formData) => ({
-        url: "/profile/service-provided",
+        url: ADD_SERVICE_PROVIDED_ENDPOINT,
         method: "POST",
         body: formData,
       }),
@@ -116,8 +124,22 @@ export const profileApiSlice = createApi({
 
     deleteServiceProvided: builder.mutation({
       query: (id) => ({
-        url: `/profile/service-provided/${id}`,
+        url: `${DELETE_SERVICE_PROVIDED_ENDPOINT}/${id}`,
         method: "DELETE",
+      }),
+    }),
+
+    followUser: builder.mutation({
+      query: (userId) => ({
+        url: `${FOLLOW_USER_ENDPOINT}${userId}`,
+        method: "POST",
+      }),
+    }),
+
+    unfollowUser: builder.mutation({
+      query: (userId) => ({
+        url: `${UNFOLLOW_USER_ENDPOINT}${userId}`,
+        method: "PUT",
       }),
     }),
 
@@ -137,4 +159,6 @@ export const {
   useUpdateEducationHistoryMutation,
   useAddServiceProvidedMutation,
   useDeleteServiceProvidedMutation,
+  useFollowUserMutation,
+  useUnfollowUserMutation
 } = profileApiSlice;

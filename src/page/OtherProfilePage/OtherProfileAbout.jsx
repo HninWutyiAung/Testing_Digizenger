@@ -1,31 +1,23 @@
-import { PiPencilSimpleFill } from "react-icons/pi";
 import { useState } from "react";
-import EditAboutInfo from "./EditAboutInfo";
-import { useGetProfileQuery } from "../../../apiService/Profile";
+import { useGetOtherProfileQuery } from "../../apiService/Profile";
+import { useParams } from "react-router-dom";
 
-const About = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data, error, isLoading, refetch } = useGetProfileQuery();
+const OtherProfileAbout = () => {
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleSaveModal = () => {
-    setIsModalOpen(false);
-  };
-
+  const { otherUserName } = useParams();
+  const { data, isLoading, isError} = useGetOtherProfileQuery(otherUserName);
+  console.log('Other Profile About: ',data);
+ 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading profile data.</div>;
+  if (isError) return <div>Error loading profile data.</div>;
 
-  const careerHistory = data?.userDto?.profileDto?.careerHistoryDtoList || [];
-  const educationHistory = data?.userDto?.profileDto?.educationHistoryDtoList || [];
-  const servicesProvided = data?.userDto?.profileDto?.serviceProvidedDtoList || [];
+  const {
+    careerHistoryDtoList: careerHistory = [],
+    serviceProvidedDtoList: servicesProvided = [],
+    educationHistoryDtoList: educationHistory = [],
+  } = data.otherProfileDto || {};
 
+  
   const renderPlaceholderLogo = (name) => (
     <div className="w-9 h-9 rounded-[4px] bg-[#00BCD4] flex justify-center items-center text-white font-bold">
       {name ? name[0] : ""}
@@ -39,10 +31,6 @@ const About = () => {
           <div className="text-[#2C3E50] text-xl font-bold font-['DM Sans']">
             About
           </div>
-          <PiPencilSimpleFill
-            className="w-6 h-6 text-[#2C3E50] cursor-pointer"
-            onClick={handleOpenModal}
-          />
         </div>
 
         {/* Career History */}
@@ -57,14 +45,14 @@ const About = () => {
               <div key={index} className="w-full">
                 <div className="w-full flex flex-wrap justify-between items-center gap-2">
                   {/* Company Logo or Placeholder */}
-                  {job.companyDto.logoImageUrl ? (
+                  {job.companyDto?.logoImageUrl ?(
                     <img
                       className="w-9 h-9 rounded-[4px] border border-solid border-[#ECF1F4]"
                       src={job.companyDto.logoImageUrl}
                       alt={`${job.companyDto.companyName} logo`}
                     />
                   ) : (
-                    renderPlaceholderLogo(job.companyDto.companyName)
+                    renderPlaceholderLogo(job.companyDto?.companyName)
                   )}
 
                   {/* Job Title and Company Info */}
@@ -74,7 +62,7 @@ const About = () => {
                     </div>
                     <div className="w-full flex justify-between items-center">
                       <div className="text-[#2C3E50] text-sm font-normal font-['DM Sans'] text-left">
-                        {job.companyDto.companyName}
+                        {job.companyDto?.companyName}
                       </div>
                       <div className="text-[#2C3E50] text-xs font-normal font-['DM Sans']">
                         {job.joinDate.slice(0, 4)} –{" "}
@@ -107,21 +95,21 @@ const About = () => {
               <div key={index} className="w-full">
                 <div className="w-full flex justify-start items-center gap-2">
                   {/* Institution Logo or Placeholder */}
-                  {education.schoolDto.logoImageUrl ? (
+                  {education.schoolDto?.logoImageUrl ? (
                     <img
                       className="w-9 h-9 rounded-[4px] border border-solid border-[#ECF1F4]"
                       src={education.schoolDto.logoImageUrl}
                       alt={`${education.schoolDto.schoolName} logo`}
                     />
                   ) : (
-                    renderPlaceholderLogo(education.schoolDto.schoolName)
+                    renderPlaceholderLogo(education.schoolDto?.schoolName)
                   )}
 
                   {/* Institution Name and Degree Info */}
                   <div className="flex-1 flex-col justify-center">
                     {/* Institution Name */}
                     <div className="text-[#2C3E50] text-sm font-bold font-['DM Sans'] text-left">
-                      {education.schoolDto.schoolName}
+                      {education.schoolDto?.schoolName || "Unknown School"}
                     </div>
                     {/* Degree and Dates */}
                     <div className="w-full flex justify-between items-center">
@@ -168,17 +156,8 @@ const About = () => {
           </div>
         </div>
       </div>
-      <EditAboutInfo
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        refetch={refetch}
-        onSave={handleSaveModal}
-        careerHistory={careerHistory}
-        educationHistory={educationHistory}
-        servicesProvided={servicesProvided}
-      />
     </div>
   );
 };
 
-export default About;
+export default OtherProfileAbout;

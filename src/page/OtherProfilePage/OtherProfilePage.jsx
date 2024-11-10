@@ -1,7 +1,11 @@
 import MenuNav from '../../components/NewFeed Nav/MenuNav2';
 import NewFeedNav from '../../components/NewFeed Nav/NewFeedNav';
+import Featured from '../../components/Profile_Information/ProfileFirstColumnCollection/Featured';
 import OtherProfileComponent from './OtherProfile';
+import OtherProfileAbout from './OtherProfileAbout';
+import OtherProfileDetailPage from './OtherProfileDetailPage';
 import SearchProfile from './SearchProfile';
+
 const OtherProfile = () => {
 
   return (
@@ -11,6 +15,9 @@ const OtherProfile = () => {
       <div className='flex flex-col p-[20px] pt-[140px] gap-[12px] w-full bg-[#ECF1F4] h-[945px] overflow-y-auto scrollable newfeed-responsive'>
             <SearchProfile/>
             <OtherProfileComponent/>
+            <Featured/>
+            <OtherProfileAbout/>
+            <OtherProfileDetailPage/>
       </div>
     </section>
   );
