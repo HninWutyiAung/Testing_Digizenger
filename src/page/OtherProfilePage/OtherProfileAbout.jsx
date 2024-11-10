@@ -6,6 +6,7 @@ const OtherProfileAbout = () => {
 
   const { otherUserName } = useParams();
   const { data, isLoading, isError} = useGetOtherProfileQuery(otherUserName);
+  console.log('Other Profile About: ',data);
  
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading profile data.</div>;
@@ -44,14 +45,14 @@ const OtherProfileAbout = () => {
               <div key={index} className="w-full">
                 <div className="w-full flex flex-wrap justify-between items-center gap-2">
                   {/* Company Logo or Placeholder */}
-                  {job.companyDto.logoImageUrl ? (
+                  {job.companyDto?.logoImageUrl ?(
                     <img
                       className="w-9 h-9 rounded-[4px] border border-solid border-[#ECF1F4]"
                       src={job.companyDto.logoImageUrl}
                       alt={`${job.companyDto.companyName} logo`}
                     />
                   ) : (
-                    renderPlaceholderLogo(job.companyDto.companyName)
+                    renderPlaceholderLogo(job.companyDto?.companyName)
                   )}
 
                   {/* Job Title and Company Info */}
@@ -61,7 +62,7 @@ const OtherProfileAbout = () => {
                     </div>
                     <div className="w-full flex justify-between items-center">
                       <div className="text-[#2C3E50] text-sm font-normal font-['DM Sans'] text-left">
-                        {job.companyDto.companyName}
+                        {job.companyDto?.companyName}
                       </div>
                       <div className="text-[#2C3E50] text-xs font-normal font-['DM Sans']">
                         {job.joinDate.slice(0, 4)} –{" "}
@@ -94,21 +95,21 @@ const OtherProfileAbout = () => {
               <div key={index} className="w-full">
                 <div className="w-full flex justify-start items-center gap-2">
                   {/* Institution Logo or Placeholder */}
-                  {education.schoolDto.logoImageUrl ? (
+                  {education.schoolDto?.logoImageUrl ? (
                     <img
                       className="w-9 h-9 rounded-[4px] border border-solid border-[#ECF1F4]"
                       src={education.schoolDto.logoImageUrl}
                       alt={`${education.schoolDto.schoolName} logo`}
                     />
                   ) : (
-                    renderPlaceholderLogo(education.schoolDto.schoolName)
+                    renderPlaceholderLogo(education.schoolDto?.schoolName)
                   )}
 
                   {/* Institution Name and Degree Info */}
                   <div className="flex-1 flex-col justify-center">
                     {/* Institution Name */}
                     <div className="text-[#2C3E50] text-sm font-bold font-['DM Sans'] text-left">
-                      {education.schoolDto.schoolName}
+                      {education.schoolDto?.schoolName || "Unknown School"}
                     </div>
                     {/* Degree and Dates */}
                     <div className="w-full flex justify-between items-center">
