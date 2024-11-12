@@ -1,4 +1,5 @@
 export let filteredMessages = [];
+export let messageLoading;
 
 export const filterMessageHandle = (chatHistoryData) =>{
    if(chatHistoryData){
@@ -17,4 +18,9 @@ export const filterMessageHandle = (chatHistoryData) =>{
         },
     }));
    }
+}
+
+export const handleLoading = (isFetching)=>{
+    messageLoading = isFetching;
+    console.log("chat is still loading");
 }

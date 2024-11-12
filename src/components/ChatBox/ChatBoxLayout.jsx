@@ -15,6 +15,7 @@ import { selectUserId } from "../../feature/authSlice";
 import { useWebSocket } from "../Websocket/websocketForLikeNoti";
 import WaveSurfer from 'wavesurfer.js';
 import { BsFillXCircleFill } from "react-icons/bs";
+import { messageLoading } from "../../page/ChatListPage/ChatListService";
 import { compressBase64Image ,
      isURL , 
      isBase64 , 
@@ -187,7 +188,8 @@ function ChatBoxLayout () {
             <img src={cover} className="chat-bg 2xl:w-[680px]"></img>
             <ChatBoxUserStatusNav message={message}/>
             <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive">
-                {message?.messages.map((text,index) => (
+                { messageLoading ? (<div>Loading ...</div>):
+                (message?.messages.map((text,index) => (
                     <main key={text.id} className={`flex flex-col w-full ${text.recipientId === userId ? "sender" : "user"}`}>
                         <div className="chat-msg-container">
                             {text.recipientId === userId && (
@@ -220,7 +222,7 @@ function ChatBoxLayout () {
                             <div ref={lastMessage}></div>
                         )}
                     </main>
-                ))}
+                )))}
             </section>
             <div className="bg-accent w-full 2xl:w-[100%] flex items-center h-[70px] gap-[10px] 2xl:gap-[30px] px-[10px]">
                 <div className="flex items-center gap-[16px]">

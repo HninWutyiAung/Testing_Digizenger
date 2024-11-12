@@ -10,7 +10,7 @@ import Noti from "../../components/Notification/LikeNoti/Noti.jsx";
 import { otherProfileDetail } from "../OtherProfilePage/OtherProfilePage.js";
 import { useGetChatListQuery , useGetChatHistoryQuery} from "../../apiService/Chat.ts";
 import { selectPage, selectLimit } from "../../feature/chatPageAndLimit.ts";
-import { filterMessageHandle , filteredMessages } from "./ChatListService.js";
+import { filterMessageHandle , filteredMessages , handleLoading} from "./ChatListService.js";
 
 function ChatList({ activeChat, columnHandle, profileBox }) {
     const dispatch = useAppDispatch();
@@ -21,12 +21,21 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
     const activeChatRoom = useAppSelector(selectActiveChatRoom);
     const otherUserId = otherProfileDetail?.otherProfileDto.otherUserForProfileDto.id;  
     const {data:chatListData,isLoading,isSuccess} = useGetChatListQuery();
-    const {data:chatHistoryData ,isSuccess:chatHistorySuccess , isLoading: chatHistoryLoading } = useGetChatHistoryQuery({activeChatRoom , page, limit});
+    const {data:chatHistoryData ,isSuccess:chatHistorySuccess ,isFetching , isLoading: chatHistoryLoading ,refetch} = useGetChatHistoryQuery({activeChatRoom , page, limit},{ skip: !activeChatRoom });
     console.log(chatHistoryData);
     console.log(activeChatRoom)
 
+    useEffect(() => {
+        if (isFetching && activeChatRoom) {
+            handleLoading(isFetching);
+        }
+        else if (!isFetching && chatHistoryData) {
+            handleLoading(isFetching);
+        }
+    }, [isFetching, activeChatRoom, chatHistoryData]);
+
     useEffect(()=>{
-        if (chatHistorySuccess && chatHistoryData) {
+        if ( chatHistorySuccess && chatHistoryData) {
             filterMessageHandle(chatHistoryData);
             dispatch(setChatMessages({id: activeChatRoom , messages:filteredMessages}));
             console.log(filteredMessages);
