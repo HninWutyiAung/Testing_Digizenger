@@ -16,6 +16,8 @@ import { useWebSocket } from "../Websocket/websocketForLikeNoti";
 import WaveSurfer from 'wavesurfer.js';
 import { BsFillXCircleFill } from "react-icons/bs";
 import { messageLoading } from "../../page/ChatListPage/ChatListService";
+import { handleEmojiToggle } from "../Emoji/EmojiService";
+import EmojiReactions from "../Emoji/Emoji";
 import { compressBase64Image ,
      isURL , 
      isBase64 , 
@@ -32,6 +34,8 @@ function ChatBoxLayout () {
     const [inputStyle, setInputStyle] = useState(false);
     const [imageFile, setImageFile] = useState(null);
     const [inputValue, setInputValue] = useState("");
+    const [emojiToggle , setEmojiToggle] = useState(null);
+    const [emoji , setEmoji] = useState("");
     const imgRef = useRef(null);
     const chatRef = useRef(null);
     const lastMessage = useRef(null);
@@ -69,6 +73,10 @@ function ChatBoxLayout () {
     if(lastChatMessage){
         senderId= lastChatMessage.senderId;
         console.log("sender Id ",senderId);
+    }
+
+    const handleReact = (emojiCode) =>{
+        setEmoji(emojiCode);
     }
 
     const handleStartRecording = () => {
@@ -187,10 +195,10 @@ function ChatBoxLayout () {
         <main className="relative">
             <img src={cover} className="chat-bg 2xl:w-[680px]"></img>
             <ChatBoxUserStatusNav message={message}/>
-            <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive">
+            <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive" >
                 { messageLoading ? (<div>Loading ...</div>):
                 (message?.messages.map((text,index) => (
-                    <main key={text.id} className={`flex flex-col w-full ${text.recipientId === userId ? "sender" : "user"}`}>
+                    <main key={text.id} className={`flex flex-col w-full relative ${text.recipientId === userId ? "sender" : "user"}`} onClick={()=> handleEmojiToggle(setEmojiToggle, text.id)}>
                         <div className="chat-msg-container">
                             {text.recipientId === userId && (
                                 <div className="w-[40px] h-[40px]">
@@ -218,11 +226,14 @@ function ChatBoxLayout () {
                                 </div>
                             </div>
                         </div>
+                        {emoji && (<div className={`text-[20px] bg-primary rounded-md mt-[3px] ${text.recipientId === userId ? "ml-[3.5rem]":"mr-[0.5rem]"} `}>{String.fromCodePoint(parseInt(emoji, 16))}</div>)}
+                        {emojiToggle === text.id && (<div className={`absolute top-[-1.6rem] bg-darkBlue px-[10px] py-[3px] rounded-full ${text.recipientId === userId ? "left-[4rem]":"right-[1rem]"}`}><EmojiReactions handleReact={handleReact}/></div>)}
                         {index === message.messages.length - 1 && (
                             <div ref={lastMessage}></div>
                         )}
                     </main>
-                )))}
+                )))
+                }
             </section>
             <div className="bg-accent w-full 2xl:w-[100%] flex items-center h-[70px] gap-[10px] 2xl:gap-[30px] px-[10px]">
                 <div className="flex items-center gap-[16px]">
