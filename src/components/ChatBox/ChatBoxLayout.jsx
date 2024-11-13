@@ -17,6 +17,7 @@ import WaveSurfer from 'wavesurfer.js';
 import { BsFillXCircleFill } from "react-icons/bs";
 import { messageLoading } from "../../page/ChatListPage/ChatListService";
 import { handleEmojiToggle } from "../Emoji/EmojiService";
+import { handleReaction , selectReactions} from "../../feature/reactionSlice";
 import EmojiReactions from "../Emoji/Emoji";
 import { compressBase64Image ,
      isURL , 
@@ -42,7 +43,7 @@ function ChatBoxLayout () {
     const message = chatList.find((msg) => msg.id === activeChatRoom);
     const generateUniqueId = () => '_' + Math.random().toString(36).substr(2, 9); 
     const selectedUserId = 6;
-    const {sendMessageToWebsocket} = useWebSocket();
+    const {sendMessageToWebsocket , sendReactionToWebsocket} = useWebSocket();
     const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
     const userId = loginInfo.userId;
     const [isRecording, setIsRecording] = useState(false);
@@ -53,7 +54,9 @@ function ChatBoxLayout () {
     const canvasRef = useRef(null);
     const waveSurferRef = useRef(null);
     const waveformContainerRef = useRef(null);
+    const reactionList = useAppSelector(selectReactions);
     let senderId = null;
+    console.log(reactionList);
 
     console.log("this is active chat room no:",activeChatRoom);
     console.log("this is chat list",chatList);
@@ -75,8 +78,24 @@ function ChatBoxLayout () {
         console.log("sender Id ",senderId);
     }
 
-    const handleReact = (emojiCode) =>{
+    const handleReact = (emojiCode, messageId) =>{
         setEmoji(emojiCode);
+        const emojiMessage = {
+            chatType : "SINGLE",
+            messageId : messageId,
+            emojiUtf8 :[emojiCode],
+            userId : userId,
+        }
+
+        const emojiMessageForWebSocket = {
+            chatType: "SINGLE",
+            messageId: messageId,
+            emojiUtf8: emojiCode,  // Send emojiUtf8 as a string for WebSocket
+            userId: userId,
+        };
+
+        dispatch(handleReaction(emojiMessage));
+        sendReactionToWebsocket(emojiMessageForWebSocket);
     }
 
     const handleStartRecording = () => {
@@ -226,8 +245,16 @@ function ChatBoxLayout () {
                                 </div>
                             </div>
                         </div>
-                        {emoji && (<div className={`text-[20px] bg-primary rounded-md mt-[3px] ${text.recipientId === userId ? "ml-[3.5rem]":"mr-[0.5rem]"} `}>{String.fromCodePoint(parseInt(emoji, 16))}</div>)}
-                        {emojiToggle === text.id && (<div className={`absolute top-[-1.6rem] bg-darkBlue px-[10px] py-[3px] rounded-full ${text.recipientId === userId ? "left-[4rem]":"right-[1rem]"}`}><EmojiReactions handleReact={handleReact}/></div>)}
+                        {emoji &&  reactionList.find((reaction) => reaction.messageId === text.id) &&
+                            (<div className={`text-[20px] bg-primary rounded-md mt-[3px] ${text.recipientId === userId ? "ml-[3.5rem]":"mr-[0.5rem]"} `}>
+                                {reactionList.find((reaction) => reaction.messageId === text.id).emojiUtf8 && 
+                                    reactionList.find((reaction) => reaction.messageId === text.id).emojiUtf8.map((emoji, index) => (
+                                        <span key={index} className="emoji">{String.fromCodePoint(parseInt(emoji, 16))}</span>
+                                    ))
+                                }
+                                
+                                </div>)}
+                        {emojiToggle === text.id && (<div className={`absolute top-[-1.6rem] bg-darkBlue px-[10px] py-[3px] rounded-full ${text.recipientId === userId ? "left-[4rem]":"right-[1rem]"}`}><EmojiReactions handleReact={handleReact} messageId={text.id}/></div>)}
                         {index === message.messages.length - 1 && (
                             <div ref={lastMessage}></div>
                         )}

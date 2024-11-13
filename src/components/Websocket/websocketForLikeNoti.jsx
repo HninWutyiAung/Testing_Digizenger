@@ -3,6 +3,7 @@ import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { addNotification, selectNotification } from '../../feature/notiSlice';
 import { addMessageToChat , selectActiveChatRoom ,setActiveChat} from '../../feature/chatSlice';
+import { handleReaction } from '../../feature/reactionSlice';
 import { useAppDispatch, useAppSelector } from '../../hook/Hook';
 import { toast } from 'react-toastify';
 
@@ -108,6 +109,23 @@ export const WebSocketProvider = ({ children }) => {
                 }
             });
 
+            stompClientRef.current.subscribe(`/user/${userId}/queue/message/react`, function (message) {
+                console.log("reaction received:", message);
+                try {
+                    const reaction = JSON.parse(message.body);
+                    console.log("Received reaction:", reaction);
+                    const reactionMessage = {
+                        messageId : reaction.id,
+                        emojiUtf8 : reaction.reactionDtoList.map(reaction => reaction.emoji),
+                        userId : reaction.userDto.id,
+                    }
+                    dispatch(handleReaction(reactionMessage))
+
+                } catch (error) {
+                    console.error("Error parsing reaciton message:", error);
+                }
+            });
+
         }, (error) => {
             console.error("Connection error:", error);
             setIsConnected(false);
@@ -137,12 +155,25 @@ export const WebSocketProvider = ({ children }) => {
         }
     };
 
+    const sendReactionToWebsocket = (reactionData) => {
+        if (isConnected) {
+            stompClientRef.current.send(
+                "/app/messages/react",
+                {},
+                JSON.stringify(reactionData)
+            );
+            console.log("Reaction sent:", reactionData);
+        } else {
+            console.error("WebSocket is not connected.");
+        }
+    };
+
     useEffect(() => {
         return () => disconnectWebSocket();
     }, []);
 
     return (
-        <WebSocketContext.Provider value={{ websocketConnectForLikeNoti, disconnectWebSocket , sendMessageToWebsocket }}>
+        <WebSocketContext.Provider value={{ websocketConnectForLikeNoti, disconnectWebSocket , sendMessageToWebsocket , sendReactionToWebsocket}}>
             {children}
         </WebSocketContext.Provider>
     );

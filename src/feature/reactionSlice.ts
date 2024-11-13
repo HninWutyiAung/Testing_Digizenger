@@ -4,9 +4,8 @@ import { RootState } from './store';
 interface MessageReaction {
   chatType: string;
   messageId: string;
-  emojiUtf8: string;
+  emojiUtf8:  string[];
   userId: string;
-  timestamp: string;
 }
 
 interface ReactionState {
@@ -23,31 +22,32 @@ const reactionSlice = createSlice({
   reducers: {
     handleReaction: (state, action: PayloadAction<MessageReaction>) => {
       const { messageId, emojiUtf8, userId } = action.payload;
+      console.log("this is reactionSlice from reaction slice", action.payload);
 
-      // Find reaction with the same messageId and userId
       const existingReaction = state.reactions.find(
         (reaction) => reaction.messageId === messageId && reaction.userId === userId
       );
 
       if (!existingReaction) {
-        // If reaction doesn't exist, add new reaction
+
         state.reactions.push(action.payload);
       } else {
-        if (existingReaction.emojiUtf8 === emojiUtf8) {
-          // If emojiUtf8 is the same, delete the reaction (remove from array)
-          state.reactions = state.reactions.filter(
-            (reaction) => !(reaction.messageId === messageId && reaction.userId === userId)
+
+        if (existingReaction.emojiUtf8.includes(emojiUtf8[0])) {
+
+          existingReaction.emojiUtf8 = existingReaction.emojiUtf8.filter(
+            (emoji) => emoji !== emojiUtf8[0]
           );
         } else {
-          // If emojiUtf8 is different, update the reaction
-          existingReaction.emojiUtf8 = emojiUtf8;
-          existingReaction.timestamp = new Date().toISOString();
+
+          existingReaction.emojiUtf8 = [...existingReaction.emojiUtf8, emojiUtf8[0]];
         }
       }
     },
   },
 });
 
-// Export the action and reducer
+
 export const { handleReaction } = reactionSlice.actions;
 export default reactionSlice.reducer;
+export const selectReactions = (state: RootState) => state.reactions.reactions;
