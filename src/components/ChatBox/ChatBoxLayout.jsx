@@ -18,6 +18,7 @@ import { BsFillXCircleFill } from "react-icons/bs";
 import { messageLoading } from "../../page/ChatListPage/ChatListService";
 import { handleEmojiToggle } from "../Emoji/EmojiService";
 import { handleReaction , selectReactions} from "../../feature/reactionSlice";
+import {RingLoader} from 'react-spinners';
 import EmojiReactions from "../Emoji/Emoji";
 import { compressBase64Image ,
      isURL , 
@@ -215,7 +216,10 @@ function ChatBoxLayout () {
             <img src={cover} className="chat-bg 2xl:w-[680px]"></img>
             <ChatBoxUserStatusNav message={message}/>
             <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive" >
-                { messageLoading ? (<div>Loading ...</div>):
+                { messageLoading ? 
+                (<div className="absolute ">
+                    <RingLoader color="#0097A7" size={50} loading={messageLoading} />
+                 </div>) :
                 (message?.messages.map((text,index) => (
                     <main key={text.id} className={`flex flex-col w-full relative ${text.recipientId === userId ? "sender" : "user"}`} onClick={()=> handleEmojiToggle(setEmojiToggle, text.id)}>
                         <div className="chat-msg-container">
@@ -245,19 +249,20 @@ function ChatBoxLayout () {
                                 </div>
                             </div>
                         </div>
-                        {emoji &&  reactionList.find((reaction) => reaction.messageId === text.id) &&
-                            (<div className={`text-[20px] bg-primary rounded-md mt-[3px] ${text.recipientId === userId ? "ml-[3.5rem]":"mr-[0.5rem]"} `}>
-                                {reactionList.find((reaction) => reaction.messageId === text.id).emojiUtf8 &&
-                                    reactionList.find((reaction) => reaction.messageId === text.id).emojiUtf8.map((emoji, index) => {
-                                        // Convert emoji to code point if valid
-                                        const codePoint = parseInt(emoji, 16);
-                                        return !isNaN(codePoint) ? (
-                                            <span key={index} className="emoji">{String.fromCodePoint(codePoint)}</span>
-                                        ) : null;
-                                    })
-                                }
-                                                        
-                                </div>)}
+                        {reactionList
+                            .filter((reaction) => reaction.messageId === text.id)
+                            .map((reaction, index) => (
+                                <div key={index} className={`text-[20px] bg-primary rounded-md mt-[3px] ${text.recipientId === userId ? "ml-[3.5rem]" : "mr-[0.5rem]"}`}>
+                                {reaction.emojiUtf8 && reaction.emojiUtf8.length > 0 && reaction.emojiUtf8.map((emoji, emojiIndex) => {
+                                    // Convert emoji to code point if valid
+                                    const codePoint = parseInt(emoji, 16);
+                                    return !isNaN(codePoint) ? (
+                                    <span key={emojiIndex} className="emoji">{String.fromCodePoint(codePoint)}</span>
+                                    ) : null;
+                                })}
+                                </div>
+                            ))
+                            }
                         {emojiToggle === text.id && (<div className={`absolute top-[-1.6rem] bg-darkBlue px-[10px] py-[3px] rounded-full ${text.recipientId === userId ? "left-[4rem]":"right-[1rem]"}`}><EmojiReactions handleReact={handleReact} messageId={text.id}/></div>)}
                         {index === message.messages.length - 1 && (
                             <div ref={lastMessage}></div>

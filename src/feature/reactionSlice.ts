@@ -25,28 +25,29 @@ const reactionSlice = createSlice({
 
       // Find the existing reaction by messageId and userId
       const existingReaction = state.reactions.find(
-        (reaction) => reaction.messageId === messageId && reaction.userId === userId
+        (reaction) => reaction.messageId === messageId 
       );
 
       if (!existingReaction) {
-        // If no existing reaction, add a new one
+        // If no existing reaction, add a new one with WebSocket or local emoji in the correct slot
         state.reactions.push({
           chatType,
           messageId,
           userId,
-          emojiUtf8: fromWebSocket ? [emojiUtf8[0], ''] : ['', emojiUtf8[0]],  // Use first slot for WebSocket
+          emojiUtf8: fromWebSocket ? [emojiUtf8[0], ''] : ['', emojiUtf8[0]],  // WebSocket in index 0, local in index 1
         });
       } else {
+        // Update existing reaction based on source
         if (fromWebSocket) {
           // Handle WebSocket reaction at index 0
           existingReaction.emojiUtf8[0] = emojiUtf8[0];
         } else {
           // Handle local reaction at index 1
           if (existingReaction.emojiUtf8[1] === emojiUtf8[0]) {
-            // Remove if it already exists
+            // Remove local emoji if it's already set to avoid duplicates
             existingReaction.emojiUtf8[1] = '';
           } else {
-            // Otherwise, add the new emoji locally
+            // Otherwise, add the new emoji for the local reaction
             existingReaction.emojiUtf8[1] = emojiUtf8[0];
           }
         }
