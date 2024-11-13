@@ -118,6 +118,7 @@ export const WebSocketProvider = ({ children }) => {
                         messageId : reaction.id,
                         emojiUtf8 : reaction.reactionDtoList.map(reaction => reaction.emoji),
                         userId : reaction.userDto.id,
+                        fromWebSocket: true, 
                     }
                     dispatch(handleReaction(reactionMessage))
 

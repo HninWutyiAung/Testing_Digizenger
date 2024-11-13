@@ -247,12 +247,16 @@ function ChatBoxLayout () {
                         </div>
                         {emoji &&  reactionList.find((reaction) => reaction.messageId === text.id) &&
                             (<div className={`text-[20px] bg-primary rounded-md mt-[3px] ${text.recipientId === userId ? "ml-[3.5rem]":"mr-[0.5rem]"} `}>
-                                {reactionList.find((reaction) => reaction.messageId === text.id).emojiUtf8 && 
-                                    reactionList.find((reaction) => reaction.messageId === text.id).emojiUtf8.map((emoji, index) => (
-                                        <span key={index} className="emoji">{String.fromCodePoint(parseInt(emoji, 16))}</span>
-                                    ))
+                                {reactionList.find((reaction) => reaction.messageId === text.id).emojiUtf8 &&
+                                    reactionList.find((reaction) => reaction.messageId === text.id).emojiUtf8.map((emoji, index) => {
+                                        // Convert emoji to code point if valid
+                                        const codePoint = parseInt(emoji, 16);
+                                        return !isNaN(codePoint) ? (
+                                            <span key={index} className="emoji">{String.fromCodePoint(codePoint)}</span>
+                                        ) : null;
+                                    })
                                 }
-                                
+                                                        
                                 </div>)}
                         {emojiToggle === text.id && (<div className={`absolute top-[-1.6rem] bg-darkBlue px-[10px] py-[3px] rounded-full ${text.recipientId === userId ? "left-[4rem]":"right-[1rem]"}`}><EmojiReactions handleReact={handleReact} messageId={text.id}/></div>)}
                         {index === message.messages.length - 1 && (
