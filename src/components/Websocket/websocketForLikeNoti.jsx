@@ -114,13 +114,26 @@ export const WebSocketProvider = ({ children }) => {
                 try {
                     const reaction = JSON.parse(message.body);
                     console.log("Received reaction:", reaction);
-                    const reactionMessage = {
-                        messageId : reaction.id,
-                        emojiUtf8 : reaction.reactionDtoList.map(reaction => reaction.emoji),
-                        userId : reaction.userDto.id,
-                        fromWebSocket: true, 
+            
+                    // Find the reaction associated with the current userId
+                    const userReaction = reaction.reactionDtoList.find(
+                        (reactionDto) => reactionDto.userDto.id !== userId
+                    );
+            
+                    // If a matching reaction is found, handle it
+                    if (userReaction) {
+                        const reactionMessage = {
+                            messageId: reaction.id,
+                            emojiUtf8: [userReaction.emoji],  // Only store the emoji for this user
+                            userId: reaction.userDto.id,
+                            fromWebSocket: true, 
+                        };
+            
+                        // Dispatch the action to update the state
+                        dispatch(handleReaction(reactionMessage));
+                    } else {
+                        console.log("No reaction found for this user");
                     }
-                    dispatch(handleReaction(reactionMessage))
 
                 } catch (error) {
                     console.error("Error parsing reaciton message:", error);
