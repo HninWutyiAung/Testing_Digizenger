@@ -58,6 +58,10 @@ function ChatBoxLayout () {
     const reactionList = useAppSelector(selectReactions);
     let senderId = null;
     console.log(reactionList);
+    let websocketEmoji = "";
+    let localEmoji = "";
+    let websocketEmojiCode = "";
+    let localEmojiCode = "";
 
     console.log("this is active chat room no:",activeChatRoom);
     console.log("this is chat list",chatList);
@@ -251,18 +255,29 @@ function ChatBoxLayout () {
                         </div>
                         {reactionList
                             .filter((reaction) => reaction.messageId === text.id)
-                            .map((reaction, index) => (
-                                <div key={index} className={`text-[20px] bg-primary rounded-md mt-[3px] ${text.recipientId === userId ? "ml-[3.5rem]" : "mr-[0.5rem]"}`}>
-                                {reaction.emojiUtf8 && reaction.emojiUtf8.length > 0 && reaction.emojiUtf8.map((emoji, emojiIndex) => {
-                                    // Convert emoji to code point if valid
-                                    const codePoint = parseInt(emoji, 16);
-                                    return !isNaN(codePoint) ? (
-                                    <span key={emojiIndex} className="emoji">{String.fromCodePoint(codePoint)}</span>
-                                    ) : null;
-                                })}
+                            .map((reaction, index) => {
+                            
+                            websocketEmojiCode = reaction.emojiUtf8[0];
+                            localEmojiCode = reaction.emojiUtf8[1];
+                            websocketEmoji = websocketEmojiCode ? String.fromCodePoint(parseInt(websocketEmojiCode, 16)) : '';
+                            localEmoji = localEmojiCode ? String.fromCodePoint(parseInt(localEmojiCode, 16)) : '';
+                    
+                            return (
+                                <div key={index} className={`text-[20px] flex gap-[8px] rounded-md mt-[3px] ${text.recipientId === userId ? "ml-[3.5rem]" : "mr-[0.5rem]"}`}>
+                                    {websocketEmoji && (
+                                        <div className="rounded-md bg-secondary">
+                                            <span  className="emoji">{websocketEmoji}</span>
+                                        </div>
+                                    )}
+                    
+                                    {localEmoji && (
+                                        <div className="rounded-md bg-primary">
+                                            <span  className="emoji">{localEmoji}</span>
+                                        </div>
+                                    )}
                                 </div>
-                            ))
-                            }
+                            );
+                        })}
                         {emojiToggle === text.id && (<div className={`absolute top-[-1.6rem] bg-darkBlue px-[10px] py-[3px] rounded-full ${text.recipientId === userId ? "left-[4rem]":"right-[1rem]"}`}><EmojiReactions handleReact={handleReact} messageId={text.id}/></div>)}
                         {index === message.messages.length - 1 && (
                             <div ref={lastMessage}></div>

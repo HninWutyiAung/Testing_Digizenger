@@ -1,6 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store.ts';
 
+interface Reaction {
+    id: string;
+    emoji: string;
+    createdDate: string;
+    editedDate?: string;
+    userDto: { id: number; firstName: string; lastName: string };
+}
+
 interface Message {
     id?: number;
     message: string;
@@ -13,6 +21,7 @@ interface Message {
     timestamp?: string;
     createDate?: string;
     userDto?: {  id: number ;firstName: string; lastName: string; };
+    reactionDtoList?: Reaction[];
 }
 
 interface Chat {

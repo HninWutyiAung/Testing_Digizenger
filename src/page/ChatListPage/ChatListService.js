@@ -16,6 +16,17 @@ export const filterMessageHandle = (chatHistoryData) =>{
             firstName: msg.userDto.firstName,
             lastName: msg.userDto.lastName,
         },
+        reactionDtoList: msg.reactionDtoList.map(reaction => ({
+            id: reaction.id,
+            emoji: reaction.emoji,
+            createdDate: reaction.createdDate,
+            editedDate: reaction.editedDate,
+            userDto: {
+                id: reaction.userDto.id,
+                firstName: reaction.userDto.firstName,
+                lastName: reaction.userDto.lastName,
+            }
+        }))
     }));
    }
 }
