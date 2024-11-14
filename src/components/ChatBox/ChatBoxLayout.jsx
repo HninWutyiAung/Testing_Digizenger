@@ -20,6 +20,8 @@ import { handleEmojiToggle } from "../Emoji/EmojiService";
 import { handleReaction , selectReactions} from "../../feature/reactionSlice";
 import {RingLoader} from 'react-spinners';
 import EmojiReactions from "../Emoji/Emoji";
+import MessageReactions from "./MessageReaction";
+import { mergeRaction } from "./chatBoxService";
 import { compressBase64Image ,
      isURL , 
      isBase64 , 
@@ -253,31 +255,7 @@ function ChatBoxLayout () {
                                 </div>
                             </div>
                         </div>
-                        {reactionList
-                            .filter((reaction) => reaction.messageId === text.id)
-                            .map((reaction, index) => {
-                            
-                            websocketEmojiCode = reaction.emojiUtf8[0];
-                            localEmojiCode = reaction.emojiUtf8[1];
-                            websocketEmoji = websocketEmojiCode ? String.fromCodePoint(parseInt(websocketEmojiCode, 16)) : '';
-                            localEmoji = localEmojiCode ? String.fromCodePoint(parseInt(localEmojiCode, 16)) : '';
-                    
-                            return (
-                                <div key={index} className={`text-[20px] flex gap-[8px] rounded-md mt-[3px] ${text.recipientId === userId ? "ml-[3.5rem]" : "mr-[0.5rem]"}`}>
-                                    {websocketEmoji && (
-                                        <div className="rounded-md bg-secondary">
-                                            <span  className="emoji">{websocketEmoji}</span>
-                                        </div>
-                                    )}
-                    
-                                    {localEmoji && (
-                                        <div className="rounded-md bg-primary">
-                                            <span  className="emoji">{localEmoji}</span>
-                                        </div>
-                                    )}
-                                </div>
-                            );
-                        })}
+                        <div><MessageReactions reactionList={reactionList} reactionDtoList={text.reactionDtoList} userId={userId} text={text}/></div>
                         {emojiToggle === text.id && (<div className={`absolute top-[-1.6rem] bg-darkBlue px-[10px] py-[3px] rounded-full ${text.recipientId === userId ? "left-[4rem]":"right-[1rem]"}`}><EmojiReactions handleReact={handleReact} messageId={text.id}/></div>)}
                         {index === message.messages.length - 1 && (
                             <div ref={lastMessage}></div>

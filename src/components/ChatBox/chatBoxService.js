@@ -1,3 +1,4 @@
+export let mergeRaction = [];
 import WaveSurfer from "wavesurfer.js";
 export function compressBase64Image(base64Image, quality = 0.6) {
     return new Promise((resolve) => {
@@ -267,4 +268,32 @@ function writeString(view, offset, string) {
     for (let i = 0; i < string.length; i++) {
         view.setUint8(offset + i, string.charCodeAt(i));
     }
+}
+
+export const handleMergeReaction = () => {
+
+    const merged = reactionList.map((reaction) => {
+        // Check if the reaction is already in reactionDtoList
+        const matchingApiReaction = reactionDtoList.find(
+          (apiReaction) => apiReaction.emoji === reaction.emojiUtf8[0] && apiReaction.userDto.id === reaction.userId
+        );
+  
+        // If found, merge WebSocket reaction with the API reaction
+        if (matchingApiReaction) {
+          return {
+            ...matchingApiReaction,
+            emojiUtf8: reaction.emojiUtf8, // Update emojiUtf8 with the new data from WebSocket
+          };
+        }
+        return reaction;
+      });
+  
+      // Add any reactions from API that are not in WebSocket data
+      mergeRaction = [
+        ...merged,
+        ...reactionDtoList.filter(
+          (apiReaction) => !merged.some((reaction) => reaction.emoji === apiReaction.emoji)
+        ),
+      ];
+
 }
