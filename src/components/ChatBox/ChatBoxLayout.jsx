@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "../../hook/Hook";
 import { selectActiveChatRoom, selectChatList , addMessageToChat } from "../../feature/chatSlice";
+import default_profile from "../../../images/default_profile.jpg";
 import cover from '../../../images/chat bg.png'
 import andrea from '/images/andrea.png';
 import { PiChatTeardropFill } from "react-icons/pi";
@@ -64,9 +65,11 @@ function ChatBoxLayout () {
     let localEmoji = "";
     let websocketEmojiCode = "";
     let localEmojiCode = "";
+    const profileImage = message.profileDto?.profileImageUrl ;
 
     console.log("this is active chat room no:",activeChatRoom);
     console.log("this is chat list",chatList);
+    console.log("this is message for image ", message)
 
     useEffect(()=>{
         waveFormPreview(audioUrl, waveSurferRef, waveformContainerRef);
@@ -231,7 +234,7 @@ function ChatBoxLayout () {
                         <div className="chat-msg-container">
                             {text.recipientId === userId && (
                                 <div className="w-[40px] h-[40px]">
-                                    <img src={andrea} alt="User Avatar" />
+                                    <img src={ profileImage || default_profile} className="rounded-full" alt="User Avatar" />
                                 </div>
                             )}
 
@@ -247,7 +250,7 @@ function ChatBoxLayout () {
                                         <span>{text.message}</span>
                                     )}
                                 </div>
-                                <div className={`text-right text-[12px] text-[#2C3E50] ${text.recipientId === userId  ? "mr-[-5px]" : "mr-[5px]"}`}>
+                                <div className={`text-right ml-[12px] text-[12px] text-[#2C3E50] ${text.recipientId === userId  ? "mr-[-5px]" : "mr-[5px]"}`}>
                                     <span>12:00 PM</span>
                                 </div>
                                 <div className={`absolute top-[1.20rem] ${text.recipientId !== userId ? "right-[-15px]" : "left-[-11px]"}`} style={{ top: isURL(text.message) || isBase64(text.message) ? "12rem" : "" }}>

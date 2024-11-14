@@ -1,15 +1,13 @@
 import React from 'react';
 
 const MessageReactions = ({ text, reactionList = [], reactionDtoList = [], userId }) => {
-    // Filter for local and websocket emojis
+
     const localApiEmoji = reactionDtoList.find((reaction) => reaction.userDto.id === userId)?.emoji;
     const webApiEmoji = reactionDtoList.find((reaction) => reaction.userDto.id !== userId)?.emoji;
 
-    // Define the emojis using the reactionList if available, otherwise fallback to API data
     const websocketEmojiCode = reactionList.find((reaction) => reaction.messageId === text.id)?.emojiUtf8[0] || webApiEmoji;
     const localEmojiCode = reactionList.find((reaction) => reaction.messageId === text.id)?.emojiUtf8[1] || localApiEmoji;
 
-    // Convert emoji codes to actual emojis
     const websocketEmoji = websocketEmojiCode ? String.fromCodePoint(parseInt(websocketEmojiCode, 16)) : '';
     const localEmoji = localEmojiCode ? String.fromCodePoint(parseInt(localEmojiCode, 16)) : '';
 
