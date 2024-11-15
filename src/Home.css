@@ -1,7 +1,6 @@
 .homepage_container{
     display: grid;
     grid-template-columns: 33.33% 350px auto;
-
     border-color: aqua;
     transition: all 0.3s ease;
     height: 945px;

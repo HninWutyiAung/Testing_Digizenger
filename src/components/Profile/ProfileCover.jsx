@@ -27,7 +27,7 @@ function ProfileCover (){
     const coverHandleBox = () =>{
         dispatch(setCoverBox(true))
     }
-    console.log(ProfileDto?.profileDto.coverImageUrl)
+    console.log("this is my profile dto",ProfileDto)
     return(
         <section className=" flex flex-col pb-6 items-center self-stretch rounded-lg border border-solid border-[#C9DCDE] bg-white">
 
@@ -60,7 +60,7 @@ function ProfileCover (){
                                     <img className="w-[19.20px] h-[19.20px]" src={mark} alt="" />
                                 </div>
                             </div>
-                            <div className="text-[#7e7e8d] text-base font-normal font-['DM Sans'] leading-normal">@john332</div>
+                            <div className="text-[#7e7e8d] text-base font-normal font-['DM Sans'] leading-normal">{`@${ProfileDto.profileDto.username}`}</div>
                         </div>
  
                     

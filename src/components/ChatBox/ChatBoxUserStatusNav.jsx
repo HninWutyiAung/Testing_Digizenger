@@ -18,7 +18,7 @@ function ChatBoxUserStatusNav({message}){
     const displayName = firstName && lastName ? `${firstName} ${lastName}` :
     selectChatRoom ? `${selectChatRoom?.firstName} ${selectChatRoom?.lastName}` : 
     "Digizenger";
-    const displayProfile = profileImage ? profileImage : selectChatRoom?.profileDto.profileImageUrl;
+    const displayProfile = profileImage ? profileImage : selectChatRoom?.profileDto?.profileImageUrl;
     console.log("this is select chat room from chat box user status", selectChatRoom);
     return(
         <section className='fixed top-[3.2rem] px-[10px] py-[8px] bg-[#ECF1F4] w-[30.4%] 2xl:w-[43.63%] z-20 chat-box-nav2-responsive'>
