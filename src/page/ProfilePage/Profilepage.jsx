@@ -43,7 +43,7 @@ function Profile({ activeChat }) {
             <NewFeedNav activeChat={activeChat} />
             <MenuNav activeChat={activeChat} />
             
-            <div className="flex relative flex-col p-[20px] pt-[140px] bg-accent gap-[12px] w-full h-[945px] overflow-y-auto scrollable newfeed-responsive">
+            <div className="flex relative flex-col p-[20px] pt-[140px] bg-accent gap-[12px] w-full h-[100vh] overflow-y-auto scrollable newfeed-responsive">
 
                 <ProfileCover firstName={userName.firstName} lastName={userName.lastName} />
                 <Featured/>

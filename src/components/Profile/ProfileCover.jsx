@@ -60,7 +60,7 @@ function ProfileCover (){
                                     <img className="w-[19.20px] h-[19.20px]" src={mark} alt="" />
                                 </div>
                             </div>
-                            <div className="text-[#7e7e8d] text-base font-normal font-['DM Sans'] leading-normal">{`@${ProfileDto.profileDto.username}`}</div>
+                            <div className="text-[#7e7e8d] text-base font-normal font-['DM Sans'] leading-normal">{`@${ProfileDto?.profileDto?.username}`}</div>
                         </div>
  
                     

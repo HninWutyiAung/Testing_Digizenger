@@ -127,7 +127,7 @@ function NewFeed({ activeChat }) {
         <section>
             <NewFeedNav activeChat={activeChat} />
             <MenuNav activeChat={activeChat} />
-            <div className="flex flex-col p-[20px] pt-[140px] gap-[12px] w-full bg-[#ECF1F4] h-[945px] overflow-y-auto scrollable newfeed-responsive">
+            <div className="flex flex-col p-[20px] pt-[140px] gap-[12px] w-full bg-[#ECF1F4] h-[100vh] overflow-y-auto scrollable newfeed-responsive">
                 <Post activeChat={activeChat} setpostLoading={setPostLoading}/>
                 <Banner activeChat={activeChat} />
                 <div>
