@@ -8,7 +8,7 @@ import { VscTriangleUp } from "react-icons/vsc";
 import pluse from '/images/pluse-bottom.png';
 import { GoImage } from "react-icons/go";
 import waveform from '/images/waveform.png';
-import emoji from '/images/emoji.png';
+import smile from '../../../images/emoji.png';
 import { useState, useRef, useEffect } from "react";
 import { FaCircleArrowUp , FaCircleStop } from "react-icons/fa6";
 import ChatBoxUserStatusNav from "./ChatBoxUserStatusNav";
@@ -22,6 +22,7 @@ import { handleReaction , selectReactions} from "../../feature/reactionSlice";
 import {RingLoader} from 'react-spinners';
 import EmojiReactions from "../Emoji/Emoji";
 import MessageReactions from "./MessageReaction";
+import { otherProfileDetail } from "../../page/OtherProfilePage/OtherProfilePage";
 import { mergeRaction } from "./chatBoxService";
 import { compressBase64Image ,
      isURL , 
@@ -61,15 +62,12 @@ function ChatBoxLayout () {
     const reactionList = useAppSelector(selectReactions);
     let senderId = null;
     console.log(reactionList);
-    let websocketEmoji = "";
-    let localEmoji = "";
-    let websocketEmojiCode = "";
-    let localEmojiCode = "";
-    const profileImage = message.profileDto?.profileImageUrl ;
+    const profileImage = message?.profileDto?.profileImageUrl ;
+    const chatListFirstName = otherProfileDetail?.otherProfileDto.otherUserForProfileDto.firstName;
 
     console.log("this is active chat room no:",activeChatRoom);
     console.log("this is chat list",chatList);
-    console.log("this is message for image ", message)
+
 
     useEffect(()=>{
         waveFormPreview(audioUrl, waveSurferRef, waveformContainerRef);
@@ -146,7 +144,7 @@ function ChatBoxLayout () {
 
         const recipientId = activeChatRoom === userId ? senderId : activeChatRoom;
         if (inputValue.trim() || audioUrl) {  
-            const messageContent =  audioBase64 || inputValue.trim();  // Use audioUrl if present; otherwise, use text
+            const messageContent =  audioBase64 || inputValue.trim();  
             const messageType = audioUrl ? "AUDIO" : "TEXT"; 
             const textMessage = {
                 id: generateUniqueId(),
@@ -156,10 +154,9 @@ function ChatBoxLayout () {
                 type: messageType,
             };
 
-            dispatch(addMessageToChat({ recipientId: activeChatRoom, message: textMessage }));
+            dispatch(addMessageToChat({ recipientId: activeChatRoom,firstName:chatListFirstName , message: textMessage }));
             sendMessageToWebsocket(textMessage);
             console.log("textMessage",textMessage);
-            console.log("base64audio" , audioBase64);
             setInputValue("");
         }
     };
@@ -226,7 +223,7 @@ function ChatBoxLayout () {
             <ChatBoxUserStatusNav message={message}/>
             <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px]  relative overflow-y-auto scrollable chat-layout-responsive" >
                 { messageLoading ? 
-                (<div className="absolute ">
+                (<div className="absolute lg:top-[18rem] lg:left-[13rem] xl:top-[18rem] xl:left-[16.5rem] 2xl:top-[22rem] 2xl:left-[19rem]">
                     <RingLoader color="#0097A7" size={50} loading={messageLoading} />
                  </div>) :
                 (message?.messages.map((text,index) => (
@@ -308,7 +305,7 @@ function ChatBoxLayout () {
                         {inputStyle ? (
                             <i><FaCircleArrowUp className={`absolute top-3 right-3 w-[25px] h-[25px] text-[#0097A7] ${isRecording || audioUrl? "text-background" : "text-primary"}`} onClick={sendMessage}/></i>
                         ) : (
-                            <img src={emoji} className="absolute right-2 bg-[2C3E50]" alt="Emoji icon" onClick={handleStopRecording}/>
+                            <img src={smile} className="absolute right-2 bg-[2C3E50]" alt="Emoji icon" onClick={handleStopRecording}/>
                         )}
                     </form>
                 </div>

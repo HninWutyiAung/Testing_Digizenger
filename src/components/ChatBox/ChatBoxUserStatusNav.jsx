@@ -1,5 +1,6 @@
 import andrea from '/images/andrea.png';
 import mark from '/images/mark2.png';
+import default_profile from "/images/default_profile.jpg";
 import { TbPhone } from "react-icons/tb";
 import { IoVideocamOutline } from "react-icons/io5";
 import { HiOutlineDotsVertical } from "react-icons/hi";
@@ -12,15 +13,18 @@ function ChatBoxUserStatusNav({message}){
     const activeChatRoom = useAppSelector(selectActiveChatRoom);
     const firstName = otherProfileDetail?.otherProfileDto.otherUserForProfileDto.firstName;
     const lastName = otherProfileDetail?.otherProfileDto.otherUserForProfileDto.lastName;
+    const profileImage = otherProfileDetail?.otherProfileDto.profileImageUrl;
     const selectChatRoom = chatList.find((msg) => msg.id === activeChatRoom)
     const displayName = firstName && lastName ? `${firstName} ${lastName}` :
     selectChatRoom ? `${selectChatRoom?.firstName} ${selectChatRoom?.lastName}` : 
     "Digizenger";
+    const displayProfile = profileImage ? profileImage : selectChatRoom?.profileDto.profileImageUrl;
+    console.log("this is select chat room from chat box user status", selectChatRoom);
     return(
         <section className='fixed top-[3.2rem] px-[10px] py-[8px] bg-[#ECF1F4] w-[30.4%] 2xl:w-[43.63%] z-20 chat-box-nav2-responsive'>
             <div className="flex justify-between items-center bg-[#ECF1F4]">
                <div className="flex items-center gap-[12px]">
-                    <img src={andrea} className='w-[40px] h-[40px] rounded-[50%]'/>
+                    <img src={profileImage || displayProfile || default_profile} className='w-[40px] h-[40px] rounded-[50%]'/>
                     <div className='flex flex-col items-start justify-center'>
                         <div className='flex items-center justify-center gap-[8px]'>
                             <span className='text-[#2C3E50] font-semibold text-[20px]'>{displayName} </span>
