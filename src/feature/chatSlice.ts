@@ -38,11 +38,13 @@ interface Chat {
 interface ChatState {
     chatList: Chat[];
     activeChatRoom: string | null;
+    activeMessageId: string | null;
 }
 
 const initialState: ChatState = {
     chatList: [],
     activeChatRoom: null,
+    activeMessageId: null,
 };
 
 const chatSlice = createSlice({
@@ -57,6 +59,10 @@ const chatSlice = createSlice({
         },
         setActiveChat: (state, action: PayloadAction<string | null>) => {
             state.activeChatRoom = action.payload;
+        },
+        setActiveMessageId: (state, action: PayloadAction<string | null>) => {
+            console.log("Setting active message ID:", action.payload);
+            state.activeMessageId = action.payload;
         },
         addMessageToChat: (state, action: PayloadAction<{ recipientId: number; firstName: string ; message: Message }>) => {
             const { recipientId, firstName, message } = action.payload;
@@ -87,7 +93,8 @@ const chatSlice = createSlice({
 });
 
 
-export const { setChatList, setActiveChat, addMessageToChat ,setChatMessages} = chatSlice.actions;
+export const { setChatList, setActiveChat, addMessageToChat ,setChatMessages ,setActiveMessageId} = chatSlice.actions;
 export default chatSlice.reducer;
 export const selectChatList = (state: RootState) => state.chat.chatList;
 export const selectActiveChatRoom = (state: RootState) => state.chat.activeChatRoom;
+export const selectActiveMessageId = (state: RootState) => state.chat.activeMessageId;  

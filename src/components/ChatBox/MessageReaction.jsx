@@ -8,7 +8,10 @@ const MessageReactions = ({ text, reactionList = [], reactionDtoList = [], userI
     const websocketEmojiCode = reactionList.find((reaction) => reaction.messageId === text.id)?.emojiUtf8[0] || webApiEmoji;
     const localEmojiCode = reactionList.find((reaction) => reaction.messageId === text.id)?.emojiUtf8[1] || localApiEmoji;
 
-    const websocketEmoji = websocketEmojiCode ? String.fromCodePoint(parseInt(websocketEmojiCode, 16)) : '';
+    const websocketEmoji = websocketEmojiCode && !isNaN(parseInt(websocketEmojiCode, 16))
+                            ? String.fromCodePoint(parseInt(websocketEmojiCode, 16))
+                            : '';
+                            
     const localEmoji = localEmojiCode ? String.fromCodePoint(parseInt(localEmojiCode, 16)) : '';
 
     return (

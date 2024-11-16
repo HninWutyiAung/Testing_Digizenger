@@ -19,9 +19,11 @@ import { BsFillXCircleFill } from "react-icons/bs";
 import { messageLoading } from "../../page/ChatListPage/ChatListService";
 import { handleEmojiToggle } from "../Emoji/EmojiService";
 import { handleReaction , selectReactions} from "../../feature/reactionSlice";
+import { handleMessageModelBox } from "../ModelBox/ModelBoxService";
 import {RingLoader} from 'react-spinners';
 import EmojiReactions from "../Emoji/Emoji";
 import MessageReactions from "./MessageReaction";
+import MessageModalBox from "../ModelBox/modelBox";
 import { otherProfileDetail } from "../../page/OtherProfilePage/OtherProfilePage";
 import { mergeRaction } from "./chatBoxService";
 import { compressBase64Image ,
@@ -41,6 +43,7 @@ function ChatBoxLayout () {
     const [imageFile, setImageFile] = useState(null);
     const [inputValue, setInputValue] = useState("");
     const [emojiToggle , setEmojiToggle] = useState(null);
+    const [modleBoxToggle , setModelBoxToggle] = useState(null);
     const [emoji , setEmoji] = useState("");
     const imgRef = useRef(null);
     const chatRef = useRef(null);
@@ -217,17 +220,23 @@ function ChatBoxLayout () {
         imgRef.current.click(); 
     };
 
+    const handleModelBox = (messageId) =>{
+        handleEmojiToggle(setEmojiToggle, messageId);
+        handleMessageModelBox(setModelBoxToggle, messageId);
+
+    }
+ 
     return (
         <main className="relative ">
             <img src={cover} className="chat-bg h-[100vh] 2xl:w-[680px]"></img>
             <ChatBoxUserStatusNav message={message}/>
             <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px] h-[92.23vh] relative overflow-y-auto scrollable chat-layout-responsive" >
                 { messageLoading ? 
-                (<div className="absolute lg:top-[18rem] lg:left-[13rem] xl:top-[18rem] xl:left-[16.5rem] 2xl:top-[22rem] 2xl:left-[19rem]">
+                (<div className="absolute lg:top-[22rem] lg:left-[13rem] xl:top-[22rem] xl:left-[16.5rem] 2xl:top-[22rem] 2xl:left-[19rem]">
                     <RingLoader color="#0097A7" size={50} loading={messageLoading} />
                  </div>) :
                 (message?.messages.map((text,index) => (
-                    <main key={text.id} className={`flex flex-col w-full relative ${text.recipientId === userId ? "sender" : "user"}`} onClick={()=> handleEmojiToggle(setEmojiToggle, text.id)}>
+                    <main key={text.id} className={`flex flex-col w-full relative ${text.recipientId === userId ? "sender" : "user"}`} onClick={()=> handleModelBox(text.id)}>
                         <div className="chat-msg-container">
                             {text.recipientId === userId && (
                                 <div className="w-[40px] h-[40px]">
@@ -257,6 +266,7 @@ function ChatBoxLayout () {
                         </div>
                         <div><MessageReactions reactionList={reactionList} reactionDtoList={text.reactionDtoList} userId={userId} text={text}/></div>
                         {emojiToggle === text.id && (<div className={`absolute top-[-1.6rem] bg-darkBlue px-[10px] py-[3px] rounded-full ${text.recipientId === userId ? "left-[4rem]":"right-[1rem]"}`}><EmojiReactions handleReact={handleReact} messageId={text.id}/></div>)}
+                        {modleBoxToggle === text.id && (<div className={`absolute z-10 top-[2.2rem] bg-background rounded-lg shadow-lg border-accent ${text.recipientId === userId ? "left-[8rem]":"right-[6rem]"}`}><MessageModalBox messageId={text.id}/></div>)}
                         {index === message.messages.length - 1 && (
                             <div ref={lastMessage}></div>
                         )}
