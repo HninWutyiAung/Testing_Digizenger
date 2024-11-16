@@ -11,6 +11,7 @@ import { otherProfileDetail } from "../OtherProfilePage/OtherProfilePage.js";
 import { useGetChatListQuery , useGetChatHistoryQuery} from "../../apiService/Chat.ts";
 import { selectPage, selectLimit } from "../../feature/chatPageAndLimit.ts";
 import { filterMessageHandle , filteredMessages , handleLoading} from "./ChatListService.js";
+import { setActiveMessageId } from "../../feature/chatSlice";
 
 function ChatList({ activeChat, columnHandle, profileBox }) {
     const dispatch = useAppDispatch();
@@ -67,6 +68,7 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
 
     const activeChatRoomHandle = (id) => {
         dispatch(setActiveChat(id));
+        dispatch(setActiveMessageId(null));
     };
 
     return (

@@ -25,7 +25,9 @@ import EmojiReactions from "../Emoji/Emoji";
 import MessageReactions from "./MessageReaction";
 import MessageModalBox from "../ModelBox/modelBox";
 import { otherProfileDetail } from "../../page/OtherProfilePage/OtherProfilePage";
+import { setActiveMessageId , selectActiveMessageId } from "../../feature/chatSlice";
 import { mergeRaction } from "./chatBoxService";
+import OriginalMessagePreview from "./OriginalMessagePreview";
 import { compressBase64Image ,
      isURL , 
      isBase64 , 
@@ -63,10 +65,13 @@ function ChatBoxLayout () {
     const waveSurferRef = useRef(null);
     const waveformContainerRef = useRef(null);
     const reactionList = useAppSelector(selectReactions);
+    const activeMessageId = useAppSelector(selectActiveMessageId);
     let senderId = null;
     console.log(reactionList);
     const profileImage = message?.profileDto?.profileImageUrl ;
     const chatListFirstName = otherProfileDetail?.otherProfileDto.otherUserForProfileDto.firstName;
+    const currentChatRoom = activeChatRoom;
+    console.log("this is current chat room no:",currentChatRoom);
 
     console.log("this is active chat room no:",activeChatRoom);
     console.log("this is chat list",chatList);
@@ -273,6 +278,7 @@ function ChatBoxLayout () {
                     </main>
                 )))
                 }
+                {activeMessageId && (<div className="bg-secondary w-full flex items-start"><OriginalMessagePreview activeMessageId={activeMessageId}/></div>)}
             </section>
             <div className="bg-accent w-full 2xl:w-[100%] flex items-center h-[70px] gap-[10px] 2xl:gap-[30px] px-[10px]">
                 <div className="flex items-center gap-[16px]">
