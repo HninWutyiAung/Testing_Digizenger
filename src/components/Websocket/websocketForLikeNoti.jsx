@@ -73,6 +73,8 @@ export const WebSocketProvider = ({ children }) => {
                         recipientId:chatData.recipientId,
                         senderId:chatData.userDto.id,
                         type:chatData.type,
+                        replyMessage: chatData.replyMessage,
+                        replyMessageType: chatData.replyMessageType,
                     }
                     if (activeChatRoomRef.current === chatData.recipientId) {
                         dispatch(addMessageToChat({
@@ -115,21 +117,19 @@ export const WebSocketProvider = ({ children }) => {
                     const reaction = JSON.parse(message.body);
                     console.log("Received reaction:", reaction);
             
-                    // Find the reaction associated with the current userId
                     const userReaction = reaction.reactionDtoList.find(
                         (reactionDto) => reactionDto.userDto.id !== userId
                     );
             
-                    // If a matching reaction is found, handle it
                     if (userReaction) {
                         const reactionMessage = {
                             messageId: reaction.id,
-                            emojiUtf8: [userReaction.emoji],  // Only store the emoji for this user
+                            emojiUtf8: [userReaction.emoji],  
                             userId: reaction.userDto.id,
                             fromWebSocket: true, 
                         };
             
-                        // Dispatch the action to update the state
+
                         dispatch(handleReaction(reactionMessage));
                     } else {
                         console.log("No reaction found for this user");

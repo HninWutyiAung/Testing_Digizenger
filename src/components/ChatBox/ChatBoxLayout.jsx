@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../hook/Hook";
-import { selectActiveChatRoom, selectChatList , addMessageToChat } from "../../feature/chatSlice";
+import { selectActiveChatRoom, selectChatList , addMessageToChat , replyMessageToChat} from "../../feature/chatSlice";
 import default_profile from "../../../images/default_profile.jpg";
 import cover from '../../../images/chat bg.png'
 import andrea from '/images/andrea.png';
@@ -156,13 +156,18 @@ function ChatBoxLayout () {
             const messageType = audioUrl ? "AUDIO" : "TEXT"; 
             const textMessage = {
                 id: generateUniqueId(),
+                replyMessageId: activeMessageId ? activeMessageId : null,
                 message: messageContent,
                 user: {"id" :userId},
                 recipientId: recipientId,
                 type: messageType,
             };
 
-            dispatch(addMessageToChat({ recipientId: activeChatRoom,firstName:chatListFirstName , message: textMessage }));
+            if(activeMessageId){
+                dispatch(replyMessageToChat({ recipientId: activeChatRoom, originalMessageId: activeMessageId, replyMessage: textMessage }));
+            }else{
+                dispatch(addMessageToChat({ recipientId: activeChatRoom,firstName:chatListFirstName , message: textMessage }));
+            } 
             sendMessageToWebsocket(textMessage);
             console.log("textMessage",textMessage);
             setInputValue("");

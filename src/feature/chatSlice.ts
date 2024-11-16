@@ -11,12 +11,13 @@ interface Reaction {
 
 interface Message {
     id?: number;
+    replyMessageId?: number;
     message: string;
     user: { id: number };
     recipientId: number;
     senderId?: number;
     type: string;
-    replayMessageType?: string;
+    replyMessageType?: string;
     replyMessage?: string;
     timestamp?: string;
     createDate?: string;
@@ -89,11 +90,40 @@ const chatSlice = createSlice({
                 state.chatList.push({ id: id , messages : messages});
             }
         },
+        replyMessageToChat: (
+            state,
+            action: PayloadAction<{ recipientId: number; originalMessageId: number; replyMessage: Message }>
+        ) => {
+            const { recipientId, originalMessageId, replyMessage } = action.payload;
+        
+            const chat = state.chatList.find(chat => chat.id === recipientId);
+        
+            if (chat) {
+                const originalMessage = chat.messages.find(msg => msg.id === originalMessageId);
+        
+                if (originalMessage) {
+                    const enrichedReplyMessage: Message = {
+                        ...replyMessage,
+                        replyMessage: originalMessage.message, 
+                        replyMessageType: originalMessage.type, 
+                        replyMessageId: originalMessage.id, 
+                    };
+        
+                    chat.messages.push(enrichedReplyMessage);
+                } else {
+                    console.error("Original message not found for originalMessageId:", originalMessageId);
+                }
+            } else {
+                console.error("Chat not found for recipientId:", recipientId);
+            }
+        },
+        
+
     },
 });
 
 
-export const { setChatList, setActiveChat, addMessageToChat ,setChatMessages ,setActiveMessageId} = chatSlice.actions;
+export const { setChatList, setActiveChat, addMessageToChat ,setChatMessages ,setActiveMessageId , replyMessageToChat} = chatSlice.actions;
 export default chatSlice.reducer;
 export const selectChatList = (state: RootState) => state.chat.chatList;
 export const selectActiveChatRoom = (state: RootState) => state.chat.activeChatRoom;
