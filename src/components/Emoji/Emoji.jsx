@@ -4,6 +4,7 @@ import React from 'react';
 const emojiCodes = ["1F44D", "1F60D", "1F602", "1F62E", "1F622"]; // Unicode codes for emojis
 
 const EmojiReactions = ({handleReact,messageId}) => {
+
   return (
     <div  style={{ display: 'flex', gap: '10px' }}>
       {emojiCodes.map((code, index) => (

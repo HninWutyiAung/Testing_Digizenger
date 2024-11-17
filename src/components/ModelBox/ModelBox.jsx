@@ -7,12 +7,13 @@ import { setActiveMessageId , selectActiveMessageId } from "../../feature/chatSl
 import { useAppDispatch, useAppSelector } from "../../hook/Hook";
 
 
-const MessageModalBox = ({messageId}) => {
+const MessageModalBox = ({messageId , handleModelBox}) => {
     const activeMessageId = useAppSelector(selectActiveMessageId);
     const dispatch = useAppDispatch();
 
     const handleReplyMessageId = (messageId) => {
         dispatch(setActiveMessageId(messageId));
+        handleModelBox(messageId);
     }
 
     return (

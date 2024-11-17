@@ -112,12 +112,13 @@ function ChatBoxLayout () {
         const emojiMessageForWebSocket = {
             chatType: "SINGLE",
             messageId: messageId,
-            emojiUtf8: emojiCode,  // Send emojiUtf8 as a string for WebSocket
+            emojiUtf8: emojiCode,
             userId: userId,
         };
 
         dispatch(handleReaction(emojiMessage));
         sendReactionToWebsocket(emojiMessageForWebSocket);
+        handleModelBox(messageId);
     }
 
     const handleStartRecording = () => {
@@ -291,14 +292,14 @@ function ChatBoxLayout () {
                         </div>
                         <div><MessageReactions reactionList={reactionList} reactionDtoList={text.reactionDtoList} userId={userId} text={text}/></div>
                         {emojiToggle === text.id && (<div className={`absolute top-[-1.6rem] bg-darkBlue px-[10px] py-[3px] rounded-full ${text.recipientId === userId ? "left-[4rem]":"right-[1rem]"}`}><EmojiReactions handleReact={handleReact} messageId={text.id}/></div>)}
-                        {modleBoxToggle === text.id && (<div className={`absolute z-10 top-[2.2rem] bg-background rounded-lg shadow-lg border-accent ${text.recipientId === userId ? "left-[8rem]":"right-[6rem]"}`}><MessageModalBox messageId={text.id}/></div>)}
+                        {modleBoxToggle === text.id && (<div className={`absolute z-10 top-[2.2rem] bg-background rounded-lg shadow-lg border-accent ${text.recipientId === userId ? "left-[8rem]":"right-[6rem]"}`}><MessageModalBox messageId={text.id} handleModelBox={handleModelBox}/></div>)}
                         {index === message.messages.length - 1 && (
                             <div ref={lastMessage}></div>
                         )}
                     </main>
                 )))
                 }
-                {activeMessageId && (<div className="bg-secondary w-full flex items-start"><OriginalMessagePreview activeMessageId={activeMessageId}/></div>)}
+                {activeMessageId && (<div className="bg-secondary fixed -mx-[20px]  bottom-16  w-[42rem] "><OriginalMessagePreview activeMessageId={activeMessageId}/></div>)}
             </section>
             <div className="bg-accent w-full 2xl:w-[100%] flex items-center h-[70px] gap-[10px] 2xl:gap-[30px] px-[10px]">
                 <div className="flex items-center gap-[16px]">
