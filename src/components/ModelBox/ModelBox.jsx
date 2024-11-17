@@ -15,7 +15,6 @@ const MessageModalBox = ({messageId}) => {
         dispatch(setActiveMessageId(messageId));
     }
 
-    console.log("this is message from model box" , activeMessageId);
     return (
             <div className='flex flex-col pl-[15px] pr-[40px] py-[5px] items-start gap-[10px]'>
                 <div className='flex items-center gap-[8px] text-darkBlue' onClick={() => handleReplyMessageId(messageId)}>

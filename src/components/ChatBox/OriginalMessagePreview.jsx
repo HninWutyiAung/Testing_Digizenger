@@ -1,5 +1,6 @@
 import { selectChatList } from "../../feature/chatSlice";
 import { useAppDispatch, useAppSelector } from "../../hook/Hook";
+import { IoCloseOutline } from "react-icons/io5";
 
 const OriginalMessagePreview = ({activeMessageId}) => {
     const chatList = useAppSelector(selectChatList);
@@ -13,6 +14,7 @@ const OriginalMessagePreview = ({activeMessageId}) => {
     return(
         <div>
             <div>{originalText.message}</div>
+            <i><IoCloseOutline /></i>
         </div>
     )
 }

@@ -28,6 +28,7 @@ import { otherProfileDetail } from "../../page/OtherProfilePage/OtherProfilePage
 import { setActiveMessageId , selectActiveMessageId } from "../../feature/chatSlice";
 import { mergeRaction } from "./chatBoxService";
 import OriginalMessagePreview from "./OriginalMessagePreview";
+import OriginalMessage from "../ReplyMessage/ReplyMessage";
 import { compressBase64Image ,
      isURL , 
      isBase64 , 
@@ -70,12 +71,17 @@ function ChatBoxLayout () {
     console.log(reactionList);
     const profileImage = message?.profileDto?.profileImageUrl ;
     const chatListFirstName = otherProfileDetail?.otherProfileDto.otherUserForProfileDto.firstName;
-    const currentChatRoom = activeChatRoom;
-    console.log("this is current chat room no:",currentChatRoom);
+    const replyRef = useRef(null);
+    const [replyHeight, setReplyHeight] = useState(0);
 
     console.log("this is active chat room no:",activeChatRoom);
     console.log("this is chat list",chatList);
 
+    useEffect(() => {
+        if (replyRef.current) {
+            setReplyHeight(replyRef.current.offsetHeight);
+        }
+    }, []);
 
     useEffect(()=>{
         waveFormPreview(audioUrl, waveSurferRef, waveformContainerRef);
@@ -246,7 +252,7 @@ function ChatBoxLayout () {
                     <RingLoader color="#0097A7" size={50} loading={messageLoading} />
                  </div>) :
                 (message?.messages.map((text,index) => (
-                    <main key={text.id} className={`flex flex-col w-full relative ${text.recipientId === userId ? "sender" : "user"}`} onClick={()=> handleModelBox(text.id)}>
+                    <main key={text.id} className={`flex flex-col w-full relative ${text.recipientId === userId ? "sender" : "user"}`}>
                         <div className="chat-msg-container">
                             {text.recipientId === userId && (
                                 <div className="w-[40px] h-[40px]">
@@ -254,7 +260,12 @@ function ChatBoxLayout () {
                                 </div>
                             )}
 
-                            <div className="flex flex-col px-[16px] py-[4px] bg-[#ECF1F4] rounded-[12px] relative">
+                            <div className="flex flex-col px-[16px] py-[4px] bg-[#ECF1F4] rounded-[12px] relative" onClick={()=> handleModelBox(text.id)}>
+                                {text.replyMessage && 
+                                    (<div ref={replyRef} className="bg-blue-100 px-[10px] py-[10px] -mx-[16px] -mt-[4px] rounded-t-[12px]">
+                                        <OriginalMessage originalMessage={text.replyMessage}/>
+                                    </div>)}
+                                    
                                 <div className="text-[#2C3E50] text-[16px] font-normal">
                                     {text.type === "IMAGE"? (
                                         <img src={isURL(text.message) ? text.message : `data:image/png;base64,${text.message}`} className="w-[200px] h-[200px]" alt="Uploaded content" />
@@ -269,7 +280,11 @@ function ChatBoxLayout () {
                                 <div className={`text-right ml-[12px] text-[12px] text-[#2C3E50] ${text.recipientId === userId  ? "mr-[-5px]" : "mr-[5px]"}`}>
                                     <span>12:00 PM</span>
                                 </div>
-                                <div className={`absolute top-[1.20rem] ${text.recipientId !== userId ? "right-[-15px]" : "left-[-11px]"}`} style={{ top: isURL(text.message) || isBase64(text.message) ? "12rem" : "" }}>
+                                <div className={`absolute ${text.recipientId !== userId ? "right-[-15px]" : "left-[-11px]"}`} style={{ top: text.replyMessage 
+                                        ? `${replyHeight + 3.7}rem`
+                                        : isURL(text.message) || isBase64(text.message) 
+                                        ? "12rem" 
+                                        : "1.20rem",}}>
                                     <i className="text-[#ECF1F4]"><VscTriangleUp size={45} /></i>
                                 </div>
                             </div>
