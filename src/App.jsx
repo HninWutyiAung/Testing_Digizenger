@@ -17,7 +17,10 @@ import { WebSocketProvider ,useWebSocket} from './components/Websocket/websocket
 import { useGetAllNotiQuery } from './apiService/Noti';
 import { HandleNoti } from './components/Notification/LikeNoti/NotiService';
 import { selectNotification } from './feature/notiSlice';
-
+import { useGetChatHistoryQuery } from './apiService/Chat';
+import { selectPage, selectLimit } from './feature/chatPageAndLimit';
+import { selectActiveChatRoom ,setChatMessages , selectChatList} from './feature/chatSlice';
+import { filterMessageHandle, filteredMessages , handleLoading} from './page/ChatListPage/ChatListService';
 
 
 function MainApp() {
@@ -25,19 +28,39 @@ function MainApp() {
   const hideNav = ["/home", "/home/newfeed" , "/home/profile" , "/home/profile/:otherUserName"];
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(selectIsLogged);
+  const activeChatRoom = useAppSelector(selectActiveChatRoom);
+  const chatList = useAppSelector(selectChatList);
+  const page = useAppSelector(selectPage);
+  const limit = useAppSelector(selectLimit);
   const navigate = useNavigate();
   const {data:noti,isSuccess} = useGetAllNotiQuery();
   const allNoti = useAppSelector(selectNotification);
   const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
   const userId = loginInfo.userId;
   const {websocketConnectForLikeNoti} = useWebSocket();
-
-  console.log(allNoti);
-
+  const {data:chatHistoryData ,isSuccess:chatHistorySuccess ,isFetching , isLoading: chatHistoryLoading ,refetch} = useGetChatHistoryQuery({activeChatRoom , page, limit},{ skip: !activeChatRoom });
 
   const shouldHideNav = hideNav.includes(location.pathname) || /^\/home\/profile\/[^/]+$/.test(location.pathname);
 
   const userToken = JSON.parse(localStorage.getItem("user") || "{}")
+
+  useEffect(() => {
+    if (isFetching && activeChatRoom) {
+        handleLoading(isFetching);
+    }
+    else if (!isFetching && chatHistoryData) {
+        handleLoading(isFetching);
+    }
+  }, [isFetching, activeChatRoom, chatHistoryData]);
+
+  useEffect(()=>{
+    if ( chatHistorySuccess && chatHistoryData) {
+        filterMessageHandle(chatHistoryData);
+        dispatch(setChatMessages({id: activeChatRoom , messages:filteredMessages}));
+        console.log(filteredMessages);
+        console.log(chatList);
+    }
+  },[dispatch, chatHistorySuccess, chatHistoryData])
 
   useEffect(() => {
     console.log("user id:",userId);

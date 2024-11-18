@@ -15,7 +15,8 @@ import { useGetProfileQuery } from '../../../apiService/Profile';
 import { ProfileDto, userDto } from '../../../page/ProfilePage/profileService';
 import { customLocale} from './ShowPostService';
 import { useLocation } from 'react-router-dom';
-import { useAppSelector } from '../../../hook/Hook';
+import { useAppSelector , useAppDispatch } from '../../../hook/Hook';
+import { setActiveChat } from '../../../feature/chatSlice';
 
 
 function ShowPost({ activeChat, post , setPosts}) {
@@ -25,6 +26,7 @@ function ShowPost({ activeChat, post , setPosts}) {
     const [setLikeOrUnlike] = useSetLikeOrUnlikeMutation();
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useAppDispatch();
 
     const { data: profileData } = useGetProfileQuery();
     const myProfileUsername = profileData?.userDto?.profileDto?.username || 'default_username';
@@ -42,6 +44,7 @@ function ShowPost({ activeChat, post , setPosts}) {
     const lastName = post?.userDto?.lastName || ProfileDto?.lastName;
     const followers = post?.userDto?.followers || ProfileDto?.followersCount;
     const otherUserName = post?.userDto?.profileDto?.username;
+    const otherUserId = post?.userDto?.id;
 
 
     const handleNavigate = () => {
@@ -51,6 +54,8 @@ function ShowPost({ activeChat, post , setPosts}) {
             navigate(`/home/profile/${otherUserName}`);
         }
         console.log(otherUserName);
+        console.log(otherUserId);
+        dispatch(setActiveChat(otherUserId));
     };
     
 

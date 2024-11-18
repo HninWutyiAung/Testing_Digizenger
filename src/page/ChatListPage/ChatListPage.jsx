@@ -44,26 +44,37 @@ function ChatList({ activeChat, columnHandle, profileBox }) {
         }
     },[dispatch, chatHistorySuccess, chatHistoryData])
 
-    useEffect(()=>{
-        if (isSuccess && chatListData) {
-            const combinedChatList = [...data, ...chatListData.userDtoList];
-            dispatch(setChatList(combinedChatList));
-        }
-    },[isSuccess])
-
     useEffect(() => {
-        dispatch(setChatList(data));
-        if (data.length > 0) {
-            const defaultChatId = data[0].id;  
-            dispatch(setActiveChat(defaultChatId));
+        // Load from localStorage if available
+        const storedChatList = JSON.parse(localStorage.getItem("combinedChatList") || "[]");
+        console.log(storedChatList);
+        if (storedChatList.length > 0) {
+            dispatch(setChatList(storedChatList)); // Use stored data to populate chat list
         }
     }, [dispatch]);
 
-    useEffect(() => {
-        if (otherUserId) {
-            dispatch(setActiveChat(otherUserId));
+    useEffect(()=>{
+        if (isSuccess && chatListData) {
+            console.log("successfully chatList",chatListData)
+            const combinedChatList = [...data, ...chatListData.userDtoList];
+            dispatch(setChatList(combinedChatList));
+            localStorage.setItem("combinedChatList", JSON.stringify(combinedChatList));
         }
-    }, [dispatch, otherUserId]);
+    },[isSuccess])
+
+    // useEffect(() => {
+    //     dispatch(setChatList(data));
+    //     if (data.length > 0) {
+    //         const defaultChatId = data[0].id;  
+    //         dispatch(setActiveChat(defaultChatId));
+    //     }
+    // }, [dispatch]);
+
+    // useEffect(() => {
+    //     if (otherUserId) {
+    //         dispatch(setActiveChat(otherUserId));
+    //     }
+    // }, [dispatch, otherUserId]);
 
 
     const activeChatRoomHandle = (id) => {

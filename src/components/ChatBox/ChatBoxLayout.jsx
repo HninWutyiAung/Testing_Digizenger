@@ -74,6 +74,8 @@ function ChatBoxLayout () {
     const replyRef = useRef(null);
     const [replyHeight, setReplyHeight] = useState(0);
 
+    console.log("this is firstname for chatList", chatListFirstName);
+
     console.log("this is active chat room no:",activeChatRoom);
     console.log("this is chat list",chatList);
 
@@ -247,9 +249,9 @@ function ChatBoxLayout () {
         <main className="relative ">
             <img src={cover} className="chat-bg h-[100vh] 2xl:w-[680px]"></img>
             <ChatBoxUserStatusNav message={message}/>
-            <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px] h-[92.23vh] relative overflow-y-auto scrollable chat-layout-responsive" >
+            <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px] h-[92.23vh] xl:h-[90vh] relative overflow-y-auto scrollable chat-layout-responsive" >
                 { messageLoading ? 
-                (<div className="absolute lg:top-[22rem] lg:left-[13rem] xl:top-[22rem] xl:left-[16.5rem] 2xl:top-[22rem] 2xl:left-[19rem]">
+                (<div className="absolute lg:top-[22rem] lg:left-[13rem] xl:top-[21rem] xl:left-[16.5rem] 2xl:top-[22rem] 2xl:left-[19rem]">
                     <RingLoader color="#0097A7" size={50} loading={messageLoading} />
                  </div>) :
                 (message?.messages.map((text,index) => (

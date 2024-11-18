@@ -15,16 +15,16 @@ function ChatBoxUserStatusNav({message}){
     const lastName = otherProfileDetail?.otherProfileDto.otherUserForProfileDto.lastName;
     const profileImage = otherProfileDetail?.otherProfileDto.profileImageUrl;
     const selectChatRoom = chatList.find((msg) => msg.id === activeChatRoom)
-    const displayName = firstName && lastName ? `${firstName} ${lastName}` :
-    selectChatRoom ? `${selectChatRoom?.firstName} ${selectChatRoom?.lastName}` : 
+    const displayName = selectChatRoom ? `${selectChatRoom?.firstName} ${selectChatRoom?.lastName}` :
+    firstName && lastName ? `${firstName} ${lastName}` : 
     "Digizenger";
-    const displayProfile = profileImage ? profileImage : selectChatRoom?.profileDto?.profileImageUrl;
+    const displayProfile = selectChatRoom?  selectChatRoom?.profileDto?.profileImageUrl : profileImage;
     
     return(
         <section className='fixed top-[3.2rem] px-[10px] py-[8px] bg-[#ECF1F4] w-[30.4%] 2xl:w-[43.63%] z-20 chat-box-nav2-responsive'>
             <div className="flex justify-between items-center bg-[#ECF1F4]">
                <div className="flex items-center gap-[12px]">
-                    <img src={profileImage || displayProfile || default_profile} className='w-[40px] h-[40px] rounded-[50%]'/>
+                    <img src={displayProfile || default_profile} className='w-[40px] h-[40px] rounded-[50%]'/>
                     <div className='flex flex-col items-start justify-center'>
                         <div className='flex items-center justify-center gap-[8px]'>
                             <span className='text-[#2C3E50] font-semibold text-[20px]'>{displayName} </span>

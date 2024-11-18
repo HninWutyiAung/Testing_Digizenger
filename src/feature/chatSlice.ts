@@ -44,7 +44,7 @@ interface ChatState {
 
 const initialState: ChatState = {
     chatList: [],
-    activeChatRoom: null,
+    activeChatRoom: "0",
     activeMessageId: null,
 };
 
