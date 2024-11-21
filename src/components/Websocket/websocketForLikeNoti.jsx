@@ -27,10 +27,13 @@ export const WebSocketProvider = ({ children }) => {
 
     const iceServers = {
         iceServers: [
+            {urls: `stun:localhost:3478`},
             {
-                urls: "stun:stun.l.google.com:19302", 
-            },
-        ],
+              urls: `turn:localhost:3478`,
+              username: "username",
+              credential: "password"
+            }
+          ]
     };
 
     const peerConnectionRef = new RTCPeerConnection(iceServers);
@@ -52,7 +55,7 @@ export const WebSocketProvider = ({ children }) => {
             console.error('Error accessing media devices:', err);
         }
     };
-
+    
     const websocketConnectForLikeNoti = (userId) => {
         if (isConnected || stompClientRef.current) {
             console.log('Already connected');
@@ -176,8 +179,11 @@ export const WebSocketProvider = ({ children }) => {
                 console.log("Remote ID: " + call.body)
     
                 peerConnectionRef.ontrack = (event) => {
-                    console.log("Remote stream received:", event.streams[0]);
-                    remoteVideoRef.current.srcObject = event.streams[0]
+                    if (remoteVideoRef.current) {
+                        remoteVideoRef.current.srcObject = event.streams[0];
+                    } else {
+                        console.error("remoteVideoRef is not available.");
+                    }
                 }
     
     
@@ -197,6 +203,8 @@ export const WebSocketProvider = ({ children }) => {
                         }))
                     }
                 }
+
+                setupMedia();
                 
                 // if (peerConnectionRef.current && typeof peerConnectionRef.current.createOffer === 'function'){
                 peerConnectionRef.createOffer().then(description => {
@@ -219,8 +227,11 @@ export const WebSocketProvider = ({ children }) => {
                 console.log(typeof (new RTCSessionDescription(o)))
     
                 peerConnectionRef.ontrack = (event) => {
-                    console.log("Remote stream received:", event.streams[0]);
-                    remoteVideoRef.current.srcObject = event.streams[0]
+                    if (remoteVideoRef.current) {
+                        remoteVideoRef.current.srcObject = event.streams[0];
+                    } else {
+                        console.error("remoteVideoRef is not available.");
+                    }
                 }
                 peerConnectionRef.onicecandidate = (event) => {
                     if (event.candidate) {
@@ -274,6 +285,8 @@ export const WebSocketProvider = ({ children }) => {
                     candidate: o["id"],
                 })
                 peerConnectionRef.addIceCandidate(iceCandidate)
+                .then(() => console.log("ICE candidate added successfully."))
+                .catch((error) => console.error("Error adding ICE candidate:", error));
             });
     
     

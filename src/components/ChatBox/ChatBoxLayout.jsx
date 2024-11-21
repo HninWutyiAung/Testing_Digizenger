@@ -251,9 +251,9 @@ function ChatBoxLayout () {
         <main className="relative ">
             <img src={cover} className="chat-bg h-[100vh] 2xl:w-[680px]"></img>
             <ChatBoxUserStatusNav message={message} setStartVideoCall={setStartVideoCall} startVideoCall={startVideoCall}/>
-          
-                <div className="absolute top-[50rem] left-[-40rem] z-50"><VideoCallModelBox setStartVideoCall={setStartVideoCall}/></div>
-          
+            { startVideoCall &&
+                (<div className="absolute top-[2rem] left-[-28rem] z-50"><VideoCallModelBox setStartVideoCall={setStartVideoCall}/></div>)
+            }
             <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px] h-[92.23vh] xl:h-[90vh] relative overflow-y-auto scrollable chat-layout-responsive" >
                 { messageLoading ? 
                 (<div className="absolute lg:top-[22rem] lg:left-[13rem] xl:top-[21rem] xl:left-[16.5rem] 2xl:top-[22rem] 2xl:left-[19rem]">

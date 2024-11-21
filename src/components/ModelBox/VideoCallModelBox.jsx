@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { MdCallEnd } from "react-icons/md";
 import { useWebSocket } from "../Websocket/websocketForLikeNoti";
 
 const VideoCallModelBox = () => {
@@ -17,42 +18,42 @@ const VideoCallModelBox = () => {
     }, [remoteVideoRef]);
 
     return (
-        <div className="relative flex flex-col items-center space-y-4 p-4 bg-gray-900 text-white rounded-lg shadow-lg">
-    {/* Buttons */}
-    <div className="flex space-x-4">
-        <button 
-            className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg shadow-md"
-        >
-            Start Call
-        </button>
-        <button
-            className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg shadow-md"
-        >
-            Join Call
-        </button>
-    </div>
+        <div className="relative flex flex-col items-center   bg-gray-900 text-white rounded-lg shadow-lg">
+            {/* Buttons */}
+            <div className="absolute bottom-10 space-x-4">
+                <button 
+                    className="p-[1rem] bg-red-500 hover:bg-blue-600 text-white font-bold rounded-full shadow-md"
+                >
+                    <MdCallEnd size={30} className="text-white"/>
+                </button>
+                {/* <button
+                    className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg shadow-md"
+                >
+                    Join Call
+                </button> */}
+            </div>
 
-    {/* Video Container */}
-    <div className="grid grid-cols-2 gap-4 w-full max-w-5xl">
-        {/* Remote Video */}
-        <div className="bg-black rounded-lg overflow-hidden border-2 border-gray-700">
-            <video
-                ref={remoteVideoRef}
-                autoPlay
-                className="w-full h-72 object-cover"
-            />
-        </div>
+            {/* Video Container */}
+            <div className="flex gap-4 w-full max-w-5xl">
+                {/* Remote Video */}
+                <div className="absolute bottom-32 right-5 bg-red-100">
+                    <video
+                        ref={remoteVideoRef}
+                        autoPlay
+                        className="w-[300px] h-[10rem] object-cover"
+                    />
+                </div>
 
-        {/* Local Video */}
-        <div className="bg-black rounded-lg overflow-hidden border-2 border-gray-700">
-            <video
-                ref={localVideoRef}
-                autoPlay
-                className="w-full h-72 object-cover"
-            />
+                {/* Local Video */}
+                <div className="bg-black rounded-lg overflow-hidden border-2 border-gray-700">
+                    <video
+                        ref={localVideoRef}
+                        autoPlay
+                        className="max-w-[600px] h-[570px] object-fill"
+                    />
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
     );
 };

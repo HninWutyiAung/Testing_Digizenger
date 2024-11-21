@@ -45,6 +45,14 @@ function MainApp() {
   const userToken = JSON.parse(localStorage.getItem("user") || "{}")
 
   useEffect(() => {
+    console.log("user id:",userId);
+    if (isLoggedIn && userId){
+      websocketConnectForLikeNoti(userId);
+    }
+      console.log("it work noti")
+  }, [websocketConnectForLikeNoti,userId]);
+
+  useEffect(() => {
     if (isFetching && activeChatRoom) {
         handleLoading(isFetching);
     }
@@ -62,13 +70,6 @@ function MainApp() {
     }
   },[dispatch, chatHistorySuccess, chatHistoryData])
 
-  useEffect(() => {
-    console.log("user id:",userId);
-    if (isLoggedIn && userId){
-      websocketConnectForLikeNoti(userId);
-    }
-      console.log("it work noti")
-  }, [websocketConnectForLikeNoti,userId]);
 
   useEffect(() => {
     if (isSuccess && noti) {
