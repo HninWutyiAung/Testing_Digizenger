@@ -7,10 +7,14 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import { otherProfileDetail } from '../../page/OtherProfilePage/OtherProfilePage';
 import { selectChatList , selectActiveChatRoom} from '../../feature/chatSlice';
 import { useAppSelector } from '../../hook/Hook';
+import { useWebSocket } from '../Websocket/websocketForLikeNoti';
 
-function ChatBoxUserStatusNav({message}){
+function ChatBoxUserStatusNav({message, setStartVideoCall,startVideoCall}){
+    const { sendCallAction} = useWebSocket();
     const chatList = useAppSelector(selectChatList);
     const activeChatRoom = useAppSelector(selectActiveChatRoom);
+    const loginInfo = JSON.parse(localStorage.getItem("LoginInfo") || "{}");
+    const userId = loginInfo.userId;
     const firstName = otherProfileDetail?.otherProfileDto.otherUserForProfileDto.firstName;
     const lastName = otherProfileDetail?.otherProfileDto.otherUserForProfileDto.lastName;
     const profileImage = otherProfileDetail?.otherProfileDto.profileImageUrl;
@@ -19,6 +23,15 @@ function ChatBoxUserStatusNav({message}){
     firstName && lastName ? `${firstName} ${lastName}` : 
     "Digizenger";
     const displayProfile = selectChatRoom?  selectChatRoom?.profileDto?.profileImageUrl : profileImage;
+
+    const handleVidoeModelBox = () => {
+        const callStart = {
+            callTo: activeChatRoom,
+            callFrom: userId,
+        }
+        setStartVideoCall(!startVideoCall);
+        sendCallAction(callStart)
+    }
     
     return(
         <section className='fixed top-[3.2rem] px-[10px] py-[8px] bg-[#ECF1F4] w-[30.4%] 2xl:w-[43.63%] z-20 chat-box-nav2-responsive'>
@@ -37,7 +50,7 @@ function ChatBoxUserStatusNav({message}){
                </div>
                <div className='flex items-center justify-center gap-[20px]'>
                     <i className='text-[#0097A7]'><TbPhone size={25}/></i>
-                    <i className='text-[#0097A7]'><IoVideocamOutline size={25}/></i>
+                    <i className='text-[#0097A7]' onClick={handleVidoeModelBox}><IoVideocamOutline size={25}/></i>
                     <i className='text-[#0097A7]'><HiOutlineDotsVertical size={25}/></i>
                </div>
 

@@ -17,11 +17,41 @@ export const WebSocketProvider = ({ children }) => {
     const stompClientRef = useRef(null); 
     const activeChatRoomRef = useRef(null);
     const shownMessagesRef = useRef(new Set());
+    const localVideoRef = useRef(null);
+    const remoteVideoRef = useRef(null);
     console.log(activeChatRoom);
 
     useEffect(() => {
         activeChatRoomRef.current = activeChatRoom;
     }, [activeChatRoom]);
+
+    const iceServers = {
+        iceServers: [
+            {
+                urls: "stun:stun.l.google.com:19302", 
+            },
+        ],
+    };
+
+    const peerConnectionRef = new RTCPeerConnection(iceServers);
+
+    const setupMedia = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            localVideoRef.current.srcObject = stream;
+    
+            // Ensure that the peer connection is open before adding tracks
+            if (peerConnectionRef.signalingState !== 'closed') {
+                stream.getTracks().forEach(track => {
+                    peerConnectionRef.addTrack(track, stream);
+                });
+            } else {
+                console.error('RTCPeerConnection is closed, cannot add tracks');
+            }
+        } catch (err) {
+            console.error('Error accessing media devices:', err);
+        }
+    };
 
     const websocketConnectForLikeNoti = (userId) => {
         if (isConnected || stompClientRef.current) {
@@ -140,6 +170,116 @@ export const WebSocketProvider = ({ children }) => {
                 }
             });
 
+            stompClientRef.current.subscribe('/user/' + userId + "/topic/call", (call) => {
+                console.log("Call From: " + call.body)
+                // remoteID = call.body;
+                console.log("Remote ID: " + call.body)
+    
+                peerConnectionRef.ontrack = (event) => {
+                    console.log("Remote stream received:", event.streams[0]);
+                    remoteVideoRef.current.srcObject = event.streams[0]
+                }
+    
+    
+                peerConnectionRef.onicecandidate = (event) => {
+                    if (event.candidate) {
+                        var candidate = {
+                            type: "candidate",
+                            lable: event.candidate.sdpMLineIndex,
+                            id: event.candidate.candidate,
+                        }
+                        console.log("Sending Candidate")
+                        console.log(candidate)
+                        stompClientRef.current.send("/app/candidate", {}, JSON.stringify({
+                            "toUser": activeChatRoom,
+                            "fromUser": userId,
+                            "candidate": candidate
+                        }))
+                    }
+                }
+                
+                // if (peerConnectionRef.current && typeof peerConnectionRef.current.createOffer === 'function'){
+                peerConnectionRef.createOffer().then(description => {
+                    peerConnectionRef.setLocalDescription(description);
+                    console.log("Setting Description" + description);
+                    stompClientRef.current.send("/app/offer", {}, JSON.stringify({
+                        "toUser": call.body,
+                        "fromUser": userId,
+                        "offer": description
+                    }))
+                })
+            //   }
+            });
+
+            stompClientRef.current.subscribe('/user/' + userId + "/topic/offer", (offer) => {
+                console.log("Offer came")
+                var o = JSON.parse(offer.body)["offer"]
+                console.log(offer.body)
+                console.log(new RTCSessionDescription(o))
+                console.log(typeof (new RTCSessionDescription(o)))
+    
+                peerConnectionRef.ontrack = (event) => {
+                    console.log("Remote stream received:", event.streams[0]);
+                    remoteVideoRef.current.srcObject = event.streams[0]
+                }
+                peerConnectionRef.onicecandidate = (event) => {
+                    if (event.candidate) {
+                        var candidate = {
+                            type: "candidate",
+                            lable: event.candidate.sdpMLineIndex,
+                            id: event.candidate.candidate,
+                        }
+                        console.log("Sending Candidate")
+                        console.log(candidate)
+                        stompClientRef.current.send("/app/candidate", {}, JSON.stringify({
+                            "toUser": activeChatRoom,
+                            "fromUser": userId,
+                            "candidate": candidate
+                        }))
+                    }
+                }
+
+    
+                peerConnectionRef.setRemoteDescription(new RTCSessionDescription(o))
+                peerConnectionRef.createAnswer().then(description => {
+                    peerConnectionRef.setLocalDescription(description)
+                    console.log("Setting Local Description")
+                    console.log(description)
+                    stompClientRef.current.send("/app/answer", {}, JSON.stringify({
+                        "toUser": activeChatRoom,
+                        "fromUser": userId,
+                        "answer": description
+                    }));
+    
+                })
+            });
+
+            stompClientRef.current.subscribe('/user/' + userId + "/topic/answer", (answer) => {
+                console.log("Answer Came")
+                var o = JSON.parse(answer.body)["answer"]
+                console.log(o)
+                peerConnectionRef.setRemoteDescription(new RTCSessionDescription(o))
+                console.log("lastest state");
+    
+            });
+
+            stompClientRef.current.subscribe('/user/' + userId + "/topic/candidate", (candidate) => {
+                console.log("Candidate Came")
+                var o = JSON.parse(candidate.body)["candidate"]
+                console.log(o)
+                console.log(o["lable"])
+                console.log(o["id"])
+                var iceCandidate = new RTCIceCandidate({
+                    sdpMLineIndex: o["lable"],
+                    candidate: o["id"],
+                })
+                peerConnectionRef.addIceCandidate(iceCandidate)
+            });
+    
+    
+            stompClientRef.current.send("/app/addUser", {}, userId)
+
+
         }, (error) => {
             console.error("Connection error:", error);
             setIsConnected(false);
@@ -153,6 +293,21 @@ export const WebSocketProvider = ({ children }) => {
                 setIsConnected(false);
                 stompClientRef.current = null;
             });
+        }
+    };
+
+    const sendCallAction = (messageData) => {
+        if (isConnected) {
+            stompClientRef.current.send(
+                "/app/call",
+                {},
+                JSON.stringify(messageData)
+            );
+            setupMedia();
+            console.log("this setupMedia is wordk");
+            console.log("Video Call Start:", messageData);
+        } else {
+            console.error("WebSocket is not connected.");
         }
     };
 
@@ -182,12 +337,34 @@ export const WebSocketProvider = ({ children }) => {
         }
     };
 
+    // const handleStartVideo = () =>{
+    //     setupMedia();
+    //     console.log("this is setupMedia is work")
+    // }
+
+    // useEffect(() => {
+    //     setupMedia();
+    //     return () => {
+    //         if (peerConnectionRef.current) {
+    //             peerConnectionRef.current.close();
+    //         }
+    //     };
+    // }, []);
+
     useEffect(() => {
         return () => disconnectWebSocket();
     }, []);
 
     return (
-        <WebSocketContext.Provider value={{ websocketConnectForLikeNoti, disconnectWebSocket , sendMessageToWebsocket , sendReactionToWebsocket}}>
+        <WebSocketContext.Provider value={{ 
+            websocketConnectForLikeNoti, 
+            disconnectWebSocket , 
+            sendMessageToWebsocket ,
+            sendReactionToWebsocket,
+            sendCallAction,  
+            localVideoRef,
+            remoteVideoRef,
+            }}>
             {children}
         </WebSocketContext.Provider>
     );
