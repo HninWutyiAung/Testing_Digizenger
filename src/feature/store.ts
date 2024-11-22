@@ -13,6 +13,7 @@ import notificationsReducer from './notiSlice.ts';
 import { chatApiSlice } from "../apiService/Chat.ts";
 import chatPageAndLimitReducer from './chatPageAndLimit.ts';
 import reactionsReducer from './reactionSlice.ts';
+import callReducer from './modelBox.ts';
 
 export const store = configureStore({
     reducer:{
@@ -24,6 +25,7 @@ export const store = configureStore({
         notifications : notificationsReducer,
         chatPageAndLimit : chatPageAndLimitReducer,
         reactions : reactionsReducer,
+        call : callReducer,
         [authApi.reducerPath] : authApi.reducer,
         [postUploadSlice.reducerPath]: postUploadSlice.reducer,
         [profileApiSlice.reducerPath] : profileApiSlice.reducer,

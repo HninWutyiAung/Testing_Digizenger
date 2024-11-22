@@ -29,7 +29,9 @@ import { setActiveMessageId , selectActiveMessageId } from "../../feature/chatSl
 import { mergeRaction } from "./chatBoxService";
 import OriginalMessagePreview from "./OriginalMessagePreview";
 import VideoCallModelBox from "../ModelBox/VideoCallModelBox";
+import { selectIncomingCall } from "../../feature/modelBox";
 import OriginalMessage from "../ReplyMessage/ReplyMessage";
+import IncomingCallBox from "../ModelBox/IncomingCallModelBox";
 import { compressBase64Image ,
      isURL , 
      isBase64 , 
@@ -41,6 +43,7 @@ import { compressBase64Image ,
 
 function ChatBoxLayout () {
     const activeChatRoom = useAppSelector(selectActiveChatRoom);
+    const incomingCallBox = useAppSelector(selectIncomingCall);
     const dispatch = useAppDispatch();
     const chatList = useAppSelector(selectChatList);
     const [inputStyle, setInputStyle] = useState(false);
@@ -251,6 +254,9 @@ function ChatBoxLayout () {
         <main className="relative ">
             <img src={cover} className="chat-bg h-[100vh] 2xl:w-[680px]"></img>
             <ChatBoxUserStatusNav message={message} setStartVideoCall={setStartVideoCall} startVideoCall={startVideoCall}/>
+            { incomingCallBox &&
+                (<div className="absolute w-[350px] h-[520px] rounded-lg top-[7.5rem] left-[-21.9rem] z-50 bg-darkBlue">< IncomingCallBox setStartVideoCall={setStartVideoCall} startVideoCall={startVideoCall}/></div>)
+            }
             { startVideoCall &&
                 (<div className="absolute top-[2rem] left-[-28rem] z-50"><VideoCallModelBox setStartVideoCall={setStartVideoCall}/></div>)
             }

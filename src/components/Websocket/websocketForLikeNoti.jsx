@@ -6,12 +6,15 @@ import { addMessageToChat , selectActiveChatRoom ,setActiveChat} from '../../fea
 import { handleReaction } from '../../feature/reactionSlice';
 import { useAppDispatch, useAppSelector } from '../../hook/Hook';
 import { toast } from 'react-toastify';
+import { toggleIncomingCall } from '../../feature/modelBox';
+import { selectAnswerCall } from '../../feature/modelBox';
 
 const WebSocketContext = createContext(null);
 
 export const WebSocketProvider = ({ children }) => {
     const dispatch = useAppDispatch();
     const activeChatRoom = useAppSelector(selectActiveChatRoom);
+    const answerCall = useAppSelector(selectAnswerCall);
     const notiData = useAppSelector(selectNotification);
     const [isConnected, setIsConnected] = useState(false);
     const stompClientRef = useRef(null); 
@@ -19,11 +22,16 @@ export const WebSocketProvider = ({ children }) => {
     const shownMessagesRef = useRef(new Set());
     const localVideoRef = useRef(null);
     const remoteVideoRef = useRef(null);
+    const answerCallRef = useRef(false);
     console.log(activeChatRoom);
 
     useEffect(() => {
         activeChatRoomRef.current = activeChatRoom;
     }, [activeChatRoom]);
+
+    useEffect(() => {
+        answerCallRef.current = answerCall;
+    }, [answerCall]);
 
     const iceServers = {
         iceServers: [
@@ -177,6 +185,8 @@ export const WebSocketProvider = ({ children }) => {
                 console.log("Call From: " + call.body)
                 // remoteID = call.body;
                 console.log("Remote ID: " + call.body)
+
+                dispatch(toggleIncomingCall());
     
                 peerConnectionRef.ontrack = (event) => {
                     if (remoteVideoRef.current) {
@@ -205,18 +215,20 @@ export const WebSocketProvider = ({ children }) => {
                 }
 
                 setupMedia();
-                
-                // if (peerConnectionRef.current && typeof peerConnectionRef.current.createOffer === 'function'){
-                peerConnectionRef.createOffer().then(description => {
-                    peerConnectionRef.setLocalDescription(description);
-                    console.log("Setting Description" + description);
-                    stompClientRef.current.send("/app/offer", {}, JSON.stringify({
-                        "toUser": call.body,
-                        "fromUser": userId,
-                        "offer": description
-                    }))
-                })
-            //   }
+                console.log("this is answer call boolean",answerCall);
+
+                // if(answerCallRef.current){
+                    peerConnectionRef.createOffer().then(description => {
+                        peerConnectionRef.setLocalDescription(description);
+                        console.log("Setting Description" + description);
+                        stompClientRef.current.send("/app/offer", {}, JSON.stringify({
+                            "toUser": call.body,
+                            "fromUser": userId,
+                            "offer": description
+                        }))
+                    })
+                // }
+
             });
 
             stompClientRef.current.subscribe('/user/' + userId + "/topic/offer", (offer) => {
