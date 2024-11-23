@@ -35,13 +35,22 @@ export const WebSocketProvider = ({ children }) => {
 
     const iceServers = {
         iceServers: [
-            {urls: `stun:localhost:3478`},
+            {urls: `stun:digizenger.info:3478`},
             {
-              urls: `turn:localhost:3478`,
-              username: "username",
+              urls: `turn:digizenger.info:3478`,
+              username: "user",
               credential: "password"
-            }
-          ]
+            },
+            {
+                urls: `turn:digizenger.info:5349`,
+                username: "user",
+                credential: "password",
+              },
+          ],
+          iceTransportPolicy: "all",
+          bundlePolicy: "balanced",
+          rtcpMuxPolicy: "require",
+          iceCandidatePoolSize: 0
     };
 
     const peerConnectionRef = new RTCPeerConnection(iceServers);
@@ -197,7 +206,7 @@ export const WebSocketProvider = ({ children }) => {
                 }
     
     
-                peerConnectionRef.onicecandidate = (event) => {
+                peerConnectionRef.onicecandidate = async (event) => {
                     if (event.candidate) {
                         var candidate = {
                             type: "candidate",

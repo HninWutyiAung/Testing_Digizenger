@@ -50,7 +50,7 @@ function MainApp() {
       websocketConnectForLikeNoti(userId);
     }
       console.log("it work noti")
-  }, [websocketConnectForLikeNoti,userId]);
+  }, [websocketConnectForLikeNoti,userId,isLoggedIn]);
 
   useEffect(() => {
     if (isFetching && activeChatRoom) {

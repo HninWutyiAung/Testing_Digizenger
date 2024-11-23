@@ -260,7 +260,7 @@ function ChatBoxLayout () {
             { startVideoCall &&
                 (<div className="absolute top-[2rem] left-[-28rem] z-50"><VideoCallModelBox setStartVideoCall={setStartVideoCall}/></div>)
             }
-            <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px] h-[92.23vh] xl:h-[90vh] relative overflow-y-auto scrollable chat-layout-responsive" >
+            <section className="flex flex-col items-start pt-[140px] px-[20px] gap-[20px]   xl:h-[91vh] 2xl:h-[92.23vh] relative overflow-y-auto scrollable chat-layout-responsive" >
                 { messageLoading ? 
                 (<div className="absolute lg:top-[22rem] lg:left-[13rem] xl:top-[21rem] xl:left-[16.5rem] 2xl:top-[22rem] 2xl:left-[19rem]">
                     <RingLoader color="#0097A7" size={50} loading={messageLoading} />

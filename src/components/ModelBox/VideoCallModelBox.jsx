@@ -36,7 +36,7 @@ const VideoCallModelBox = () => {
             {/* Video Container */}
             <div className="flex gap-4 w-full max-w-5xl">
                 {/* Remote Video */}
-                <div className="absolute bottom-32 right-5 bg-red-100">
+                <div className="absolute rounded-md bottom-32 right-5 bg-darkBlue">
                     <video
                         ref={remoteVideoRef}
                         autoPlay
